@@ -1,0 +1,48 @@
+#intro-section {
+  margin-top: 1rem;
+}
+
+#intro-section .intro-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#intro-section .intro-container .hero-img-container img {
+  width: 500px;
+}
+
+#intro-section .main-content {
+  background-color: #F9F4ED;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+#intro-section .main-content .menu-nobg-img {
+  max-width: 80%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+/*# sourceMappingURL=intro.css.map */

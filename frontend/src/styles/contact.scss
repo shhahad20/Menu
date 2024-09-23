@@ -1,0 +1,98 @@
+#contact-section {
+    background-color: #1d1d1d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2rem;
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1rem 5rem;
+      flex-wrap: wrap; /* Makes content wrap in smaller screens */
+    }
+  
+    .contact-header {
+      margin: 3rem 0;
+  
+      .header {
+        color: white;
+        font-size: 35px;
+        font-weight: 700;
+        text-align: center;
+      }
+    }
+  
+    .left, .right {
+      width: 48%; /* Equal width on larger screens */
+      margin: 10px 0;
+  
+      @media (max-width: 768px) {
+        width: 100%; /* Full width on smaller screens */
+        margin: 0; /* Remove margin for better spacing */
+      }
+  
+      .form {
+        background-color: #2a292b;
+        padding: 1rem;
+        border-radius: 8px;
+  
+        .form-header, .title {
+          color: white;
+        }
+  
+        .input-bg {
+          background-color: #4d4d4d;
+          border: 1px solid #999999;
+        }
+  
+        .sub {
+          background-color: #9ef8ee;
+          color: #1d1d1d;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+  
+          &:hover {
+            background-color: #8ee0d8;
+          }
+        }
+      }
+    }
+  
+    .right-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+  
+      @media (max-width: 768px) {
+        margin-top: 2rem;
+        grid-template-columns: 1fr; /* Full width columns on small screens */
+      }
+  
+      .item-top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+      }
+  
+      .grid-item {
+        padding: 20px;
+        text-align: center;
+  
+        .item-header {
+          font-size: 16px;
+          font-weight: 700;
+          color: white;
+          padding: 3px 0;
+        }
+  
+        .item-p {
+          font-size: 14px;
+          color: gray;
+        }
+      }
+    }
+  }
+  

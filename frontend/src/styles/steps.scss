@@ -1,0 +1,37 @@
+
+.steps-section{
+    margin: 8rem 0 3rem 0;
+    margin-bottom: 10rem;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hidden {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.srcoll-section{
+    padding-bottom: 5rem;
+} 
+.steps-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5rem;
+  .steps-text{
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #2A292B;
+  }
+}
+@media (max-width: 480px){
+  .steps-header{
+    .steps-text{
+      font-size: 30px;
+    }
+  }
+}

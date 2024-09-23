@@ -1,0 +1,33 @@
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.srcoll-section{
+    padding-bottom: 5rem;
+}
+.scroll-section-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  h1{
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: #2A292B;
+  }
+}
+@media (max-width: 480px){
+  .scroll-section-header{
+    h1{
+      font-size: 30px;
+    }
+  }
+}
