@@ -1,0 +1,115 @@
+#signup-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+  
+    .signup-container {
+      background-color: #F9F4ED;
+      padding: 4rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 650px;  // Increased width for 2-column layout
+      width: 100%;
+    border: 1.5px solid #ede4d9;
+      .signup-header {
+        color: #2A292B;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+  
+      .signup-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        .input-pair {
+          display: flex;
+          gap: 1rem; 
+  
+          .input-container {
+            flex: 1; // Each input will take equal width
+            padding-left: 0.5rem;
+            .label {
+              color: #2A292B;
+              font-size: 0.875rem;
+            }
+  
+            .input {
+            width: 260px;
+              padding: 0.75rem;
+              border: 1px solid #999;
+              border-radius: 4px;
+              background-color: #F9F4ED;
+              color: #2A292B;
+              outline: none;
+  
+              &:focus {
+                border-color: #2A292B;
+              }
+            }
+          }
+        }
+  
+        .submit-btn {
+          padding: 0.75rem;
+          width: 400px;
+          background-color: #ede4d9;
+          color: #2A292B;
+          font-weight: bold;
+          text-align: center;
+          border: none;
+          margin-top: 0.5rem;
+          border-radius: 4px;
+          font-weight: 600;
+          cursor: pointer;
+  
+          &:hover {
+            color: white;
+            background-color: #2A292B;
+          }
+        }
+      }
+    }
+    .policy-link {
+        color: #2A292B;
+        text-decoration: underline;
+    }
+      .check-box{
+        margin-right: 5px;
+      }
+    
+      .login-link {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+    
+        a {
+          color: #2A292B;
+          text-decoration: underline;
+          &:hover {
+            font-weight: 600;
+          }
+        }
+      }
+  }
+  
+  /* Responsive design for mobile */
+  @media (max-width: 768px) {
+    .signup-container {
+      padding: 1.5rem;
+    }
+  
+    .input-pair {
+      flex-direction: column; // Stack inputs on small screens
+    }
+  
+    .signup-form .input-container .input {
+      font-size: 1rem;
+    }
+  }
+  

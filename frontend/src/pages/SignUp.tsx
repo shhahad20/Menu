@@ -1,10 +1,16 @@
-const SignUp: React.FC = () => {
-    return (
-      <section id="signup-section">
+import Navbar from "../components/Navbar";
+import SignUpForm from "../components/SignupForm";
+import "../styles/signup.scss";
 
-      </section>
-    );
-  };
-  
-  
-  export default SignUp;
+const SignUp: React.FC = () => {
+
+
+  return (
+<>
+<Navbar/>
+<SignUpForm/>
+</>
+  );
+};
+
+export default SignUp;
