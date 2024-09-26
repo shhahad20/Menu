@@ -1,4 +1,4 @@
-#signup-section {
+#signup-section, #login-section {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -12,7 +12,7 @@
   padding: 2rem;
 }
 
-#signup-section .signup-container {
+#signup-section .signup-container, #signup-section .login-container, #login-section .signup-container, #login-section .login-container {
   background-color: #F9F4ED;
   padding: 4rem;
   border-radius: 8px;
@@ -23,7 +23,7 @@
   border: 1.5px solid #ede4d9;
 }
 
-#signup-section .signup-container .signup-header {
+#signup-section .signup-container .signup-header, #signup-section .signup-container .login-header, #signup-section .login-container .signup-header, #signup-section .login-container .login-header, #login-section .signup-container .signup-header, #login-section .signup-container .login-header, #login-section .login-container .signup-header, #login-section .login-container .login-header {
   color: #2A292B;
   text-align: center;
   margin-bottom: 1.5rem;
@@ -31,7 +31,7 @@
   font-weight: 600;
 }
 
-#signup-section .signup-container .signup-form {
+#signup-section .signup-container .signup-form, #signup-section .login-container .signup-form, #login-section .signup-container .signup-form, #login-section .login-container .signup-form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -48,28 +48,28 @@
   gap: 1rem;
 }
 
-#signup-section .signup-container .signup-form .input-pair {
+#signup-section .signup-container .signup-form .input-pair, #signup-section .login-container .signup-form .input-pair, #login-section .signup-container .signup-form .input-pair, #login-section .login-container .signup-form .input-pair {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   gap: 1rem;
 }
 
-#signup-section .signup-container .signup-form .input-pair .input-container {
+#signup-section .signup-container .signup-form .input-pair .input-container, #signup-section .login-container .signup-form .input-pair .input-container, #login-section .signup-container .signup-form .input-pair .input-container, #login-section .login-container .signup-form .input-pair .input-container {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   padding-left: 0.5rem;
 }
 
-#signup-section .signup-container .signup-form .input-pair .input-container .label {
+#signup-section .signup-container .signup-form .input-pair .input-container .label, #signup-section .login-container .signup-form .input-pair .input-container .label, #login-section .signup-container .signup-form .input-pair .input-container .label, #login-section .login-container .signup-form .input-pair .input-container .label {
   color: #2A292B;
   font-size: 0.875rem;
 }
 
-#signup-section .signup-container .signup-form .input-pair .input-container .input {
+#signup-section .signup-container .signup-form .input-pair .input-container .input, #signup-section .login-container .signup-form .input-pair .input-container .input, #login-section .signup-container .signup-form .input-pair .input-container .input, #login-section .login-container .signup-form .input-pair .input-container .input {
   width: 260px;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid #999;
   border-radius: 4px;
   background-color: #F9F4ED;
@@ -77,11 +77,11 @@
   outline: none;
 }
 
-#signup-section .signup-container .signup-form .input-pair .input-container .input:focus {
+#signup-section .signup-container .signup-form .input-pair .input-container .input:focus, #signup-section .login-container .signup-form .input-pair .input-container .input:focus, #login-section .signup-container .signup-form .input-pair .input-container .input:focus, #login-section .login-container .signup-form .input-pair .input-container .input:focus {
   border-color: #2A292B;
 }
 
-#signup-section .signup-container .signup-form .submit-btn {
+#signup-section .signup-container .signup-form .submit-btn, #signup-section .login-container .signup-form .submit-btn, #login-section .signup-container .signup-form .submit-btn, #login-section .login-container .signup-form .submit-btn {
   padding: 0.75rem;
   width: 400px;
   background-color: #ede4d9;
@@ -95,48 +95,133 @@
   cursor: pointer;
 }
 
-#signup-section .signup-container .signup-form .submit-btn:hover {
+#signup-section .signup-container .signup-form .submit-btn:hover, #signup-section .login-container .signup-form .submit-btn:hover, #login-section .signup-container .signup-form .submit-btn:hover, #login-section .login-container .signup-form .submit-btn:hover {
   color: white;
   background-color: #2A292B;
 }
 
-#signup-section .policy-link {
+#signup-section .policy-link, #login-section .policy-link {
   color: #2A292B;
   text-decoration: underline;
 }
 
-#signup-section .check-box {
+#signup-section .check-box, #login-section .check-box {
   margin-right: 5px;
 }
 
-#signup-section .login-link {
+#signup-section .login-link, #login-section .login-link {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.875rem;
 }
 
-#signup-section .login-link a {
+#signup-section .login-link a, #login-section .login-link a {
   color: #2A292B;
   text-decoration: underline;
 }
 
-#signup-section .login-link a:hover {
+#signup-section .login-link a:hover, #login-section .login-link a:hover {
   font-weight: 600;
+}
+
+#signup-section .login-form, #login-section .login-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+
+#signup-section .login-form .login-pair, #login-section .login-form .login-pair {
+  display: block;
+}
+
+#signup-section .login-form .login-pair .login-input-container, #login-section .login-form .login-pair .login-input-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: left;
+      -ms-flex-align: left;
+          align-items: left;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 10px;
+}
+
+#signup-section .login-form .login-pair .login-input-container .label, #login-section .login-form .login-pair .login-input-container .label {
+  color: #2A292B;
+  font-size: 0.875rem;
+}
+
+#signup-section .login-form .login-pair .login-input-container .input, #login-section .login-form .login-pair .login-input-container .input {
+  width: 260px;
+  padding: 0.5rem;
+  border: 1px solid #999;
+  border-radius: 4px;
+  background-color: #F9F4ED;
+  color: #2A292B;
+  outline: none;
+}
+
+#signup-section .login-form .login-pair .login-input-container .input:focus, #login-section .login-form .login-pair .login-input-container .input:focus {
+  border-color: #2A292B;
+}
+
+#signup-section .login-form .login-submit-btn, #login-section .login-form .login-submit-btn {
+  padding: 0.75rem;
+  width: 300px;
+  background-color: #ede4d9;
+  color: #2A292B;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#signup-section .login-form .login-submit-btn:hover, #login-section .login-form .login-submit-btn:hover {
+  color: white;
+  background-color: #2A292B;
 }
 
 /* Responsive design for mobile */
 @media (max-width: 768px) {
-  .signup-container {
+  #signup-section .signup-container, #login-section .signup-container {
     padding: 1.5rem;
   }
-  .input-pair {
+  #signup-section .signup-container .signup-form .submit-btn, #login-section .signup-container .signup-form .submit-btn {
+    width: 260px;
+  }
+  #signup-section .input-pair, #login-section .input-pair {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
   }
-  .signup-form .input-container .input {
+  #signup-section .signup-form, #signup-section .input-container, #signup-section .input, #login-section .signup-form, #login-section .input-container, #login-section .input {
     font-size: 1rem;
+  }
+  #signup-section .login-form, #signup-section .login-input-container, #signup-section .input, #login-section .login-form, #login-section .login-input-container, #login-section .input {
+    font-size: 1rem;
+  }
+  #signup-section .login-form .login-submit-btn, #signup-section .login-input-container .login-submit-btn, #signup-section .input .login-submit-btn, #login-section .login-form .login-submit-btn, #login-section .login-input-container .login-submit-btn, #login-section .input .login-submit-btn {
+    width: 260px;
+  }
+  #signup-section .login-link, #login-section .login-link {
+    width: 260px;
   }
 }
 /*# sourceMappingURL=signup.css.map */

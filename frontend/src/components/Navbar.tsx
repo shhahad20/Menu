@@ -54,7 +54,7 @@ function Navbar() {
         </ul>
         <div className="icons-container">
           <div className="icons">
-            <Link to="signup" className="icon account">
+            <Link to="/signup" className="icon account">
               <img src="/account.svg" alt="account" />
             </Link>
             <Link to="/" className="icon shopping-cart">
