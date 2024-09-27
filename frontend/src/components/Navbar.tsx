@@ -38,7 +38,7 @@ function Navbar() {
           {!isMobile && (
             <div id="navbar_elements">
               <li>
-                <Link to="/">About</Link>
+                <Link to="/about-us">About</Link>
               </li>
               <li>
                 <Link to="/">Pricing</Link>

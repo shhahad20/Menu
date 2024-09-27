@@ -7,6 +7,7 @@ import App from './App.tsx'
 import './index.css'
 import SignUp from './pages/SignUp';
 import Login from './pages/Login.tsx';
+import About from './pages/About.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,8 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/about-us" element={<About />} />
+
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
       </Routes>
