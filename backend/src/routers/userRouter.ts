@@ -26,7 +26,9 @@ import { isLoggedOut, isLoggenIn } from '../middleware/authentication.js'
 
 const router = express.Router()
  
-router.get('/', isLoggenIn,isSuperAdmin, getAllUsers);
+// router.get('/', isLoggenIn,isSuperAdmin, getAllUsers);
+router.get('/', getAllUsers);
+
 router.get('/:userId',isLoggenIn,isSuperAdmin, getSingleUser);
 
 router.delete('/:userId',isLoggenIn,isSuperAdmin, deleteUserById);

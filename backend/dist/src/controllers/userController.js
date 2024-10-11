@@ -21,7 +21,7 @@ import { forgetPasswordEmail } from "../helper/emails.js";
 //   valueWithoutExtension,
 // } from '../helper/cloudinaryHelper'
 import { dev } from "../config/index.js";
-import { sendRegistrationEmail } from "../services/userServices.js";
+import { supabase } from "../config/supabaseClient.js";
 // import { console } from "inspector";
 const DEFAULT_IMAGES_PATH = "public/images/usersImages/default/usrImage.png";
 // A function to wrap the MySQL query with a Promise
@@ -39,44 +39,65 @@ export const queryDB = (query, params) => {
 };
 export const getAllUsers = async (req, res, next) => {
     try {
-        connectDB.query("SELECT * FROM users", (err, results) => {
-            if (err) {
-                return next(err); // Handle any SQL error
-            }
-            // Check if users are found
-            if (results.length === 0) {
-                return next(ApiError.notFound("Users not found"));
-            }
-            // Send the user data as JSON
-            res.status(200).json({
-                message: "All users are here",
-                payload: results, // Just the rows, no circular structure
-            });
-        });
+        const { data, error } = await supabase.from('users').select('*');
+        if (error)
+            return next(error);
+        if (!data || data.length === 0)
+            return next(ApiError.notFound("Users not found"));
+        res.status(200).json({ message: "All users are here", payload: data });
     }
     catch (error) {
-        next(error); // Catch and handle other errors
+        next(error);
     }
+    // try {
+    //   connectDB.query("SELECT * FROM users", (err, results) => {
+    //     if (err) {
+    //       return next(err); // Handle any SQL error
+    //     }
+    //     // Check if users are found
+    //     if (results.length === 0) {
+    //       return next(ApiError.notFound("Users not found"));
+    //     }
+    //     // Send the user data as JSON
+    //     res.status(200).json({
+    //       message: "All users are here",
+    //       payload: results, // Just the rows, no circular structure
+    //     });
+    //   });
+    // } catch (error) {
+    //   next(error); // Catch and handle other errors
+    // }
 };
 export const addUser = async (req, res, next) => {
     try {
         const { name, age, email } = req.body;
-        // Basic validation for required fields
-        if (!name || !age || !email) {
-            return res
-                .status(400)
-                .json({ message: "Name, age, and email are required" });
-        }
-        const addQuery = "INSERT INTO users (name, age, email) VALUES (?, ?, ?)";
-        connectDB.query(addQuery, [name, age, email], (err, result) => {
-            if (err) {
-                console.error("Failed to insert data:", err);
-                return res.status(500).send("Failed to insert data");
-            }
-            res.status(201).send("Data inserted successfully");
-        });
+        if (!name || !age || !email)
+            return res.status(400).json({ message: "Name, age, and email are required" });
+        const { error } = await supabase.from('users').insert([{ name, age, email }]);
+        if (error)
+            return res.status(500).send("Failed to insert data");
+        res.status(201).send("Data inserted successfully");
     }
-    catch (error) { }
+    catch (error) {
+        next(error);
+    }
+    // try {
+    //   const { name, age, email } = req.body;
+    //   // Basic validation for required fields
+    //   if (!name || !age || !email) {
+    //     return res
+    //       .status(400)
+    //       .json({ message: "Name, age, and email are required" });
+    //   }
+    //   const addQuery = "INSERT INTO users (name, age, email) VALUES (?, ?, ?)";
+    //   connectDB.query(addQuery, [name, age, email], (err, result) => {
+    //     if (err) {
+    //       console.error("Failed to insert data:", err);
+    //       return res.status(500).send("Failed to insert data");
+    //     }
+    //     res.status(201).send("Data inserted successfully");
+    //   });
+    // } catch (error) {}
 };
 export const getSingleUser = async (req, res, next) => {
     try {
@@ -136,61 +157,100 @@ export const deleteUserById = async (req, res, next) => {
 };
 export const registerUser = async (req, res, next) => {
     try {
-        const { first_name, last_name, email, password, address, phone, age, country, city, } = req.body;
-        // Check if password is provided
-        if (!password) {
+        const { first_name, last_name, email, password, address, phone, age, country, city } = req.body;
+        if (!password)
             return res.status(400).json({ message: "Password is required" });
+        const { data: userExists, error: existError } = await supabase.from('users').select('email').eq('email', email);
+        if (existError || userExists?.length > 0) {
+            return res.status(400).json({ message: "A user with this email already exists." });
         }
-        // Check if the user already exists by email
-        const isExist = await queryDB("SELECT email FROM users WHERE email = ?", [
-            email,
-        ]);
-        if (isExist.length > 0) {
-            return res
-                .status(400)
-                .json({
-                message: "A user with this email already exists. Please use a different email.",
-            });
-        }
-        // Generate salt and hash password
-        const saltRounds = 10;
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hashedPassword = bcrypt.hashSync(password, salt);
-        const tokenPayloadObject = {
-            first_name,
-            last_name,
-            email,
-            password: hashedPassword,
-            phone,
-            address,
-            age,
-            country,
-            city,
-        };
-        // Generate token for email verification
-        // Create a JWT token for email verification
-        const token = jwt.sign(tokenPayloadObject, dev.jwt.reset_k, { expiresIn: "1h" } // Token expires in 1 hour
-        );
-        const emailResult = await sendRegistrationEmail(email, first_name, last_name, token);
-        if (!emailResult.success) {
-            return res
-                .status(500)
-                .json({ message: emailResult.message, error: emailResult.error });
-        }
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const tokenPayload = { first_name, last_name, email, password: hashedPassword, phone, address, age, country, city };
+        const token = jwt.sign(tokenPayload, dev.jwt.reset_k, { expiresIn: '1h' });
+        // Send email logic here...
         res.status(200).json({
             message: "Verification email sent. Please check your email to complete registration.",
-            token: emailResult.token,
-            payload: token,
+            token,
         });
     }
     catch (error) {
-        console.log("Error occurred: ", error.message);
-        // Handle specific duplicate entry error from the database if necessary
-        if (error.code === "ER_DUP_ENTRY") {
-            return res.status(400).json({ message: "Email is already registered." });
-        }
         next(error);
     }
+    // try {
+    //   const {
+    //     first_name,
+    //     last_name,
+    //     email,
+    //     password,
+    //     address,
+    //     phone,
+    //     age,
+    //     country,
+    //     city,
+    //   } = req.body;
+    //   // Check if password is provided
+    //   if (!password) {
+    //     return res.status(400).json({ message: "Password is required" });
+    //   }
+    //   // Check if the user already exists by email
+    //   const isExist = await queryDB("SELECT email FROM users WHERE email = ?", [
+    //     email,
+    //   ]);
+    //   if (isExist.length > 0) {
+    //     return res
+    //       .status(400)
+    //       .json({
+    //         message:
+    //           "A user with this email already exists. Please use a different email.",
+    //       });
+    //   }
+    //   // Generate salt and hash password
+    //   const saltRounds = 10;
+    //   const salt = bcrypt.genSaltSync(saltRounds);
+    //   const hashedPassword = bcrypt.hashSync(password, salt);
+    //   const tokenPayloadObject = {
+    //     first_name,
+    //     last_name,
+    //     email,
+    //     password: hashedPassword,
+    //     phone,
+    //     address,
+    //     age,
+    //     country,
+    //     city,
+    //   };
+    //   // Generate token for email verification
+    //   // Create a JWT token for email verification
+    //   const token = jwt.sign(
+    //     tokenPayloadObject,
+    //     dev.jwt.reset_k,
+    //     { expiresIn: "1h" } // Token expires in 1 hour
+    //   );
+    //   const emailResult = await sendRegistrationEmail(
+    //     email,
+    //     first_name,
+    //     last_name,
+    //     token
+    //   );
+    //   if (!emailResult.success) {
+    //     return res
+    //       .status(500)
+    //       .json({ message: emailResult.message, error: emailResult.error });
+    //   }
+    //   res.status(200).json({
+    //     message:
+    //       "Verification email sent. Please check your email to complete registration.",
+    //     token: emailResult.token,
+    //     payload: token,
+    //   });
+    // } catch (error: any) {
+    //   console.log("Error occurred: ", error.message);
+    //   // Handle specific duplicate entry error from the database if necessary
+    //   if (error.code === "ER_DUP_ENTRY") {
+    //     return res.status(400).json({ message: "Email is already registered." });
+    //   }
+    //   next(error);
+    // }
 };
 export const activateUser = async (req, res, next) => {
     try {

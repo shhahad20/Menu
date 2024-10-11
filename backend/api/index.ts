@@ -1,6 +1,6 @@
 import express from 'express'
-import mongoose from 'mongoose'
-import mysql from 'mysql'
+// import mongoose from 'mongoose'
+// import mysql from 'mysql'
 import cors from 'cors'
 import { config } from 'dotenv'
 import morgan from 'morgan'
@@ -11,22 +11,23 @@ import userRouter from '../src/routers/userRouter.js'
 import authenticationRouter from '../src/routers/authRouter.js'
 import pricingRouter from '../src/routers/pricingRouter.js'
 import menuRouter from '../src/routers/menuRouter.js'
+import { supabase } from '../src/config/supabaseClient.js'
 
-import {connectDB} from '../src/config/db.js'
+// import {connectDB} from '../src/config/db.js'
 import apiErrorHandler from '../src/middleware/errorHandler.js'
  
 config()
 const app = express() 
 const PORT = 5050
 
-connectDB;
-connectDB.connect(error => {
-  if (error) {
-    console.error('Database connection failed:', error.stack);
-    return;
-  } 
-  console.log('Connected to database.');
-}); 
+// connectDB;
+// connectDB.connect(error => {
+//   if (error) {
+//     console.error('Database connection failed:', error.stack);
+//     return;
+//   } 
+//   console.log('Connected to database.');
+// }); 
 app.use('/public',express.static('public'))
 
 app.use(cookieParser())
