@@ -29,9 +29,12 @@ const router = express.Router()
 // router.get('/', isLoggenIn,isSuperAdmin, getAllUsers);
 router.get('/', getAllUsers);
 
-router.get('/:userId',isLoggenIn,isSuperAdmin, getSingleUser);
+// router.get('/:userId',isLoggenIn,isSuperAdmin, getSingleUser);
+router.get('/:userId', getSingleUser);
 
-router.delete('/:userId',isLoggenIn,isSuperAdmin, deleteUserById);
+// router.delete('/:userId',isLoggenIn,isSuperAdmin, deleteUserById);
+router.delete('/:userId', deleteUserById);
+
 
 router.post('/registering',creatUserValidator,runValidation, registerUser);
 router.post('/add-user', addUser);
@@ -40,7 +43,8 @@ router.post('/forget-password',isLoggedOut, forgetPassword);
 router.post('/reset-password', resetPassword);
 
 router.put('/:userId', updateUser);
-router.put('/change-role/:userId',isLoggenIn,isSuperAdmin, changeRole);
+// router.put('/change-role/:userId',isLoggenIn,isSuperAdmin, changeRole);
+router.put('/change-role/:userId', changeRole);
 
 // router.post(
 //   '/registering',
