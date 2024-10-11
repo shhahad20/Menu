@@ -20,14 +20,6 @@ config()
 const app = express() 
 const PORT = 5050
 
-// connectDB;
-// connectDB.connect(error => {
-//   if (error) {
-//     console.error('Database connection failed:', error.stack);
-//     return;
-//   } 
-//   console.log('Connected to database.');
-// }); 
 app.use('/public',express.static('public'))
 
 app.use(cookieParser())
