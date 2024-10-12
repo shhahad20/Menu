@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { ContentItem, StickyScroll } from "../components/ui/sticky-scroll-reveal";
 import '../styles/stickyScroll.scss';
 

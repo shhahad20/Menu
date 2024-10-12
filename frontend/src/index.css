@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: #F9F4ED;
+  height: 100%;
   /* display: flex;
   place-items: center;
   min-width: 320px;

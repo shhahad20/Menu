@@ -5,34 +5,36 @@ import { dev } from "../config/index.js";
 import { CustomRequest } from '../types/types';
 
 
-
-export const isLoggenIn = async(req:Request,res:Response,next:NextFunction)=>{
+export const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const accessToken = req.cookies.access_token
-        if(!accessToken){
-            throw ApiError.unauthorized("Please Login first or Sign up if you don't have an account.");
+        const accessToken = req.cookies.access_token;
+        if (!accessToken) {
+            throw ApiError.unauthorized("Please login first or sign up if you don't have an account.");
         }
-        const decoded = (await jwt.verify(accessToken, dev.jwt.key)) as jwt.JwtPayload
-        if(!decoded){
-            throw ApiError.unauthorized("Invaild access token");
+
+        const decoded = (await jwt.verify(accessToken, dev.jwt.key)) as JwtPayload;
+        if (!decoded) {
+            throw ApiError.unauthorized("Invalid access token.");
         }
+
         console.log("Decoded JWT Payload:", decoded);
 
+        // Attach user information to the request object
         req.user = { id: decoded.id, role: decoded.role };
         next();
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
-export const isLoggedOut = async(req: Request, res: Response, next: NextFunction)=>{
+export const isLoggedOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const accessToken = req.cookies?.access_token;
-      if(accessToken){
-        throw ApiError.unauthorized("You are already logged in.")
-      }
-      next();
+        const accessToken = req.cookies?.access_token;
+        if (accessToken) {
+            throw ApiError.unauthorized("You are already logged in.");
+        }
+        next();
     } catch (error) {
-        next(error)
+        next(error);
     }
-  }
+};
