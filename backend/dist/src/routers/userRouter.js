@@ -1,24 +1,23 @@
 import express from 'express';
-import { activateUser, addUser, changeRole, deleteUserById, forgetPassword, getAllUsers, getSingleUser, registerUser, resetPassword, updateUser,
+import { activateUser, changeRole, deleteUserById, forgetPassword, getAllUsers, getSingleUser, registerUser, resetPassword, updateUser,
 // banUser,
 // unbanUser,
  } from '../controllers/userController.js';
 import { creatUserValidator, } from '../validation/userValidation.js';
 import { runValidation } from '../validation/index.js';
 import { isSuperAdmin } from '../middleware/superAdmin.js';
-import { isLoggedOut, isLoggenIn } from '../middleware/authentication.js';
+import { isLoggedOut, isLoggedIn } from '../middleware/authentication.js';
 const router = express.Router();
-// router.get('/', isLoggenIn,isSuperAdmin, getAllUsers);
-router.get('/', getAllUsers);
-router.get('/:userId', isLoggenIn, isSuperAdmin, getSingleUser);
-router.delete('/:userId', isLoggenIn, isSuperAdmin, deleteUserById);
+router.get('/', isLoggedIn, isSuperAdmin, getAllUsers);
+router.get('/:userId', isLoggedIn, isSuperAdmin, getSingleUser);
+router.delete('/:userId', isLoggedIn, isSuperAdmin, deleteUserById);
 router.post('/registering', creatUserValidator, runValidation, registerUser);
-router.post('/add-user', addUser);
+// router.post('/add-user', addUser);
 router.post('/activate', activateUser);
 router.post('/forget-password', isLoggedOut, forgetPassword);
 router.post('/reset-password', resetPassword);
 router.put('/:userId', updateUser);
-router.put('/change-role/:userId', isLoggenIn, isSuperAdmin, changeRole);
+router.put('/change-role/:userId', isLoggedIn, isSuperAdmin, changeRole);
 // router.post(
 //   '/registering',
 //   isLoggedOut,

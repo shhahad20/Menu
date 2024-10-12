@@ -22,25 +22,25 @@ import {
 import { runValidation, runValidationUser } from '../validation/index.js'
 import { upload } from '../middleware/uploadFile.js'
 import { isSuperAdmin } from '../middleware/superAdmin.js'
-import { isLoggedOut, isLoggenIn } from '../middleware/authentication.js'
+import { isLoggedOut, isLoggedIn } from '../middleware/authentication.js'
 
 const router = express.Router()
  
-// router.get('/', isLoggenIn,isSuperAdmin, getAllUsers);
-router.get('/', getAllUsers);
+router.get('/', isLoggedIn,isSuperAdmin, getAllUsers);
 
-router.get('/:userId',isLoggenIn,isSuperAdmin, getSingleUser);
+router.get('/:userId',isLoggedIn,isSuperAdmin, getSingleUser);
 
-router.delete('/:userId',isLoggenIn,isSuperAdmin, deleteUserById);
+router.delete('/:userId',isLoggedIn,isSuperAdmin, deleteUserById);
+
 
 router.post('/registering',creatUserValidator,runValidation, registerUser);
-router.post('/add-user', addUser);
+// router.post('/add-user', addUser);
 router.post('/activate', activateUser);
 router.post('/forget-password',isLoggedOut, forgetPassword);
 router.post('/reset-password', resetPassword);
 
 router.put('/:userId', updateUser);
-router.put('/change-role/:userId',isLoggenIn,isSuperAdmin, changeRole);
+router.put('/change-role/:userId',isLoggedIn,isSuperAdmin, changeRole);
 
 // router.post(
 //   '/registering',
