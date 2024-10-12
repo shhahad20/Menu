@@ -11,6 +11,7 @@ import userRouter from '../src/routers/userRouter.js';
 import authenticationRouter from '../src/routers/authRouter.js';
 import pricingRouter from '../src/routers/pricingRouter.js';
 import menuRouter from '../src/routers/menuRouter.js';
+import FAQsRouter from '../src/routers/FAQsRouter.js';
 // import {connectDB} from '../src/config/db.js'
 import apiErrorHandler from '../src/middleware/errorHandler.js';
 config();
@@ -31,6 +32,7 @@ app.use('/users', userRouter);
 app.use('/auth', authenticationRouter);
 app.use('/pricing', pricingRouter);
 app.use('/menus', menuRouter);
+app.use('/FAQs', FAQsRouter);
 // app.use('/menu-tamplate',)
 // app.use('/categories', categoriesRouter)
 app.use(apiErrorHandler);

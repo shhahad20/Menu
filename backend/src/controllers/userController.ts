@@ -21,7 +21,7 @@ import { forgetPasswordEmail, registeringEmail } from "../helper/emails.js";
 //   valueWithoutExtension,
 // } from '../helper/cloudinaryHelper'
 import { dev } from "../config/index.js";
-import { sendRegistrationEmail } from "../services/userServices.js";
+// import { sendRegistrationEmail } from "../services/userServices.js";
 import { UserInterface } from "../types/userInterface.js";
 import { supabase } from "../config/supabaseClient.js";
 // import { console } from "inspector";
