@@ -1,8 +1,11 @@
 import {API_URL} from"../api/api"
 
+const FAQ_API_URL = `${API_URL}/FAQs`;
+
+
 export const fetchFAQs = async () => {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(FAQ_API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
