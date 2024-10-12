@@ -15,7 +15,6 @@ import FAQsRouter from '../src/routers/FAQsRouter.js'
 
 import { supabase } from '../src/config/supabaseClient.js'
 
-// import {connectDB} from '../src/config/db.js'
 import apiErrorHandler from '../src/middleware/errorHandler.js'
  
 config()

@@ -15,6 +15,6 @@ router.post('/add-faq', isLoggedIn, isSuperAdmin || isAdmin, createFAQ );
 router.put('/:id',isLoggedIn, isSuperAdmin || isAdmin,updateFAQ );
 router.delete('/:id',isLoggedIn, isSuperAdmin || isAdmin, deleteFAQ);
 
-
+ 
 export default router;
  

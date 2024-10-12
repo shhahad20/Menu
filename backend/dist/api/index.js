@@ -12,7 +12,6 @@ import authenticationRouter from '../src/routers/authRouter.js';
 import pricingRouter from '../src/routers/pricingRouter.js';
 import menuRouter from '../src/routers/menuRouter.js';
 import FAQsRouter from '../src/routers/FAQsRouter.js';
-// import {connectDB} from '../src/config/db.js'
 import apiErrorHandler from '../src/middleware/errorHandler.js';
 config();
 const app = express();
