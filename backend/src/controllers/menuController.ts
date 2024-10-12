@@ -1,122 +1,131 @@
-import { NextFunction, query, Request, Response } from "express";
-import { queryDB } from "./userController.js";
-import { connectDB } from "../config/db.js";
+import { NextFunction, Request, Response } from "express";
 import ApiError from "../errors/ApiError.js";
+import { supabase } from "../config/supabaseClient.js"; // Ensure Supabase client setup
 
+export const getAllMenuTemplates = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { data, error } = await supabase.from("menus").select("*");
 
-export const getAllMenuTemplates = async(req: Request, res: Response, next: NextFunction)=>{
-    try {
-        connectDB.query('SELECT * FROM menus',(err,menus)=>{
-            if(err){
-                return next(err)
-            }
-            if (menus.length === 0) {
-                return next(ApiError.notFound("Menus not found"));
-              }
-            res.status(200).json({
-                message: 'Menus retrieved successfully.',
-                payload: menus
-            })
-        })
-    } catch (error) {
-        next(error)
+    if (error) {
+      return next(ApiError.internal("Error retrieving menus data"));
     }
+
+    if (!data || data.length === 0) {
+      return next(ApiError.notFound("Menus not found"));
+    }
+
+    res.status(200).json({
+      message: "Menus retrieved successfully.",
+      payload: data,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const getMenuByName = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-        const {name} = req.params;
-        if(name){
-            return next(ApiError.badRequest("menu name must be provided!"));
-        }
+export const getMenuByName = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name } = req.params;
 
-      connectDB.query('SELECT * FROM menus WHERE name = ?' ,[name],(err, menu) => {
-        if (err) {
-          return next(err);
-        }
-        if (menu.length === 0) {
-          return next(ApiError.notFound(`Menu with name: ${name} not found.`));
-        }
-        res.status(200).json({
-          message: "Menu retrived successfully.",
-          payload: menu,
-        });
-      });
-    } catch (error) {
-        next(error)
+    if (!name) {
+      return next(ApiError.badRequest("Menu name must be provided!"));
     }
-  };
 
-  export const createMenu = async(req:Request,res:Response,next:NextFunction)=>{
-    try {
-        const { name, num_sections, num_products, description } = req.body;
-            // Basic validation for required fields
+    const { data, error } = await supabase
+      .from("menus")
+      .select("*")
+      .eq("name", name);
+
+    if (error) {
+      return next(ApiError.internal("Error retrieving menu data"));
+    }
+
+    if (!data || data.length === 0) {
+      return next(ApiError.notFound(`Menu with name: ${name} not found.`));
+    }
+
+    res.status(200).json({
+      message: "Menu retrieved successfully.",
+      payload: data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createMenu = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name, num_sections, num_products, description } = req.body;
+
+    // Basic validation for required fields
     if (!name || !num_sections || !num_products || !description) {
-        return res
-          .status(400)
-          .json({ message: "Name, num_sections, num_products, and Description are required." });
-      }
-      const addPrice = "INSERT INTO menus (name, num_sections, num_products, description) VALUES (?, ?, ? ,?)";
-      connectDB.query(addPrice, [name, num_sections, num_products, description], (err, result) => {
-        if (err) {
-          console.error("Failed to insert data:", err);
-          return next(ApiError.internal("Failed to insert data"));
-        }
-        res.status(201).send("Data inserted successfully");
-      });
-
-
-    } catch (error) {
-        next(ApiError.badRequest("Bad request."))   
+      return res
+        .status(400)
+        .json({ message: "Name, num_sections, num_products, and Description are required." });
     }
-}
 
-export const updateMenu = async (req: Request, res: Response, next:NextFunction) => {
-    try {
-        const { id } = req.params;
-        const { name, num_sections, num_products, description } = req.body;
-        connectDB.query(
-            "UPDATE menus SET name = ?,price = ? , duration = ? , description = ?  WHERE id = ?",
-            [name,num_sections, num_products, description, id],
-            (err, updatedMenu) => {
-              if (err) {
-                console.error("Failed to update data:", err);
-                return res.status(500).send("Failed to update data");
-              }
-              if (updatedMenu.affectedRows === 0) {
-                return next(ApiError.notFound('Menu template not found'));
-            }
-              res.status(200).json({ message: `You updated menu with id : ${id}` });
-            }
-          );
-    } catch (error) {
+    const { error } = await supabase
+      .from("menus")
+      .insert([{ name, num_sections, num_products, description }]);
+
+    if (error) {
+      console.error("Failed to insert data:", error);
+      return next(ApiError.internal("Failed to insert data"));
     }
+
+    res.status(201).json({ message: "Data inserted successfully" });
+  } catch (error) {
+    next(ApiError.badRequest("Bad request."));
+  }
 };
 
-export const deleteMenu = async (req: Request, res: Response, next:NextFunction) => {
-    try {
-        const {id} = req.params;
-        connectDB.query(
-          "DELETE FROM menus WHERE id = ?",
-          [id],
-          (err, deletedMenu) => {
-            if (err) {
-              console.error("Failed to delete menu data:", err);
-              return res.status(500).send("Failed to delete data");
-            }
-            if (deletedMenu.affectedRows === 0) {
-                return next(ApiError.notFound('Menu template not found'));
-            }
-            res.status(200).json({
-              message: `You deleted menu with id = ${id}`,
-            });
-          }
-        );
-    } catch (error) {
-        next(error)
+export const updateMenu = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { name, num_sections, num_products, description } = req.body;
+
+    const { error, count } = await supabase
+      .from("menus")
+      .update({ name, num_sections, num_products, description })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Failed to update data:", error);
+      return res.status(500).send("Failed to update data");
     }
+
+    if (count === 0) {
+      return next(ApiError.notFound("Menu template not found"));
+    }
+
+    res.status(200).json({ message: `You updated menu with id: ${id}` });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMenu = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    const { error, count } = await supabase
+      .from("menus")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Failed to delete menu data:", error);
+      return res.status(500).send("Failed to delete data");
+    }
+
+    if (count === 0) {
+      return next(ApiError.notFound("Menu template not found"));
+    }
+
+    res.status(200).json({
+      message: `You deleted menu with id = ${id}`,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
