@@ -44,14 +44,14 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
   });
 
   const backgroundColors = [
-    "#F9F4ED",
-    "#F9F4ED",
-    "#F9F4ED",
+    "white",
+    "white",
+    "white",
   ];
   const linearGradients = [
-    "#F9F4ED",
-    "#F9F4ED",
-    "#F9F4ED",
+    "white",
+    "white",
+    "white",
   ];
 
   const [backgroundGradient, setBackgroundGradient] = useState(

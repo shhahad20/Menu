@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import AboutUs from '../components/Aboutus';
-import ContactUs from '../components/ContactUs';
 import Footer from '../components/Footer';
 
 
@@ -10,7 +9,6 @@ const About: React.FC = () => {
     <>
     <Navbar/>
     <AboutUs/>
-    <ContactUs/>
     <Footer/>
     </>
   );

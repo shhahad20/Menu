@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ApiError from "../errors/ApiError.js";
-import { supabase } from "../config/supabaseClient.js"; // Ensure Supabase client setup
+import { supabase } from "../config/supabaseClient.js"; 
 
 export const getAllMenuTemplates = async (req: Request, res: Response, next: NextFunction) => {
   try {

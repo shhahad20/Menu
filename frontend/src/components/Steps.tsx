@@ -21,8 +21,8 @@ const content: ContentItem[] = [
     content: (
       <div className="h-full w-full flex items-center justify-center text-white">
         <img
-          src="/Signup.svg"
-          width={250}
+          src="/Signup-blue20.svg"
+          width={300}
           height={250}
           className=" object-cover"
           alt="linear board demo"
@@ -44,8 +44,8 @@ const content: ContentItem[] = [
     content: (
       <div className="h-full w-full flex items-center justify-center text-white">
         <img
-          src="/plans.svg"
-          width={250}
+          src="/plans-blue.svg"
+          width={300}
           height={250}
           className=" object-cover"
           alt="linear board demo"
@@ -67,8 +67,8 @@ const content: ContentItem[] = [
     content: (
       <div className="h-full w-full flex items-center justify-center text-white">
         <img
-          src="/customize.svg"
-          width={200}
+          src="/customize-blue.svg"
+          width={250}
           height={200}
           className=" object-cover"
           alt="linear board demo"
@@ -89,8 +89,8 @@ const content: ContentItem[] = [
     content: (
       <div className="h-full w-full flex items-center justify-center text-white">
         <img
-          src="/qrcode.svg"
-          width={100}
+          src="/qrcode-blue.svg"
+          width={150}
           height={100}
           className=" object-cover"
           alt="linear board demo"

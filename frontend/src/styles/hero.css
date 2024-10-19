@@ -15,7 +15,7 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
-  color: #2A292B;
+  color: #1d2126;
 }
 
 #hero-section #hero_heading_section {
@@ -42,8 +42,8 @@
   text-align: center;
   font-weight: 500;
   padding: 0 15px;
-  background: -webkit-gradient(linear, left bottom, left top, from(#8cc4c3), to(#008F8C));
-  background: linear-gradient(0deg, #8cc4c3, #008F8C);
+  background: -webkit-gradient(linear, left bottom, left top, from(#66b2ff), to(#0061c2));
+  background: linear-gradient(0deg, #66b2ff, #0061c2);
   background-clip: text;
   color: transparent;
   display: block;
@@ -60,8 +60,8 @@
 
 #hero-section #hero_heading_section .explore-container {
   margin-top: 1rem;
-  background-color: #F9F4ED;
-  border: 1.5px #2A292B solid;
+  background-color: #0061c2;
+  border: 1.5px #0061c2 solid;
   padding: 0.3rem 2rem;
   border-radius: 25px;
   cursor: pointer;
@@ -69,14 +69,14 @@
 
 #hero-section #hero_heading_section .explore-container h2 {
   font-size: 18px;
-  color: #2A292B;
+  color: white;
   font-weight: 500;
   letter-spacing: 0.2px;
 }
 
 #hero-section #hero_heading_section .explore-container:hover {
-  background-color: #008F8C;
-  border: 1.5px #008F8C solid;
+  background-color: #66b2ff;
+  border: 1.5px #66b2ff solid;
 }
 
 #hero-section #hero_heading_section .explore-container:hover h2 {
@@ -127,9 +127,22 @@
   margin: 0;
   -webkit-animation: slideUp 12s infinite;
           animation: slideUp 12s infinite;
-  color: #2A292B;
+  color: #1d2126;
   font-weight: 700;
   font-size: 8rem;
+}
+
+#hero-section .hero-img-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 5rem;
 }
 
 @-webkit-keyframes opacity {
