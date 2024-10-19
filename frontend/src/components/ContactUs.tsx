@@ -88,7 +88,7 @@ const ContactUs: React.FC = () => {
         <div className="right-container">
             <div className="grid-item">
                 <div className="item-top">
-                <img src="/support-w.svg" width={20} height={20} alt="feedback" className="feedback-img" />
+                {/* <img src="/support-w.svg" width={20} height={20} alt="feedback" className="feedback-img" /> */}
                <h2 className="item-header">Customer Support</h2>
                 </div>
                <p className="item-p">Our support team is available to address any concerns or queries you may have.</p>

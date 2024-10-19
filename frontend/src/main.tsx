@@ -10,6 +10,7 @@ import Login from './pages/Login.tsx';
 import About from './pages/About.tsx';
 import Pricing from './pages/Pricing.tsx';
 import FAQs from './pages/FAQs.tsx';
+import MenusTemplates from './pages/MenuTemplates.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about-us" element={<About />} />
+        <Route path="/menus" element={<MenusTemplates />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/faqs" element={<FAQs />} />
 

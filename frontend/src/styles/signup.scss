@@ -4,17 +4,17 @@
     align-items: center;
     min-height: 80vh;
     padding: 2rem;
-  
+  margin-top: 5rem;
     .signup-container, .login-container {
-      background-color: #F9F4ED;
+      background-color: white;
       padding: 4rem;
       border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       max-width: 650px;  // Increased width for 2-column layout
       width: 100%;
-    border: 1.5px solid #ede4d9;
+    border: 1.5px solid #1d2126;
       .signup-header, .login-header {
-        color: #2A292B;
+        color: #1d2126;
         text-align: center;
         margin-bottom: 1.5rem;
         font-size: 1.5rem;
@@ -36,21 +36,21 @@
             flex: 1; // Each input will take equal width
             padding-left: 0.5rem;
             .label {
-              color: #2A292B;
+              color: #1d2126;
               font-size: 0.875rem;
             }
 
             .input {
             width: 260px;
               padding: 0.5rem;
-              border: 1px solid #999;
+              border: 1px solid #475463;
               border-radius: 4px;
-              background-color: #F9F4ED;
-              color: #2A292B;
+              // background-color: #F9F4ED;
+              color: #1d2126;
               outline: none;
   
               &:focus {
-                border-color: #2A292B;
+                border-color: #1d2126;
               }
             }
           }
@@ -58,8 +58,8 @@
         .submit-btn {
           padding: 0.75rem;
           width: 400px;
-          background-color: #ede4d9;
-          color: #2A292B;
+          background-color: #475463;
+          color: white;
           font-weight: bold;
           text-align: center;
           border: none;
@@ -69,15 +69,14 @@
           cursor: pointer;
   
           &:hover {
-            color: white;
-            background-color: #2A292B;
+            background-color: #1d2126;
           }
         }
       }
 
     }
     .policy-link {
-        color: #2A292B;
+        color: #1d2126;
         text-decoration: underline;
     }
       .check-box{
@@ -90,7 +89,7 @@
         font-size: 0.875rem;
     
         a {
-          color: #2A292B;
+          color: #1d2126;
           text-decoration: underline;
           &:hover {
             font-weight: 600;
@@ -112,21 +111,21 @@
         flex-direction: column;
         margin-bottom: 10px;
         .label {
-          color: #2A292B;
+          color: #1d2126;
           font-size: 0.875rem;
         }
 
         .input {
           width: 260px;
           padding: 0.5rem;
-          border: 1px solid #999;
+          border: 1px solid #475463;
           border-radius: 4px;
-          background-color: #F9F4ED;
-          color: #2A292B;
+          // background-color: #F9F4ED;
+          color: #1d2126;
           outline: none;
 
           &:focus {
-            border-color: #2A292B;
+            border-color: #1d2126;
           }
         }
       }
@@ -134,8 +133,8 @@
     .login-submit-btn {
       padding: 0.75rem;
       width: 300px;
-      background-color: #ede4d9;
-      color: #2A292B;
+      background-color: #475463;
+      color: white;
       font-weight: bold;
       text-align: center;
       border: none;
@@ -145,8 +144,7 @@
       cursor: pointer;
   
       &:hover {
-        color: white;
-        background-color: #2A292B;
+        background-color: #1d2126;
       }
     }
   }

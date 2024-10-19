@@ -1,5 +1,5 @@
 import ApiError from "../errors/ApiError.js";
-import { supabase } from "../config/supabaseClient.js"; // Ensure Supabase client setup
+import { supabase } from "../config/supabaseClient.js";
 export const getAllMenuTemplates = async (req, res, next) => {
     try {
         const { data, error } = await supabase.from("menus").select("*");
