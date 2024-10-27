@@ -44,8 +44,8 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
   });
 
   const backgroundColors = [
-    "#2A292B",
-    "#F9F4ED",
+    "#1d2126",
+    "var(--neutral-900)",
     "var(--neutral-900)",
   ];
   const linearGradients = [
@@ -67,11 +67,12 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[40rem] overflow-y-auto flex  justify-center relative space-x-20 rounded-md p-10 scrollbar-hidden" 
+      className="h-[40rem] overflow-y-auto flex  justify-center relative space-x-20  p-10 scrollbar-hidden" 
       ref={ref}
     >
       <div className="div relative flex items-start px-10">
         <div className="max-w-2xl">
+          
           {content.map((item, index) => (
             <div key={typeof item.title === "string" ? item.title + index : index} className="my-20">
             <motion.h2

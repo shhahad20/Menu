@@ -12,6 +12,8 @@ import authenticationRouter from '../src/routers/authRouter.js'
 import pricingRouter from '../src/routers/pricingRouter.js'
 import menuRouter from '../src/routers/menuRouter.js'
 import FAQsRouter from '../src/routers/FAQsRouter.js'
+import categoryRouter from '../src/routers/menuRouters/categoryRouter.js'
+import menuItemRouter from '../src/routers/menuRouters/menuItemRouter.js'
 
 import { supabase } from '../src/config/supabaseClient.js'
 
@@ -39,6 +41,8 @@ app.use('/users', userRouter)
 app.use('/auth', authenticationRouter)
 app.use('/pricing', pricingRouter)
 app.use('/menus', menuRouter)
+app.use('/menu/categories', categoryRouter)
+app.use('/menu/menu-items', menuItemRouter)
 app.use('/FAQs', FAQsRouter)
 // app.use('/menu-tamplate',)
 // app.use('/categories', categoriesRouter)

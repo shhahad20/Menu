@@ -1,5 +1,7 @@
 #intro-section {
-  margin-top: 1rem;
+  margin-top: -12rem;
+  padding-top: 0;
+  margin-bottom: 0;
 }
 
 #intro-section .intro-container {
@@ -19,7 +21,7 @@
 }
 
 #intro-section .main-content {
-  background-color: #F9F4ED;
+  background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -38,7 +40,7 @@
 }
 
 #intro-section .main-content .menu-nobg-img {
-  max-width: 80%;
+  max-width: 90%;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;

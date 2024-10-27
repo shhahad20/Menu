@@ -37,19 +37,18 @@
 #about-section .content-container .mission-container h1 {
   font-size: 40px;
   font-weight: 700;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 #about-section .content-container .mission-container p {
   width: 1000px;
   font-size: 20px;
   font-weight: 500;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 #about-section .content-container .whowe-section {
-  background-color: #2a292b;
-  border-radius: 8px;
+  background-color: #1d2126;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -81,7 +80,7 @@
   width: 1000px;
   font-size: 20px;
   font-weight: 400;
-  color: #f9f4ed;
+  color: white;
 }
 
 #about-section .content-container .wedo-section {
@@ -103,14 +102,14 @@
 #about-section .content-container .wedo-section h1 {
   font-size: 40px;
   font-weight: 700;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 #about-section .content-container .wedo-section p {
   width: 1000px;
   font-size: 20px;
   font-weight: 500;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 #about-section .content-container .feature-section {
@@ -156,29 +155,28 @@
 }
 
 #about-section .content-container .feature-section .feature-content {
-  background-color: #f9f4ed;
   border-radius: 8px;
-  border: 1px solid #2a292b;
+  border: 1.5px solid #1d2126;
   padding: 1rem;
 }
 
 #about-section .content-container .feature-section h1 {
   font-size: 40px;
   font-weight: 700;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 #about-section .content-container .feature-section h2 {
   font-size: 22px;
-  font-weight: 600;
-  color: #2a292b;
+  font-weight: 500;
+  color: #1d2126;
 }
 
 #about-section .content-container .feature-section p {
   width: 300px;
   font-size: 16px;
   font-weight: 400;
-  color: #2a292b;
+  color: #1d2126;
 }
 
 @media (max-width: 1200px) {

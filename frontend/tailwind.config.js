@@ -18,7 +18,7 @@ module.exports = {
     extend: {
       colors: {
         darkCustomColor: {
-          600: '#2A292B', // Your custom color
+          600: '#1d2126', // Your custom color
         },
       },
     },

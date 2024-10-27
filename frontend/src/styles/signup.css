@@ -10,21 +10,22 @@
           align-items: center;
   min-height: 80vh;
   padding: 2rem;
+  margin-top: 5rem;
 }
 
 #signup-section .signup-container, #signup-section .login-container, #login-section .signup-container, #login-section .login-container {
-  background-color: #F9F4ED;
+  background-color: white;
   padding: 4rem;
   border-radius: 8px;
   -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 650px;
   width: 100%;
-  border: 1.5px solid #ede4d9;
+  border: 1.5px solid #1d2126;
 }
 
 #signup-section .signup-container .signup-header, #signup-section .signup-container .login-header, #signup-section .login-container .signup-header, #signup-section .login-container .login-header, #login-section .signup-container .signup-header, #login-section .signup-container .login-header, #login-section .login-container .signup-header, #login-section .login-container .login-header {
-  color: #2A292B;
+  color: #1d2126;
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
@@ -63,29 +64,28 @@
 }
 
 #signup-section .signup-container .signup-form .input-pair .input-container .label, #signup-section .login-container .signup-form .input-pair .input-container .label, #login-section .signup-container .signup-form .input-pair .input-container .label, #login-section .login-container .signup-form .input-pair .input-container .label {
-  color: #2A292B;
+  color: #1d2126;
   font-size: 0.875rem;
 }
 
 #signup-section .signup-container .signup-form .input-pair .input-container .input, #signup-section .login-container .signup-form .input-pair .input-container .input, #login-section .signup-container .signup-form .input-pair .input-container .input, #login-section .login-container .signup-form .input-pair .input-container .input {
   width: 260px;
   padding: 0.5rem;
-  border: 1px solid #999;
+  border: 1px solid #475463;
   border-radius: 4px;
-  background-color: #F9F4ED;
-  color: #2A292B;
+  color: #1d2126;
   outline: none;
 }
 
 #signup-section .signup-container .signup-form .input-pair .input-container .input:focus, #signup-section .login-container .signup-form .input-pair .input-container .input:focus, #login-section .signup-container .signup-form .input-pair .input-container .input:focus, #login-section .login-container .signup-form .input-pair .input-container .input:focus {
-  border-color: #2A292B;
+  border-color: #1d2126;
 }
 
 #signup-section .signup-container .signup-form .submit-btn, #signup-section .login-container .signup-form .submit-btn, #login-section .signup-container .signup-form .submit-btn, #login-section .login-container .signup-form .submit-btn {
   padding: 0.75rem;
   width: 400px;
-  background-color: #ede4d9;
-  color: #2A292B;
+  background-color: #475463;
+  color: white;
   font-weight: bold;
   text-align: center;
   border: none;
@@ -96,12 +96,11 @@
 }
 
 #signup-section .signup-container .signup-form .submit-btn:hover, #signup-section .login-container .signup-form .submit-btn:hover, #login-section .signup-container .signup-form .submit-btn:hover, #login-section .login-container .signup-form .submit-btn:hover {
-  color: white;
-  background-color: #2A292B;
+  background-color: #1d2126;
 }
 
 #signup-section .policy-link, #login-section .policy-link {
-  color: #2A292B;
+  color: #1d2126;
   text-decoration: underline;
 }
 
@@ -116,7 +115,7 @@
 }
 
 #signup-section .login-link a, #login-section .login-link a {
-  color: #2A292B;
+  color: #1d2126;
   text-decoration: underline;
 }
 
@@ -160,29 +159,28 @@
 }
 
 #signup-section .login-form .login-pair .login-input-container .label, #login-section .login-form .login-pair .login-input-container .label {
-  color: #2A292B;
+  color: #1d2126;
   font-size: 0.875rem;
 }
 
 #signup-section .login-form .login-pair .login-input-container .input, #login-section .login-form .login-pair .login-input-container .input {
   width: 260px;
   padding: 0.5rem;
-  border: 1px solid #999;
+  border: 1px solid #475463;
   border-radius: 4px;
-  background-color: #F9F4ED;
-  color: #2A292B;
+  color: #1d2126;
   outline: none;
 }
 
 #signup-section .login-form .login-pair .login-input-container .input:focus, #login-section .login-form .login-pair .login-input-container .input:focus {
-  border-color: #2A292B;
+  border-color: #1d2126;
 }
 
 #signup-section .login-form .login-submit-btn, #login-section .login-form .login-submit-btn {
   padding: 0.75rem;
   width: 300px;
-  background-color: #ede4d9;
-  color: #2A292B;
+  background-color: #475463;
+  color: white;
   font-weight: bold;
   text-align: center;
   border: none;
@@ -193,8 +191,7 @@
 }
 
 #signup-section .login-form .login-submit-btn:hover, #login-section .login-form .login-submit-btn:hover {
-  color: white;
-  background-color: #2A292B;
+  background-color: #1d2126;
 }
 
 /* Responsive design for mobile */

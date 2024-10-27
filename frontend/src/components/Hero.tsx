@@ -1,9 +1,11 @@
 import "../styles/hero.scss";
+import Intro from "./Intro";
 
 
 const Hero: React.FC = () => {
  
   return (
+    <>
     <section id="hero-section">
     <div id="hero_heading_section">
 
@@ -13,15 +15,16 @@ const Hero: React.FC = () => {
         {/* <h1 className="brackets">[ </h1> */}
         <div className="name">
           <h1 className="word">We-</h1>
-          <h1 className="word">Pro</h1>
           <h1 className="word">Re-</h1>
-          <h1 className="word">Co-</h1>
+          <h1 className="word">We-</h1>
+          <h1 className="word">Re-</h1>
         </div>
         <div>
           <h1 className="text" >Design</h1>
         </div>
         {/* <h1 className="brackets">] </h1> */}
       </div>
+
       <div className="hero_heading_two">
       <h1 className="text">Your Menu </h1>
       </div>
@@ -31,10 +34,13 @@ const Hero: React.FC = () => {
       </div>
     </div>
     {/* <div className="hero-img-container">
-    <img src="/menu.png" alt="menu-img" className="menu-img" />
+    <img src="/Corsan.svg" alt="corsan" className="corsan" width="150px" />
+    <img src="/rice.svg" alt="corsan" className="corsan" width="150px" />
 
     </div> */}
     </section>
+    <Intro/>
+    </>
   );
 };
 

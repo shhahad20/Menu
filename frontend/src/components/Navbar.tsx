@@ -41,6 +41,9 @@ function Navbar() {
                 <Link to="/about-us">About</Link>
               </li>
               <li>
+                <Link to="/menus">Menus</Link>
+              </li>
+              <li>
                 <Link to="/pricing">Pricing</Link>
               </li>
               <li>
@@ -72,6 +75,9 @@ function Navbar() {
             <li>
               <Link to="/">About</Link>
             </li>
+            <li>
+                <Link to="/menus">Menus</Link>
+              </li>
             <li>
               <Link to="/">Pricing</Link>
             </li>
