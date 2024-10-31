@@ -1,11 +1,15 @@
 import React from 'react';
 import '../styles/home.scss'
-import Template1 from '../components/menu-templates/templateOne';
+import { Link } from 'react-router-dom';
 
 const MenusTemplates: React.FC = () => {
   return (
     <section id="menus-section">
-        <Template1/>
+        <ul>
+          <li><Link to="/template1">Template 1</Link></li>
+          <li><Link to="/template2">Template 2</Link></li>
+
+        </ul>
     </section>
   );
 };

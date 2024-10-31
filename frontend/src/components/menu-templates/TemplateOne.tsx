@@ -1,69 +1,46 @@
-import React, { useState } from 'react';
-import '../../styles/menus-style/template1.scss'
+import React, { useEffect, useState } from "react";
+import "../../styles/menus-style/template1.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store"; // Import your own RootState
+import { fetchMenuData, MenuItem } from "../../redux/menu/menuSlice";
 
-const categories = ['All', 'Salad', 'Burger', 'Pasta', 'Drinks'];
-// interface MenuItem {
-//     name: string;
-//     description: string;
-//     calories: number;
-//     protein: number;
-//     carbs: number;
-//     fat: number;
-//     price: number;
-//     image: string;
-//     category: string;
-//     isPopular?: boolean;
-//     isOnlineOnly?: boolean;
-//   }
-  
 const Template1 = () => {
-    const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const dispatch: AppDispatch = useDispatch();
+  const { categories, menuItems, loading, error } = useSelector(
+    (state: RootState) => state.menu // Use your own RootState here
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
+  // Fetch menu data on component mount
+  useEffect(() => {
+    dispatch(fetchMenuData());
+  }, [dispatch]);
+
+  // Handle category change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  // Filter menu items based on selected category
+  const filteredMenuItems =
+  selectedCategory === "All"
+    ? menuItems
+    : menuItems.filter((item: MenuItem) => item.category.name === selectedCategory);
 
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
-    const menuItems = [
-        {
-          name: 'Peach + Burrata',
-          description: 'Peaches, burrata, tomatoes, cucumbers, basil, mint, balsamic vinaigrette',
-          calories: 435,
-          protein: 11,
-          carbs: 25,
-          fat: 26,
-          image: '/dish1.png', // Replace with the actual image paths
-          isPopular: true,
-          isOnlineOnly: false,
-          price: 39.5,
-          category: 'Burger',
-        },
-        {
-          name: 'QUINOA SALAD',
-          description: 'A nutritious blend of fluffy quinoa, colorful bell peppers, crunchy cucumbers, and fresh herbs, this salad is both vibrant and filling. Tossed in a zesty lemon vinaigrette, it offers a delightful balance of flavors',
-          calories: 445,
-          protein: 11,
-          carbs: 26,
-          fat: 26,
-          image: '/dish2.svg',
-          isPopular: false,
-          isOnlineOnly: false,
-          price:50,
-          category: 'Salad',
-        },
-      ];
-      const handleCategoryChange = (category: string) => {
-        setSelectedCategory(category);
-      };
-    
-      const filteredMenuItems = selectedCategory === 'All'
-        ? menuItems
-        : menuItems.filter((item) => item.category === selectedCategory);
   return (
-<div className="menu-container">
+    <div className="menu-container">
       <h1>Brand Name</h1>
       <div className="category-nav">
         {categories.map((category) => (
           <button
             key={category}
-            className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+            className={`category-button ${
+              selectedCategory === category ? "active" : ""
+            }`}
             onClick={() => handleCategoryChange(category)}
           >
             {category}
@@ -74,7 +51,9 @@ const Template1 = () => {
         {filteredMenuItems.map((item, index) => (
           <div key={index} className="menu-item">
             {item.isPopular && <span className="badge popular">Popular</span>}
-            {item.isOnlineOnly && <span className="badge online-only">Online Only</span>}
+            {item.isOnlineOnly && (
+              <span className="badge online-only">Online Only</span>
+            )}
             <img src={item.image} alt={item.name} className="menu-image" />
             <h3 className="menu-item-title">{item.name}</h3>
             <p className="menu-item-description">{item.description}</p>
