@@ -8,7 +8,7 @@ const MenusTemplates: React.FC = () => {
         <ul>
           <li><Link to="/template1">Template 1</Link></li>
           <li><Link to="/template2">Template 2</Link></li>
-
+          <li><Link to="/dashboard">Dashboard</Link></li>
         </ul>
     </section>
   );

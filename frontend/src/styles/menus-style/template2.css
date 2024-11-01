@@ -1,6 +1,6 @@
 .menu-container-tem2 {
   background-color: #f7f5f5;
-  padding: 2rem;
+  padding: 2rem 10rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -26,7 +26,7 @@
 }
 
 .section1 {
-  padding: 0 5rem;
+  padding: 0 12rem;
   max-width: 100%;
   margin-top: 3rem;
 }
@@ -60,7 +60,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 5rem;
+  gap: 4rem;
   padding: 1.5rem;
   scroll-behavior: smooth;
 }
@@ -83,18 +83,22 @@
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
   text-align: center;
-  width: 150px;
+  width: 250px;
   padding: 0 1rem;
   scroll-snap-align: start;
 }
 
 .section-bottom .item-container .item .item-img {
-  max-width: 40%;
-  height: auto;
+  width: 200px;
+  height: 150px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 1px solid black;
 }
 
 .section-bottom .item-container .item .item-name {
   padding: 1rem 0;
+  width: 100%;
 }
 
 .holder {

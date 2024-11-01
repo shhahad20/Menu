@@ -1,7 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCategories, getMenuItems } from '../../api/api'; // Import the API functions
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { API_URL, getCategories, getMenuItems } from '../../api/api'; // Import the API functions
+import axios from 'axios';
 
 export interface MenuItem {
+  id: number;
   name: string;
   description: string;
   calories: number;
@@ -44,6 +46,13 @@ export const fetchMenuData = createAsyncThunk(
     };
   }
 );
+export const updateMenuData = createAsyncThunk(
+  'menu/updateMenuData',
+  async (item: MenuItem) => {
+    const response = await axios.put(`${API_URL}/menu/categories/${item.id}`, item);
+    return response.data;
+  }
+);
 
 const menuSlice = createSlice({
   name: 'menu',
@@ -63,6 +72,13 @@ const menuSlice = createSlice({
       .addCase(fetchMenuData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch data';
+      })
+      // Upadte 
+      .addCase(updateMenuData.fulfilled, (state, action: PayloadAction<MenuItem>) => {
+        const index = state.menuItems.findIndex((i) => i.id === action.payload.id);
+        if (index !== -1) {
+          state.menuItems[index] = action.payload;
+        }
       });
   },
 });

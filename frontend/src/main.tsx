@@ -14,6 +14,7 @@ import MenusTemplates from './pages/MenuTemplates.tsx';
 import Template2 from './components/menu-templates/TemplateTwo.tsx';
 import Template1 from './components/menu-templates/TemplateOne.tsx';
 import store from './redux/store.ts';
+import Dashboard from './components/Dashboard.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/menus" element={<MenusTemplates />} />
         <Route path="/template1" element={<Template1 />} />
         <Route path="/template2" element={<Template2 />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/faqs" element={<FAQs />} />
