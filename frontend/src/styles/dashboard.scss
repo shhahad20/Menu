@@ -9,15 +9,38 @@
   
   .left-panel {
     flex: 1; /* Takes up remaining space */
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for the dashboard */
+    overflow-y: auto; // Enable vertical scrolling
+    height: 100vh;
+    // padding: 20px 200px;
+    // background-color: #f9f9f9; 
   }
   
   .right-panel {
     width: 300px; /* Fixed width for the editing tools */
     // padding: 20px;
+    // flex-grow: 1;
+    overflow-y: auto; // Enable vertical scrolling
+    // padding: 1rem;
+    height: 100vh; 
     background-color: #072326; /* Slightly darker background for the tools */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    &::-webkit-scrollbar {
+      width: 5px; /* Width of the scrollbar */
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: #072326; /* Background of the scrollbar track */
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: #EEF26B; /* Color of the scrollbar handle */
+      // border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #EEF26B; /* Handle color on hover */
+    }
   }
   
   h1, h2 {
@@ -28,9 +51,8 @@
     display: flex;
     justify-content: right;
     align-items: center;
-    padding: 20px 0;
-        padding: 20px;
-
+    // padding: 20px 0;
+    padding: 0 20px;
   }
   
   .logo {

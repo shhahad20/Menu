@@ -6,11 +6,25 @@ import { fetchMenuData } from "../../src/redux/menu/menuSlice";
 import MenuList from "./MenuList";
 // import EditMenuItemForm from "./EditMenuItemForm";
 import "../styles/dashboard.scss";
+import { LeftPanelTop } from "./LeftPanelTop";
+import Breadcrumb from "./Breadcrumb";
 const Dashboard = () => {
   const dispatch: AppDispatch = useDispatch();
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const [breadcrumbItems, setBreadcrumbItems] = useState<{ name: string; path: string }[]>([
+    { name: "الرئيسية", path: "/" },
+  ]);
 
+  const handleToolClick = (toolName: string) => {
+    setSelectedTool(toolName);
 
+    // Update breadcrumb based on the selected tool
+    const newBreadcrumb = [
+      { name: toolName, path: `/dashboard/${toolName}` },
+      { name: "الرئيسية", path: "/" },
+    ];
+    setBreadcrumbItems(newBreadcrumb);
+  };
 //   const { menuItems, loading, error } = useSelector(
 //     (state: RootState) => state.menu
 //   );
@@ -49,14 +63,16 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(fetchMenuData());
   }, [dispatch]);
-  const handleToolClick = (toolName: string) => {
-    setSelectedTool(toolName);
-  };
+  // const handleToolClick = (toolName: string) => {
+  //   setSelectedTool(toolName);
+  // };
   return (
     <div className="dashboard-container">
       <div className="left-panel">
+        <LeftPanelTop/>
+        <Breadcrumb items={breadcrumbItems} />
         <div className="left-top-section">
-        <h1>Menu Dashboard</h1>
+        
         </div>
         
         {/* {loading && <p>Loading...</p>}
@@ -117,6 +133,35 @@ const Dashboard = () => {
           ))}
         </div>
 
+        <div className="tools-list">
+        <h2 className="tool-header">الدعم</h2>
+          {tools4.map((tool, index) => (
+            <div className={`tool-item ${selectedTool === tool.name ? 'selected' : ''}`}  key={index} onClick={() => handleToolClick(tool.name)}>
+              <span className="tool-name">{tool.name}</span>
+              <img className="tool-icon" src={tool.icon} alt={tool.name} />
+            </div>
+          ))}
+        </div>
+
+        <div className="tools-list">
+        <h2 className="tool-header">الدعم</h2>
+          {tools4.map((tool, index) => (
+            <div className={`tool-item ${selectedTool === tool.name ? 'selected' : ''}`}  key={index} onClick={() => handleToolClick(tool.name)}>
+              <span className="tool-name">{tool.name}</span>
+              <img className="tool-icon" src={tool.icon} alt={tool.name} />
+            </div>
+          ))}
+        </div>
+
+        <div className="tools-list">
+        <h2 className="tool-header">الدعم</h2>
+          {tools4.map((tool, index) => (
+            <div className={`tool-item ${selectedTool === tool.name ? 'selected' : ''}`}  key={index} onClick={() => handleToolClick(tool.name)}>
+              <span className="tool-name">{tool.name}</span>
+              <img className="tool-icon" src={tool.icon} alt={tool.name} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

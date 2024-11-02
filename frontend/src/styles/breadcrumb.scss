@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.breadcrumb {
+    display: flex;
+    justify-content: flex-end;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    // align-items: right;
+    text-align: right;
+    font-size: 14px;
+    color: #aaa;
+    padding: 10px 20px;
+  }
+  
+  .breadcrumb-item {
+    display: flex;
+    // align-items: right;
+    // text-align: right;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 5px;
+    color: #aaa;
+  }
+  
+  .breadcrumb-item a {
+    color: #027368;
+    text-decoration: none;
+  }
+  
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+  
