@@ -1,15 +1,21 @@
 // Dashboard.tsx
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../src/redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../src/redux/store";
 import { fetchMenuData } from "../../src/redux/menu/menuSlice";
-import MenuList from "./MenuList";
+// import MenuList from "./MenuList";
 // import EditMenuItemForm from "./EditMenuItemForm";
 import "../styles/dashboard.scss";
 import { LeftPanelTop } from "./LeftPanelTop";
 import Breadcrumb from "./Breadcrumb";
+import { BrowserRouter as Router, Route,Routes, Link } from "react-router-dom"; // Import React Router
+import CreateMenu from "./dashboard/userMenus";
+
+
 const Dashboard = () => {
   const dispatch: AppDispatch = useDispatch();
+
+
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [breadcrumbItems, setBreadcrumbItems] = useState<{ name: string; path: string }[]>([
     { name: "الرئيسية", path: "/" },
@@ -24,6 +30,7 @@ const Dashboard = () => {
       { name: "الرئيسية", path: "/" },
     ];
     setBreadcrumbItems(newBreadcrumb);
+
   };
 //   const { menuItems, loading, error } = useSelector(
 //     (state: RootState) => state.menu
@@ -72,12 +79,10 @@ const Dashboard = () => {
         <LeftPanelTop/>
         <Breadcrumb items={breadcrumbItems} />
         <div className="left-top-section">
-        
+        {selectedTool === "المنتجات" && <CreateMenu />}
+        {selectedTool === "الرئيسية" && <h2>Welcome to the Dashboard</h2>}
         </div>
-        
-        {/* {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
-        {!loading && !error && <MenuList menuItems={menuItems} />} */}
+
       </div>
       <div className="right-panel">
         <h1 className="logo">MenuCraft</h1>
@@ -93,7 +98,8 @@ const Dashboard = () => {
 
         <div className="tools-list">
           {tools1.map((tool, index) => (
-            <div className={`tool-item ${selectedTool === tool.name ? 'selected' : ''}`}  key={index} onClick={() => handleToolClick(tool.name)}>
+            <div className={`tool-item ${selectedTool === tool.name ? 'selected' : ''}`}  key={index} onClick={() => handleToolClick(tool.name)} >
+    
               <span className="tool-name">{tool.name}</span>
               <span className={`tool-icon ${selectedTool === tool.name ? 'icon-selected' : ''}`}>
                 <img src={tool.icon} alt={tool.name} />

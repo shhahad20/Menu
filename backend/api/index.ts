@@ -3,6 +3,7 @@ import express from 'express'
 // import mysql from 'mysql'
 import cors from 'cors'
 import { config } from 'dotenv'
+import { supabase } from '../src/config/supabaseClient.js'
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import 'dotenv/config'
@@ -14,8 +15,8 @@ import menuRouter from '../src/routers/menuRouter.js'
 import FAQsRouter from '../src/routers/FAQsRouter.js'
 import categoryRouter from '../src/routers/menuRouters/categoryRouter.js'
 import menuItemRouter from '../src/routers/menuRouters/menuItemRouter.js'
+import schemaRouter from '../src/routers/userRouters/schemaRouter.js'
 
-import { supabase } from '../src/config/supabaseClient.js'
 
 import apiErrorHandler from '../src/middleware/errorHandler.js'
  
@@ -44,7 +45,7 @@ app.use('/menus', menuRouter)
 app.use('/menu/categories', categoryRouter)
 app.use('/menu/menu-items', menuItemRouter)
 app.use('/FAQs', FAQsRouter)
-// app.use('/menu-tamplate',)
+app.use('/schema', schemaRouter)
 // app.use('/categories', categoriesRouter)
 
 app.use(apiErrorHandler)

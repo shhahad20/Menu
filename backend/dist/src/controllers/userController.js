@@ -19,6 +19,7 @@ import { forgetPasswordEmail } from "../helper/emails.js";
 // } from '../helper/cloudinaryHelper'
 import { dev } from "../config/index.js";
 import { supabase } from "../config/supabaseClient.js";
+import { createUserSchema } from "../services/schemaManager.js";
 // import { console } from "inspector";
 const DEFAULT_IMAGES_PATH = "public/images/usersImages/default/usrImage.png";
 export const getAllUsers = async (req, res, next) => {
@@ -140,10 +141,9 @@ export const activateUser = async (req, res, next) => {
                 return res.status(400).json({ message: "User already registered with this email" });
             }
             // Insert user into the main users table
-            const { error: insertError } = await supabase
+            const { data: insertedUser, error: insertError } = await supabase
                 .from('users')
-                .insert([
-                {
+                .insert([{
                     first_name,
                     last_name,
                     email,
@@ -153,13 +153,27 @@ export const activateUser = async (req, res, next) => {
                     age,
                     country,
                     city,
-                }
-            ]);
+                }]).select();
             if (insertError) {
                 console.error("Error inserting user:", insertError);
                 return res.status(500).json({ message: "Failed to register user" });
             }
-            res.status(200).json({ message: "User successfully verified and registered" });
+            console.log('Inserted user:', insertedUser);
+            if (!insertedUser) {
+                return res.status(500).json({ message: "Failed to retrieve inserted user" });
+            }
+            // Now, create the user-specific schema after the user is inserted
+            const userId = insertedUser[0].id; // Assuming `id` is returned after inserting the user
+            try {
+                // Call the createUserSchema function
+                const schemaResult = await createUserSchema(userId);
+                console.log('Schema created for user:', userId, schemaResult);
+            }
+            catch (schemaError) {
+                console.error('Error creating user schema:', schemaError);
+                return res.status(500).json({ message: 'Failed to create user schema' });
+            }
+            res.status(200).json({ message: "User successfully verified, registered, and schema created" });
         });
     }
     catch (error) {

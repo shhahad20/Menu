@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+
+.create-menu-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 21rem;
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  .add-product-button {
+    padding: 5px 20px;
+    background-color: #027368;
+    color: #fff;
+    color: #ccf2c2;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .sort-container{
+    label{
+        color: #072326;
+        padding: 0 2px;
+    }
+    color: #027368;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  color: #072326;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 1px 10px rgba(145, 145, 145, 0.2);
+  .form-header {
+    color: #072326;
+    display: flex;
+    justify-content: center;
+  }
+  form{
+    color: #072326;
+    .element-contanier{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        text-align: right;
+        label{
+            padding: 5px 0;
+        }
+        input{
+            margin: 2px 0;
+            padding: 3px;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            text-align: right;
+            color: #072326;
+        }
+        #category{
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            padding: 5px;
+            margin: 2px 0;
+
+        }
+    }
+    .button-container{
+        display: flex;
+        justify-content: center;
+        padding-top: 8px;
+    }
+    .submit-button{
+        margin: 8px;
+        background-color: #027368;
+        color: #ccf2c2;
+        padding: 5px 25px;
+        border-radius: 20px;
+        font-size: 16px;
+        text-align: center;
+        &:hover{
+            background-color: #ccf2c2;
+            color: #027368;
+        }
+    }
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: #072326;
+  cursor: pointer;
+}
