@@ -28,14 +28,21 @@ export const getMenuItem = async (req: Request, res: Response, next: NextFunctio
 export const createMenuItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, description, calories, price, category_id, is_popular, is_new } = req.body;
+    const parsedPrice = parseFloat(price);
+    const parsedCalories = parseFloat(calories);
+    if (isNaN(parsedPrice) || isNaN(parsedCalories)) {
+      return res.status(400).json({ error: 'Price and calories must be numbers' });
+    }
+
     const newMenuItem = await menuItemService.createMenuItem({
       name,
       description,
-      calories,
-      price,
+       calories :parsedCalories,
+       price :parsedPrice,
       is_popular,
       is_new,
       category_id,
+      image,
     });
     res.status(201).json(newMenuItem);
   } catch (error) {

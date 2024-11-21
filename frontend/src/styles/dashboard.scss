@@ -98,22 +98,48 @@
     font-optical-sizing: auto;
 
   }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li, .tool-link{
+    display: flex;
+    align-items: center;
+    padding: 10px 10px;
+    cursor: pointer;
+    justify-content: flex-end;
+    &:hover {
+      background-color: #041E21;
+    }
+  }
+
+  .tool-link.selected {
+    .tool-name {
+      color: #EEF26B;
+    }
+    .tool-icon {
+      filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
+    }
+  }
+
   .tool-header{
     text-align: right;
     padding: 0 30px;
     color: #ACBEF2;
   }
-  .tool-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px; 
-    cursor: pointer; 
-    justify-content: flex-end;
+  // .tool-item {
+  //   display: flex;
+  //   align-items: center;
+  //   padding: 10px 20px; 
+  //   cursor: pointer; 
+  //   justify-content: flex-end;
 
-    &:hover{
-        background-color: #041E21;
-    }
-  }
+  //   &:hover{
+  //       background-color: #041E21;
+  //   }
+  // }
   .tool-item.selected {
     .tool-name{
         color: #EEF26B;

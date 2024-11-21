@@ -16,7 +16,7 @@ export interface MenuItem {
     name: string;
   };
   isPopular?: boolean;
-  isOnlineOnly?: boolean;
+  isNew?: boolean;
 }
 
 interface MenuState {

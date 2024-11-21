@@ -15,7 +15,7 @@ import Template2 from './components/menu-templates/TemplateTwo.tsx';
 import Template1 from './components/menu-templates/TemplateOne.tsx';
 import store from './redux/store.ts';
 import Dashboard from './components/Dashboard.tsx';
-import CreateMenu from './components/dashboard/userMenus.tsx';
+import ItemTool from './components/dashboard/itemTool.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -30,7 +30,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/template2" element={<Template2 />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/create-menu" element={<CreateMenu />} />
+        <Route path="/dashboard/items" element={<ItemTool />} />
 
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/faqs" element={<FAQs />} />

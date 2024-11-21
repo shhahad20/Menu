@@ -20,7 +20,7 @@
 }
 
 .right-panel {
-  width: 300px;
+  width: 270px;
   /* Fixed width for the editing tools */
   overflow-y: auto;
   height: 100vh;
@@ -116,28 +116,43 @@ h1, h2 {
   font-optical-sizing: auto;
 }
 
-.tool-header {
-  text-align: right;
-  padding: 0 30px;
-  color: #ACBEF2;
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-.tool-item {
+li, .tool-link {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 10px 20px;
+  padding: 10px 10px;
   cursor: pointer;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
 
-.tool-item:hover {
+li:hover, .tool-link:hover {
   background-color: #041E21;
+}
+
+.tool-link.selected .tool-name {
+  color: #EEF26B;
+}
+
+.tool-link.selected .tool-icon {
+  -webkit-filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
+          filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
+}
+
+.tool-header {
+  text-align: right;
+  padding: 0 30px;
+  color: #ACBEF2;
 }
 
 .tool-item.selected .tool-name {
