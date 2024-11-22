@@ -3,9 +3,9 @@ import * as menuItemController from '../../controllers/menuControllers/ItemContr
 import { uploadMiddleware } from '../../middleware/upload.js';
 import { isLoggedIn } from '../../middleware/authentication.js';
 const router = express.Router();
-router.get('/', menuItemController.getMenuItems);
-router.get('/:id', menuItemController.getMenuItem);
+router.get('/', isLoggedIn, menuItemController.getMenuItems);
+router.get('/:id', isLoggedIn, menuItemController.getMenuItem);
 router.post('/', isLoggedIn, uploadMiddleware, menuItemController.createMenuItem);
-router.put('/:id', menuItemController.updateMeuItem);
-router.delete('/:id', menuItemController.deleteMenuItem);
+router.put('/:id', isLoggedIn, uploadMiddleware, menuItemController.updateMeuItem);
+router.delete('/:id', isLoggedIn, menuItemController.deleteMenuItem);
 export default router;

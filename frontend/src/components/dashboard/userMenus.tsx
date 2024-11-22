@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store'; 
-import {fetchItems, createItem, editItem, removeItem, Item, addItem } from '../../redux/menu/itemSlice';
+import {fetchItems, createItem, editItem, removeItem, Item } from '../../redux/menu/itemSlice';
 import "../../styles/dashboard-elements/createMenu.scss";
 
 

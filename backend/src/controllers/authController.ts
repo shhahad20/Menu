@@ -27,7 +27,7 @@ export const handleLogin = async (req: Request, res: Response, next: NextFunctio
             throw ApiError.unauthorized('Wrong password.');
         }
 
-        const accessToken = jwt.sign({ id: user.id, role: user.role }, dev.jwt.key, { expiresIn: '24h' });
+        const accessToken = jwt.sign({ id: user.user_id, role: user.role }, dev.jwt.key, { expiresIn: '24h' });
         res.cookie('access_token', accessToken, {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,

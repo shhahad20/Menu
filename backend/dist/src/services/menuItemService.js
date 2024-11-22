@@ -1,18 +1,25 @@
 import { supabase } from "../config/supabaseClient.js";
 import ApiError from "../errors/ApiError.js";
-export const getAllMenuItems = async () => {
-    const { data, error } = await supabase
-        .from('menu_item')
-        .select('*, category:categories (name)'); // Join with category
-    if (error)
-        throw error;
-    return data;
+export const getAllMenuItems = async (userId) => {
+    try {
+        const { data, error } = await supabase
+            .from("menu_item")
+            .select("*, category:categories (name)")
+            .eq("user_id", userId);
+        if (error)
+            throw error;
+        return data;
+    }
+    catch (error) {
+        console.error(error);
+    }
 };
-export const getMenuItemById = async (id) => {
+export const getMenuItemById = async (id, userId) => {
     const { data, error } = await supabase
-        .from('menu_item')
-        .select('*, category:categories (name)')
-        .eq('id', id)
+        .from("menu_item")
+        .select("*, category:categories (name)")
+        .eq("id", id)
+        .eq("user_id", userId)
         .single();
     if (error)
         throw error;
@@ -20,18 +27,19 @@ export const getMenuItemById = async (id) => {
 };
 export const createMenuItem = async (menuItemData) => {
     const { data, error } = await supabase
-        .from('menu_item')
+        .from("menu_item")
         .insert([menuItemData])
-        .select('*');
+        .select("*");
     if (error)
         throw error;
     return data;
 };
-export const updateMenuItem = async (id, menuItemData) => {
+export const updateMenuItem = async (id, userId, menuItemData) => {
     const { data: existingItem, error: selectError } = await supabase
         .from("menu_item")
         .select("*")
         .eq("id", id)
+        .eq("user_id", userId)
         .single();
     if (selectError || !existingItem) {
         throw ApiError.notFound("item not found");
@@ -45,11 +53,12 @@ export const updateMenuItem = async (id, menuItemData) => {
         throw error;
     return data;
 };
-export const deleteMenuItem = async (id) => {
+export const deleteMenuItem = async (id, userId) => {
     const { error } = await supabase
-        .from('menu_item')
+        .from("menu_item")
         .delete()
-        .eq('id', id);
+        .eq("id", id)
+        .eq("user_id", userId);
     if (error)
         throw error;
 };
