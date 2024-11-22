@@ -29,6 +29,7 @@ export const createMenuItem = async (menuItemData: {
   category_id: number;
   is_popular: boolean;
   is_new:boolean;
+  image_url: string | File | null;
 }) => {
   const { data, error } = await supabase
     .from('menu_item')

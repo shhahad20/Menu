@@ -1,5 +1,6 @@
 import ApiError from "../../errors/ApiError.js";
 import * as menuItemService from '../../services/menuItemService.js';
+import { uploadImageToSupabase } from "../../helper/supabaseUploadFile.js";
 export const getMenuItems = async (req, res, next) => {
     try {
         const menuItems = await menuItemService.getAllMenuItems();
@@ -26,11 +27,21 @@ export const getMenuItem = async (req, res, next) => {
 };
 export const createMenuItem = async (req, res, next) => {
     try {
+        const userId = req.user?.id;
         const { name, description, calories, price, category_id, is_popular, is_new } = req.body;
         const parsedPrice = parseFloat(price);
         const parsedCalories = parseFloat(calories);
         if (isNaN(parsedPrice) || isNaN(parsedCalories)) {
             return res.status(400).json({ error: 'Price and calories must be numbers' });
+        }
+        // Check if a file is uploaded
+        if (!req.file) {
+            return res.status(400).json({ error: "Image file is required" });
+        }
+        // Upload the image to Supabase
+        const imageUrl = await uploadImageToSupabase(req.file, userId);
+        if (!imageUrl) {
+            return res.status(500).json({ error: "Failed to upload image" });
         }
         const newMenuItem = await menuItemService.createMenuItem({
             name,
@@ -40,7 +51,7 @@ export const createMenuItem = async (req, res, next) => {
             is_popular,
             is_new,
             category_id,
-            image,
+            image_url: imageUrl,
         });
         res.status(201).json(newMenuItem);
     }
