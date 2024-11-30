@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/slices/authSlice";
 
 import "../styles/navbar.scss";
+import { AppDispatch } from "../redux/store";
 
 function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
@@ -23,6 +27,20 @@ function Navbar() {
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()) // Use unwrap to handle async logic cleanly
+      // localStorage.removeItem('userToken');
+      navigate("/"); // Redirect to the home page
+    } catch (error) {
+      console.error("Logout Error:", error); // Display error for debugging
+    }
+  };
+  
+
   return (
     <header>
       <div id="navbar">
@@ -59,6 +77,9 @@ function Navbar() {
           <div className="icons">
             <Link to="/signup" className="icon account">
               <img src="/account.svg" alt="account" />
+            </Link>
+            <Link to="/" onClick={handleLogout}>
+            Logout
             </Link>
             <Link to="/" className="icon shopping-cart">
               <img src="/cart.svg" alt="cart" />

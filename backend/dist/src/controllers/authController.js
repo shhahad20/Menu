@@ -20,29 +20,37 @@ export const handleLogin = async (req, res, next) => {
         if (!matchPassword) {
             throw ApiError.unauthorized('Wrong password.');
         }
-        const accessToken = jwt.sign({ id: user.user_id, role: user.role }, dev.jwt.key, { expiresIn: '24h' });
+        const accessToken = jwt.sign({ id: user.id, role: user.role }, dev.jwt.key, { expiresIn: '24h' });
         res.cookie('access_token', accessToken, {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: 'none',
+            // !!!! sameSite: none requires HTTPS !!!! 
+            // sameSite: 'none',
             secure: process.env.NODE_ENV === 'production',
         });
         res.status(200).json({
             status: 200,
             message: `Welcome ${user.first_name} as ${user.role}`,
+            user: {
+                id: user.id,
+                first_name: user.first_name,
+                role: user.role,
+                email: user.email,
+            },
+            token: accessToken,
         });
     }
     catch (error) {
-        console.error('Login Error:', error);
         next(error);
     }
 };
 export const handleLogout = async (req, res, next) => {
     try {
-        res.cookie('access_token', '', {
-            expires: new Date(0),
+        res.clearCookie('access_token', {
+            // expires: new Date(0),
             httpOnly: true,
-            sameSite: 'none',
+            // !!!! sameSite: none requires HTTPS !!!! 
+            // sameSite: 'none', 
             secure: process.env.NODE_ENV === 'production',
         });
         res.status(200).json({
