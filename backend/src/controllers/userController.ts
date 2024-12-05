@@ -135,12 +135,12 @@ export const registerUser = async (
       return res.status(400).json({ message: "A user with this email already exists." });
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const tokenPayload = { first_name, last_name, email, password: hashedPassword, phone, address, age, country, city };
+    // const hashedPassword = bcrypt.hashSync(password, 10);
+    const tokenPayload = { first_name, last_name, email, password, phone, address, age, country, city };
     const token = jwt.sign(tokenPayload, dev.jwt.reset_k, { expiresIn: '1h' });
-
+    const emailToSend = registeringEmail(email, first_name, last_name, token)
+    await emailSender(emailToSend)
     // Send email logic here...
-
     res.status(200).json({
       message: "Verification email sent. Please check your email to complete registration.",
       token,
@@ -156,92 +156,89 @@ export const activateUser = async (
   next: NextFunction
 ) => {
   try {
-    const { token } = req.body;
+    const { token } = req.params;
+
     if (!token) {
-      next(ApiError.notFound("Please provide a valid token"));
-      return;
+      return res.status(404).json({ message: "Please provide a valid token" });
     }
 
     // Verify the token
     jwt.verify(
       token,
       dev.jwt.reset_k,
-      async (err: jwt.VerifyErrors | null, decoded: jwt.JwtPayload | string | undefined) => {
+      async (
+        err: jwt.VerifyErrors | null,
+        decoded: jwt.JwtPayload | string | undefined
+      ) => {
         if (err) {
           console.error("Token verification error:", err);
           return res.status(400).json({ message: err.message || "Invalid or expired token" });
         }
-        
+
         if (typeof decoded === "string") {
           return res.status(400).json({ message: "Invalid token payload" });
         }
-        
+
         const payloadUser = decoded as UserInterface;
-        const { email, first_name, last_name, password, phone, address, age, country, city } = payloadUser;
+        const { email, first_name, last_name, password, phone, address, age, country, city } =
+          payloadUser;
 
         // Check if user already exists
         const { data: existingUser, error: fetchError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('email', email);
+          .from("users")
+          .select("*")
+          .eq("email", email);
 
         if (fetchError) {
           console.error("Error fetching user:", fetchError);
           return res.status(500).json({ message: "Error checking user existence" });
         }
-
+        console.log(existingUser);
         if (existingUser.length > 0) {
-          return res.status(400).json({ message: "User already registered with this email" });
+          return res.status(400).json({ message: "User already activated. Please log in." });
         }
 
-       // Insert user into the main users table
-       const { data: insertedUser, error: insertError } = await supabase
-       .from('users')
-       .insert([{
-         first_name,
-         last_name,
-         email,
-         password, // Ensure you hash the password before storing it
-         phone,
-         address,
-         age,
-         country,
-         city,
-       }]).select();
+        // Hash the password before storing
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert user into the main users table
+        const { data: insertedUser, error: insertError } = await supabase
+          .from("users")
+          .insert([
+            {
+              first_name,
+              last_name,
+              email,
+              password: hashedPassword, // Ensure you hash the password before storing it
+              phone,
+              address,
+              age,
+              country,
+              city,
+            },
+          ])
+          .select();
 
         if (insertError) {
           console.error("Error inserting user:", insertError);
           return res.status(500).json({ message: "Failed to register user" });
         }
 
-        console.log('Inserted user:', insertedUser);
-
+        console.log("Inserted user:", insertedUser);
 
         if (!insertedUser) {
           return res.status(500).json({ message: "Failed to retrieve inserted user" });
         }
-        // Now, create the user-specific schema after the user is inserted
-        const userId = (insertedUser[0] as UserInterface).id; // Assuming `id` is returned after inserting the user
-        
-        try {
-          // Call the createUserSchema function
-          const schemaResult = await createUserSchema(userId);
-          console.log('Schema created for user:', userId, schemaResult);
-        } catch (schemaError) {
-          console.error('Error creating user schema:', schemaError);
-          return res.status(500).json({ message: 'Failed to create user schema' });
-        }
 
-
-        res.status(200).json({ message: "User successfully verified, registered, and schema created" });
+        return res.status(200).json({ message: "User successfully verified and registered." });
       }
     );
   } catch (error: any) {
     console.error("Error in activation:", error.message || error);
     next(error);
   }
-  
 };
+
 
 export const forgetPassword = async (
   req: Request,

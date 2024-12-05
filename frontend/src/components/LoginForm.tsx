@@ -15,7 +15,7 @@ const LoginForm: React.FC = () => {
     password: '',
   });
   const dispatch: AppDispatch = useDispatch();
-  const { loading, error } = useSelector((state: RootState) => state.users);
+  const { loading, error } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

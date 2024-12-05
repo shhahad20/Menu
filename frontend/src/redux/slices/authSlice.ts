@@ -29,7 +29,6 @@ export const login = createAsyncThunk(
 
       const { token, user } = response.data; // Adjusted to match backend response
       // localStorage.setItem("userToken", token); // Store the token in localStorage
-
       return { user, token };
     } catch (err) {
       const axiosError = err as AxiosError<{ message: string }>; // Type the error

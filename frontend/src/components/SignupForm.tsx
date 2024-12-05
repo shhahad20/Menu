@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/signup.scss";
 import Axios from "axios";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { useSelector } from "react-redux";
+import { registerUser } from "../redux/slices/userSlice";
 
 type CountryType = {
   country: string;
@@ -11,23 +15,38 @@ type CountryType = {
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    country: '',
-    city: '',
-    agreeToPolicy: false,  // Added state for the policy agreement checkbox
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: 0,
+    password: "",
+    confirmPassword: "",
+    country: "",
+    city: "",
+    age: 0,
+    address: "",
+    agreeToPolicy: false,
   });
-
+  const dispatch: AppDispatch = useDispatch();
+  const { loading, error, successMessage } = useSelector(
+    (state: RootState) => state.users
+  );
   const [countries, setCountries] = useState<CountryType[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
   const fetchCountries = async () => {
-    const response = await Axios.get("https://countriesnow.space/api/v0.1/countries");
-    setCountries(response.data.data);
+    try {
+      const response = await Axios.get(
+        "https://countriesnow.space/api/v0.1/countries",
+        {
+          withCredentials: false,
+        }
+      );
+      setCountries(response.data.data);
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+      alert("Failed to fetch countries. Please try again later.");
+    }
   };
 
   const fetchCities = (countryName: string) => {
@@ -63,13 +82,26 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     if (!formData.agreeToPolicy) {
       alert("You must agree to the privacy policy before submitting.");
       return;
     }
-
-    console.log('Form Data:', formData);
+    const userData = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+      address: formData.address,
+      age: formData.age,
+      country: formData.country,
+      city: formData.city,
+    };
+    dispatch(registerUser(userData));
   };
 
   return (
@@ -80,26 +112,30 @@ const SignUp: React.FC = () => {
           {/* First Name and Last Name */}
           <div className="input-pair">
             <div className="input-container">
-              <label htmlFor="name" className="label">First Name</label>
+              <label htmlFor="first_name" className="label">
+                First Name
+              </label>
               <input
                 type="text"
                 id="name"
-                name="name"
+                name="first_name"
                 placeholder="Mohammed"
-                value={formData.name}
+                value={formData.first_name}
                 onChange={handleChange}
                 className="input"
                 required
               />
             </div>
             <div className="input-container">
-              <label htmlFor="lastName" className="label">Last Name</label>
+              <label htmlFor="last_name" className="label">
+                Last Name
+              </label>
               <input
                 type="text"
                 id="lastName"
-                name="lastName"
+                name="last_name"
                 placeholder="Ali"
-                value={formData.lastName}
+                value={formData.last_name}
                 onChange={handleChange}
                 className="input"
                 required
@@ -110,7 +146,9 @@ const SignUp: React.FC = () => {
           {/* Email and Phone */}
           <div className="input-pair">
             <div className="input-container">
-              <label htmlFor="email" className="label">Email</label>
+              <label htmlFor="email" className="label">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -123,9 +161,11 @@ const SignUp: React.FC = () => {
               />
             </div>
             <div className="input-container">
-              <label htmlFor="phone" className="label">Phone</label>
+              <label htmlFor="phone" className="label">
+                Phone
+              </label>
               <input
-                type="text"
+                type="number"
                 id="phone"
                 name="phone"
                 placeholder="123-456-7890"
@@ -140,7 +180,9 @@ const SignUp: React.FC = () => {
           {/* Password and Confirm Password */}
           <div className="input-pair">
             <div className="input-container">
-              <label htmlFor="password" className="label">Password</label>
+              <label htmlFor="password" className="label">
+                Password
+              </label>
               <input
                 type="password"
                 id="password"
@@ -152,7 +194,9 @@ const SignUp: React.FC = () => {
               />
             </div>
             <div className="input-container">
-              <label htmlFor="confirmPassword" className="label">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="label">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -164,13 +208,50 @@ const SignUp: React.FC = () => {
               />
             </div>
           </div>
-
+          <div className="input-pair">
+            <div className="input-container">
+              <label htmlFor="age" className="label">
+                age
+              </label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+            </div>
+            <div className="input-container">
+              <label htmlFor="address" className="label">
+                address
+              </label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+            </div>
+          </div>
           {/* Country and City */}
           <div className="input-pair">
             <div className="input-container">
-              <label htmlFor="country" className="label">Country</label>
-              <select onChange={handleCountryChange} value={formData.country} className="input">
-                <option selected hidden disabled>Select your country</option>
+              <label htmlFor="country" className="label">
+                Country
+              </label>
+              <select
+                onChange={handleCountryChange}
+                value={formData.country}
+                className="input"
+              >
+                <option selected hidden disabled>
+                  Select your country
+                </option>
                 {countries.map((country) => (
                   <option key={country.country} value={country.country}>
                     {country.country}
@@ -179,9 +260,18 @@ const SignUp: React.FC = () => {
               </select>
             </div>
             <div className="input-container">
-              <label htmlFor="city" className="label">City</label>
-              <select onChange={handleCityChange} value={formData.city} className="input" disabled={!formData.country}>
-                <option selected hidden disabled>Select your city</option>
+              <label htmlFor="city" className="label">
+                City
+              </label>
+              <select
+                onChange={handleCityChange}
+                value={formData.city}
+                className="input"
+                disabled={!formData.country}
+              >
+                <option selected hidden disabled>
+                  Select your city
+                </option>
                 {cities.map((city) => (
                   <option key={city} value={city}>
                     {city}
@@ -197,17 +287,27 @@ const SignUp: React.FC = () => {
               <input
                 type="checkbox"
                 name="agreeToPolicy"
-                checked={formData.agreeToPolicy}
+                // checked={formData.agreeToPolicy}
                 onChange={handleChange}
                 className="check-box"
               />
-              I agree to the <a href="/privacy-policy" target="_blank" className="policy-link">Privacy Policy</a>
+              I agree to the{" "}
+              <a href="/privacy-policy" target="_blank" className="policy-link">
+                Privacy Policy
+              </a>
             </label>
           </div>
 
           {/* Submit Button */}
-          <button type="submit" className="submit-btn">Sign Up</button>
-
+          <button type="submit" className="submit-btn">
+            {loading ? "Signing Up..." : "Sign Up"}
+          </button>
+          {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
+          {successMessage && (
+            <div className="success-message" style={{ color: "green" }}>
+              <p>{successMessage}</p>
+            </div>
+          )}
           {/* Login Link */}
           <p className="login-link">
             Already have an account? <a href="/login">Log in here</a>

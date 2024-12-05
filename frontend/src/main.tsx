@@ -16,6 +16,7 @@ import Template1 from './components/menu-templates/TemplateOne.tsx';
 import store from './redux/store.ts';
 import Dashboard from './components/Dashboard.tsx';
 import ItemTool from './components/dashboard/itemTool.tsx';
+import Activate from './components/Activation.tsx';
 // import Logout from './pages/Logout.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -38,6 +39,7 @@ createRoot(document.getElementById('root')!).render(
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/users/activate/:token" element={<Activate />} />
         {/* <Route path="/logout" element={<Logout />} /> */}
       </Routes>
     </BrowserRouter>
