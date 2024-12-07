@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap');
-
+@import '_themes'; 
 a{
     text-decoration: none;
-    color: #1d2126;
+    // color: #1d2126;
 }
 li{
     list-style: none;
-    color: #1d2126;  
+    // color: #1d2126;  
 
 }
 ul{
     margin: 0;
 }
 header{
-    color:#1d2126;
-    background-color: white; 
+    // color:#1d2126;
+    // background-color: white; 
 
 #navbar{
     padding: 20px 80px;
@@ -24,7 +24,7 @@ header{
     #logo-name{
         font-family: "SUSE", sans-serif;
         font-optical-sizing: auto;
-        font-weight: 700;
+        font-weight: 600;
         font-style: normal;
         font-size: 28px;
     }
@@ -41,45 +41,72 @@ header{
         align-items: center;
         padding: 0px 55px;
         li{
-            padding: 10px 40px; 
+            padding: 10px 30px; 
             position: relative;
             border-radius: 8px;
             font-weight: 500;
+            font-size: 15px;
             cursor: pointer;
-            &:after{
-                content: "";
-                bottom: -2px;
-                // width: calc(100% - 32px);
-                width: 40%;
-                height: 6px;
-                background-color: #475463;
-                border-radius: 6px;
-                position: absolute;
-                // left: 16px;
-                left: 30%;
-                transition: all .1s ease-in-out;
-                opacity: 0;
-            }
+            // &:after{
+            //     content: "";
+            //     bottom: -2px;
+            //     // width: calc(100% - 32px);
+            //     width: 40%;
+            //     height: 6px;
+            //     background-color: #475463;
+            //     border-radius: 6px;
+            //     position: absolute;
+            //     // left: 16px;
+            //     left: 30%;
+            //     transition: all .1s ease-in-out;
+            //     opacity: 0;
+            // }
 
-        &:hover:after {
-            opacity: 1;
-          }
+        // &:hover:after {
+        //     opacity: 1;
+        //   }
         }
     }
     .icons-container{
-        .icons{
-            display: flex;
-            justify-content: space-between;
-            .icon{
-                padding: 0 10px;
-                
-            }
-            img{
-                width: 25px;
-                height: 25px;
-                cursor: pointer;
-            }
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+
+        .user-account{
+            position: relative;
+            cursor: pointer;
+            // width: 100px;
         }
+        .slide-nav {
+            position: absolute;
+            width: 150px;
+            top: 30px;
+
+            // left: 0;
+            right: 0;
+            // background: green;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        //    align-items: flex-start;
+           .slide-item {
+            border-radius: 0;
+            display: flex;
+            text-align: left;
+            padding: 5px 20px;
+            // cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: white;
+            transition: none;
+            box-shadow: none;
+          }
+          .logout-btn{
+            display: flex;
+                      }
+          }
 
     }
 }

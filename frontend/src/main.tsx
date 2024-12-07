@@ -17,11 +17,13 @@ import store from './redux/store.ts';
 import Dashboard from './components/Dashboard.tsx';
 import ItemTool from './components/dashboard/itemTool.tsx';
 import Activate from './components/Activation.tsx';
+import { ThemeProvider } from './context/ThemeContext.tsx';
 // import Logout from './pages/Logout.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
+    <ThemeProvider>
        <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
@@ -43,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
         {/* <Route path="/logout" element={<Logout />} /> */}
       </Routes>
     </BrowserRouter>
+    </ThemeProvider>
     </Provider>
   </StrictMode>,
 )

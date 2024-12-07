@@ -1,8 +1,17 @@
-
-#home-section{
-    margin: 0;
-    background-color: #171717;
-    // background-color: white;
-    // background-color:  #F9F4ED;
-    color: #1d2126;
-} 
+@import '_themes';
+// #home-section {
+//     @include apply-theme($light-theme); // Default theme
+//     background-color: red; 
+//     &[data-theme="dark"] {
+//       @include apply-theme($dark-theme);
+//       background-color: blue; 
+//     }
+//   }
+  
+// #home-section{
+//     margin: 0;
+//     background-color: #171717;
+//     // background-color: white;
+//     // background-color:  #F9F4ED;
+//     color: #1d2126;
+// } 

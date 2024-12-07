@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "../../utils/utils";
-import  '../../styles/stickyScroll.scss';
+import "../../styles/stickyScroll.scss";
 // Define types for the content prop
 export type ContentItem = {
-  title: string | JSX.Element;  // Allow string or JSX.Element
-  description: string | JSX.Element;  // Allow string or JSX.Element
+  title: string | JSX.Element; // Allow string or JSX.Element
+  description: string | JSX.Element; // Allow string or JSX.Element
   content?: React.ReactNode;
 };
 
@@ -44,15 +44,11 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
   });
 
   const backgroundColors = [
-    "#1d2126",
-    "var(--neutral-900)",
-    "var(--neutral-900)",
+    "#121212",
+    "#121212",
+    "#121212",
   ];
-  const linearGradients = [
-    "#2A292B",
-    "#2A292B",
-    "#2A292B",
-  ];
+  const linearGradients = ["#121212", "#121212", "#121212"];
 
   const [backgroundGradient, setBackgroundGradient] = useState(
     linearGradients[0]
@@ -67,15 +63,17 @@ export const StickyScroll: React.FC<StickyScrollProps> = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[40rem] overflow-y-auto flex  justify-center relative space-x-20  p-10 scrollbar-hidden" 
+      className="h-[40rem] overflow-y-auto flex  justify-center relative space-x-20  p-10 scrollbar-hidden"
       ref={ref}
     >
       <div className="div relative flex items-start px-10">
         <div className="max-w-2xl">
-          
           {content.map((item, index) => (
-            <div key={typeof item.title === "string" ? item.title + index : index} className="my-20">
-            <motion.h2
+            <div
+              key={typeof item.title === "string" ? item.title + index : index}
+              className="my-20"
+            >
+              <motion.h2
                 initial={{ opacity: 0 }}
                 animate={{ opacity: activeCard === index ? 1 : 0.3 }}
                 className="text-2xl font-bold text-slate-100"

@@ -1,0 +1,91 @@
+// Light Theme Variables
+$light-bg: #ffffff;
+$light-text: #1d2126;
+$light-hover-bg: #f0f0f0;
+$light-hover-color: #333;
+$light-gradient: linear-gradient(0deg, #635EF2, #252273);
+
+// Dark Theme Variables
+$dark-bg: #121212;
+$dark-text: rgb(255, 251, 246);
+$dark-primary-color: #CCF2C2;
+$dark-hover-bg: #555;
+$dark-hover-color: #f0f0f0;
+$dark-gradient: linear-gradient(0deg, #CCF2C2, #C4D977); // Dark Gradient
+
+
+// Light theme variables
+$light-theme: (
+  background-color: #ffffff,
+  text-color: #000000,
+  primary-color: #ff0055,
+  gradient: $light-gradient,
+);
+ 
+// Dark theme variables
+$dark-theme: (
+  background-color: #121212,
+  text-color: #ffffff,
+  primary-color: #CCF2C2,
+  gradient: $dark-gradient, // Dark theme gradient
+);
+// Apply styles for data-theme
+html[data-theme="light"] {
+    background-color: $light-bg;
+    color: $light-text;
+    button {
+        background-color: #C4D977;
+        color: #121212;
+        border: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+    
+        // &:hover {
+        //   opacity: 0.8;
+        // }
+      }
+  }
+  
+  html[data-theme="dark"] {
+    background-color: $dark-bg;
+    color: $dark-text;
+    button {
+        background-color: #C4D977;
+        color: #121212;
+        border: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+    
+        // &:hover {
+        //   opacity: 0.8;
+        // }
+      }
+  }
+
+// Mixin for applying theme styles
+@mixin apply-theme($theme) {
+  background-color: map-get($theme, background-color);
+  color: map-get($theme, text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  a {
+    color: map-get($theme, primary-color);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    background-color: map-get($theme, primary-color);
+    color: map-get($theme, text-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

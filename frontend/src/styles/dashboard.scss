@@ -44,7 +44,7 @@
   }
   
   h1, h2 {
-    color: #CCF2C2;
+    // color: #CCF2C2;
     margin: 0 0 20px;
   }
   .top-section {
@@ -110,9 +110,9 @@
     padding: 10px 10px;
     cursor: pointer;
     justify-content: flex-end;
-    &:hover {
-      background-color: #041E21;
-    }
+    // &:hover {
+    //   background-color: #041E21;
+    // }
   }
 
   .tool-link.selected {

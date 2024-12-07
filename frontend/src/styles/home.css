@@ -1,6 +1,28 @@
-#home-section {
-  margin: 0;
-  background-color: #171717;
+html[data-theme="light"] {
+  background-color: #ffffff;
   color: #1d2126;
+}
+
+html[data-theme="light"] button {
+  background-color: #C4D977;
+  color: #121212;
+  border: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+html[data-theme="dark"] {
+  background-color: #121212;
+  color: #fffbf6;
+}
+
+html[data-theme="dark"] button {
+  background-color: #C4D977;
+  color: #121212;
+  border: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 /*# sourceMappingURL=home.css.map */

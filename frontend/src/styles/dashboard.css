@@ -51,7 +51,6 @@
 }
 
 h1, h2 {
-  color: #CCF2C2;
   margin: 0 0 20px;
 }
 
@@ -134,10 +133,6 @@ li, .tool-link {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
-}
-
-li:hover, .tool-link:hover {
-  background-color: #041E21;
 }
 
 .tool-link.selected .tool-name {

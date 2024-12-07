@@ -31,10 +31,8 @@
 
 .scroll-section-header h1 {
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
-  color: #1d2126;
-  margin-bottom: 5rem;
 }
 
 @media (max-width: 480px) {

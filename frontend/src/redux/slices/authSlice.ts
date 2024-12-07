@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 interface AuthState {
   user: null | object;
   token: null | string;
+  isLoggedIn: boolean;
   loading: boolean;
   error: null | string;
 }
@@ -14,6 +15,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token: null,
+  isLoggedIn: false,
   loading: false,
   error: null,
 };
@@ -64,6 +66,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isLoggedIn = true;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
