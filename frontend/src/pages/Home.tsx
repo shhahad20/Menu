@@ -4,7 +4,7 @@ import Hero from '../components/Hero';
 // import Intro from '../components/Intro';
 import { StickyScrollRevealDemo } from '../components/StickyScrollSection';
 import {Steps} from '../components/Steps';
-// import Intro from '../components/Intro';
+import Intro from '../components/Intro';
 // import ContactUs from '../components/ContactUs';
 
 const Home: React.FC = () => {
@@ -13,6 +13,8 @@ const Home: React.FC = () => {
       <Hero/>
       {/* <Intro/> */}
       <StickyScrollRevealDemo/>
+            {/* <Intro/> */}
+
       {/* <Steps/> */}
       {/* <ContactUs/> */}
     </section>

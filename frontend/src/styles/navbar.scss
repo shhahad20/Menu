@@ -17,7 +17,7 @@ header{
     // background-color: white; 
 
 #navbar{
-    padding: 20px 80px;
+    padding: 20px 90px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,15 +67,28 @@ header{
         //   }
         }
     }
+    .theme-toggle{
+        .dark-mode-icon{
+            width: 16px;
+        }
+        .light-mode-icon{
+            width: 20px;
+        }
+    }
     .icons-container{
         display: flex;
         justify-content: center;
         gap: 2rem;
-
         .user-account{
             position: relative;
             cursor: pointer;
             // width: 100px;
+            .account-icon{
+                width: 16px;
+            }
+        }
+        .cart-icon{
+            width: 23px;
         }
         .slide-nav {
             position: absolute;
@@ -114,7 +127,7 @@ header{
 #mobile_menu_toggle{
     display: block;
     cursor: pointer;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 800;
     color: #1d2126;
 }
@@ -124,16 +137,16 @@ header{
     font-size: 26px;
     color: #1d2126;
 }
+
 #mobile_menu{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: center;
     margin-top: 70px;
     padding-top: 6%;
     // padding-left: 30px;
@@ -152,6 +165,11 @@ header{
       }
     }
 }
+.no-scroll {
+    overflow: hidden;
+    height: 100%;
+  }
+  
 @media (max-width: 1024px) {
     header{
         #navbar{
@@ -159,8 +177,17 @@ header{
             #navbar_elements{
                 padding: 0 0;
                 li{
-                padding: 10px 25px;
-                font-size: 18px;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .theme-toggle{
+                .dark-mode-icon{
+                    width: 16px;
+                }
+                .light-mode-icon{
+                    width: 20px;
+                }
             }
         }
     }
@@ -169,26 +196,20 @@ header{
     header{
         #navbar{
             padding: 5px 30px;
-            #logo-name{
-            }
             #navbar_container{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 0;
             } 
-            #navbar_elements{
-            }
-            #mobile_menu_toggle{
-            }
             .icons-container{
                 .icons{
                     display: flex;
                     justify-content: space-between;
-                    padding-left: 15rem;
+                    // padding-left: 15rem;
                     margin: 0;
                     .icon{
-                        padding: 0 15px;
+                        // padding: 0 15px;
                         
                     }
                     img{

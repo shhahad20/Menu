@@ -14,13 +14,16 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 900);
     }
 
     handleResize();
@@ -32,12 +35,22 @@ function Navbar() {
   }, []);
 
   const handleMobileMenuToggle = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    // setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen((prevState) => {
+      const isOpening = !prevState;
+      if (isOpening) {
+        document.body.classList.add("no-scroll");
+      } else {
+        document.body.classList.remove("no-scroll");
+      }
+      return isOpening;
+    });
   };
-
-  const toggleMenu = () => setMenuOpen(!isMenuOpen);
-  const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -56,11 +69,6 @@ function Navbar() {
           MenuCraft
         </a>
         <ul id="navbar_container">
-          {/* <div id='logo'>
-          <Link to="/">
-            <h3 id="logo-name">MenuCraft</h3>
-          </Link>
-        </div> */}
           {!isMobile && (
             <div id="navbar_elements">
               <li>
@@ -78,23 +86,37 @@ function Navbar() {
               <li>
                 <Link to="/">Contact</Link>
               </li>
-              
-                <button onClick={toggleTheme} className="theme-toggle">
-                  {theme === "light"
-                    ? "Dark Mode"
-                    : "Light Mode"}
-                </button>
-              
             </div>
+            
+          
           )}
         </ul>
-        <div className="icons-container">
+         <div className="icons-container">
+        <button onClick={toggleTheme} className="theme-toggle">
+            {theme === "light" ? (
+              <img
+                src="/darkMode.svg"
+                alt="Switch to dark mode"
+                className="dark-mode-icon"
+              />
+            ) : (
+              <img
+                src="/lightMode.svg"
+                alt="Switch to light mode"
+                className="light-mode-icon"
+              />
+            )}
+          </button>
+          <div>
+            <Link to="/" className="icon shopping-cart">
+              <img src="/cart.svg" alt="cart" className="cart-icon"/>
+            </Link>
+          </div>
           <div className="user-account" onClick={toggleMenu}>
-            <img src="/account.svg" alt="account" width={18} />
+            <img src="/account.svg" alt="account" className="account-icon" />
 
             {isMenuOpen && (
               <div className="slide-nav">
-                {/* Conditional link and text based on login state */}
                 {isLoggedIn ? (
                   <Link to="/dashboard" className="icon account">
                     <div className="slide-item">Dashboard</div>
@@ -121,19 +143,17 @@ function Navbar() {
               </div>
             )}
           </div>
-
-          <div>
-            <Link to="/" className="icon shopping-cart">
-              <img src="/cart.svg" alt="cart" width={25} />
-            </Link>
-          </div>
-        </div>
+        </div> 
+        
         {isMobile && (
+
           <li onClick={handleMobileMenuToggle} id="mobile_menu_toggle">
             {isMobileMenuOpen ? "x" : "="}
           </li>
+          
         )}
         {isMobile && isMobileMenuOpen && (
+         
           <div id="mobile_menu">
             <li>
               <Link to="/">About</Link>
