@@ -12,7 +12,7 @@ type CountryType = {
   iso3: string;
   cities: string[];
 };
-
+ 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
     first_name: "",

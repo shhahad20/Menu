@@ -1,11 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500&display=swap");
 @import "_themes";
 
-  html[data-theme="light"] .hero-slogan, .hero-description {
+  html[data-theme="light"] .hero-slogan {
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0 15px;
     background: linear-gradient(0deg, #C4D977, #98ba21);
+    background-clip: text;
+    color: transparent;
+    display: block;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
+    
   }
-  html[data-theme="dark"] .hero-slogan, .hero-description {
+  html[data-theme="dark"] .hero-slogan {
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0 15px;
     background: linear-gradient(0deg, #CCF2C2, #C4D977);
+    background-clip: text;
+    color: transparent;
+    display: block;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
   }
 #hero-section {
   display: flex;
@@ -26,34 +45,32 @@
     padding: 3rem;
 
     .hero-slogan {
-      font-weight: 400;
-      font-size: 1.3rem;
-      text-align: center;
-      font-weight: 500;
-      padding: 0 15px;
+      // font-size: 1.3rem;
+      // text-align: center;
+      // font-weight: 500;
+      // padding: 0 15px;
       // background:linear-gradient(0deg, #CCF2C2, #C4D977);
-      background-clip: text;
-      color: transparent;
-      display: block;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
+      // background-clip: text;
+      // color: transparent;
+      // display: block;
+      // -webkit-text-fill-color: transparent;
+      // text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
     }
     .hero-description {
       // font-weight: 400;
       // font-size: 1.3rem;
       width: 590px;
       line-height: 1.3em;
-      font-weight: 400;
-      font-size: 1.3rem;
-      text-align: center;
-      font-weight: 500;
-      padding: 0 15px;
+      // font-weight: 500;
+      // font-size: 1.3rem;
+      // text-align: center;
+      // padding: 0 15px;
       // background:linear-gradient(0deg, #CCF2C2, #C4D977);
-      background-clip: text;
-      color: transparent;
-      display: block;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
+      // background-clip: text;
+      // color: transparent;
+      // display: block;
+      // -webkit-text-fill-color: transparent;
+      // text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
     }
     .explore-container {
       margin-top: 1rem;
@@ -65,6 +82,10 @@
       // border-radius: 25px;
       .her-btn{
         border-radius: 25px;
+        background-color: #C4D977;
+        padding: 5px 15px;
+        color: #121212;
+        font-weight: 600;
       }
       h2 {
         font-size: 18px;
@@ -89,7 +110,7 @@
         letter-spacing: -3px;
       }
     }
-  }
+  } 
   // height: 15vh;
   // background-color: #F17625;
   // margin-bottom: 5rem;

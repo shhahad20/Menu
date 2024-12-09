@@ -4,12 +4,27 @@ html[data-theme="light"] {
   color: #1d2126;
 }
 
+html[data-theme="light"] #hero-section #hero_heading_section .hero-description {
+  color: #121212;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+html[data-theme="light"] .whowe-section {
+  background-color: #fffbf6;
+}
+
 html[data-theme="light"] #mobile_menu {
   background-color: #ffffff;
 }
 
 html[data-theme="light"] #footer-section {
   background-color: white;
+}
+
+html[data-theme="light"] #footer-section h3 {
+  color: #121212;
 }
 
 html[data-theme="light"] button {
@@ -19,6 +34,29 @@ html[data-theme="light"] button {
 html[data-theme="dark"] {
   background-color: #121212;
   color: #fffbf6;
+}
+
+html[data-theme="dark"] #hero-section #hero_heading_section .hero-description {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 500;
+  padding: 0 15px;
+  background: -webkit-gradient(linear, left bottom, left top, from(#CCF2C2), to(#C4D977));
+  background: linear-gradient(0deg, #CCF2C2, #C4D977);
+  background-clip: text;
+  color: transparent;
+  display: block;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
+}
+
+html[data-theme="dark"] .whowe-section {
+  background-color: #0D0D0D;
+}
+
+html[data-theme="dark"] #navbar .slide-item {
+  background-color: #333;
+  font-weight: 500;
 }
 
 html[data-theme="dark"] #mobile_menu {
@@ -33,14 +71,32 @@ html[data-theme="dark"] button {
   cursor: pointer;
 }
 
-html[data-theme="light"] .hero-slogan, .hero-description {
+html[data-theme="light"] .hero-slogan {
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 500;
+  padding: 0 15px;
   background: -webkit-gradient(linear, left bottom, left top, from(#C4D977), to(#98ba21));
   background: linear-gradient(0deg, #C4D977, #98ba21);
+  background-clip: text;
+  color: transparent;
+  display: block;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
 }
 
-html[data-theme="dark"] .hero-slogan, .hero-description {
+html[data-theme="dark"] .hero-slogan {
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 500;
+  padding: 0 15px;
   background: -webkit-gradient(linear, left bottom, left top, from(#CCF2C2), to(#C4D977));
   background: linear-gradient(0deg, #CCF2C2, #C4D977);
+  background-clip: text;
+  color: transparent;
+  display: block;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
 }
 
 #hero-section {
@@ -79,32 +135,9 @@ html[data-theme="dark"] .hero-slogan, .hero-description {
   padding: 3rem;
 }
 
-#hero-section #hero_heading_section .hero-slogan {
-  font-weight: 400;
-  font-size: 1.3rem;
-  text-align: center;
-  font-weight: 500;
-  padding: 0 15px;
-  background-clip: text;
-  color: transparent;
-  display: block;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
-}
-
 #hero-section #hero_heading_section .hero-description {
   width: 590px;
   line-height: 1.3em;
-  font-weight: 400;
-  font-size: 1.3rem;
-  text-align: center;
-  font-weight: 500;
-  padding: 0 15px;
-  background-clip: text;
-  color: transparent;
-  display: block;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
 }
 
 #hero-section #hero_heading_section .explore-container {
@@ -113,6 +146,10 @@ html[data-theme="dark"] .hero-slogan, .hero-description {
 
 #hero-section #hero_heading_section .explore-container .her-btn {
   border-radius: 25px;
+  background-color: #C4D977;
+  padding: 5px 15px;
+  color: #121212;
+  font-weight: 600;
 }
 
 #hero-section #hero_heading_section .explore-container h2 {

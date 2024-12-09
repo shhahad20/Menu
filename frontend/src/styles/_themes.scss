@@ -33,11 +33,27 @@ $dark-theme: (
 html[data-theme="light"] {
     background-color: $light-bg;
     color: $light-text;
+    #hero-section{
+      #hero_heading_section{
+      .hero-description{
+        color: #121212;
+        font-size: 1.2rem;
+        text-align: center;
+        font-weight: 500;
+      }
+    }
+    }
+    .whowe-section {
+      background-color: $dark-text;
+    }
     #mobile_menu{
       background-color: $light-bg;
     }
     #footer-section{
       background-color: white;
+      h3{
+        color: #121212;
+      }
   }
     button {
         // background-color: #C4D977;
@@ -56,7 +72,31 @@ html[data-theme="light"] {
   html[data-theme="dark"] {
     background-color: $dark-bg;
     color: $dark-text;
-
+    #hero-section{
+      #hero_heading_section{
+      .hero-description{
+        font-size: 1.2rem;
+        text-align: center;
+        font-weight: 500;
+        padding: 0 15px;
+        background: linear-gradient(0deg, #CCF2C2, #C4D977);
+        background-clip: text;
+        color: transparent;
+        display: block;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 16px rgba(174, 207, 242, 0.24);
+      }
+    }
+    }
+    .whowe-section {
+      background-color: #0D0D0D;
+    }
+    #navbar{
+      .slide-item{
+        background-color: #333;
+        font-weight: 500;
+      }
+    }
     #mobile_menu{
       background-color: $dark-bg;
     }

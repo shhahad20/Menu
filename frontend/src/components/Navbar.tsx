@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../redux/slices/authSlice";
@@ -14,7 +14,8 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+  // const toggleMenu = () => setMenuOpen(!isMenuOpen);
+  const menuRef = useRef<HTMLDivElement>(null);
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -46,6 +47,21 @@ function Navbar() {
       return isOpening;
     });
   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMenuOpen]);
   useEffect(() => {
     return () => {
       document.body.classList.remove("no-scroll");
@@ -112,10 +128,17 @@ function Navbar() {
               <img src="/cart.svg" alt="cart" className="cart-icon"/>
             </Link>
           </div>
-          <div className="user-account" onClick={toggleMenu}>
+          <div className="user-account" onClick={() => {
+    if (!isLoggedIn) {
+      navigate("/login"); // Redirect to the login page if not logged in
+    } else {
+      setMenuOpen((prev) => !prev); // Toggle the menu if logged in
+    }
+  }}
+  ref={menuRef}>
             <img src="/account.svg" alt="account" className="account-icon" />
 
-            {isMenuOpen && (
+            {isMenuOpen && isLoggedIn &&(
               <div className="slide-nav">
                 {isLoggedIn ? (
                   <Link to="/dashboard" className="icon account">
@@ -140,7 +163,7 @@ function Navbar() {
                     </div>
                   </Link>
                 )}
-              </div>
+              </div> 
             )}
           </div>
         </div> 
