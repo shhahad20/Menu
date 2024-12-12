@@ -11,6 +11,7 @@ const Features: React.FC = () => {
   // Track the cursor position
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      console.log("Mouse position:", event.clientX, event.clientY);
       setCursorPos({ x: event.clientX, y: event.clientY });
     };
 
@@ -30,8 +31,8 @@ const Features: React.FC = () => {
         src="/cursor.svg" // Replace with your SVG path
         alt="Custom Cursor"
         animate={{
-          x: cursorPos.x - 50, // Offset to center the cursor
-          y: cursorPos.y - 50,
+          x: cursorPos.x - 100, // Offset to center the cursor
+          y: cursorPos.y - 100,
           scale: isHovering ? 1.5 : 1, // Scale the cursor when hovering
         }}
         transition={{
@@ -44,13 +45,20 @@ const Features: React.FC = () => {
           height: "20px",
           position: "absolute",
           pointerEvents: "none",
+          top: 0,
+          left: 0,
           zIndex: 1000,
+          transform: "translate(-50%, -50%)", // Center the custom cursor
         }}
       />
 
       {/* Features Section with Border Trail */}
 
       <section className="feature-section">
+        <div className="feature-header-container">
+          <p className="feature-top-p">Features</p>
+          <h1 className="feature-header">Why We’re Your Best Choice</h1>
+        </div>
         <div className="top-features">
           <div
             className="feature-item f1"
@@ -88,12 +96,12 @@ const Features: React.FC = () => {
             </p>
             {theme === "light" ? (
               <img
-                src="/feature2light.svg"
+                src="/feature2light_1.svg"
                 alt="feature2 Light"
                 className="feature2-light"
               />
             ) : (
-              <img
+              <img 
                 src="/feature2.svg"
                 alt="feature2 Dark"
                 className="feature2-dark"

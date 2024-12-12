@@ -30,8 +30,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/home" element={<Home />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/menus" element={<MenusTemplates />} />
-        <Route path="/template1" element={<Template1 />} />
-        <Route path="/template2" element={<Template2 />} />
+        <Route path="menus/template1" element={<Template1 />} />
+        <Route path="menus/template2" element={<Template2 />} />
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/items" element={<ItemTool />} />
