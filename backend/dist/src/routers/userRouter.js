@@ -13,7 +13,7 @@ router.get('/:userId', isLoggedIn, isSuperAdmin, getSingleUser);
 router.delete('/:userId', isLoggedIn, isSuperAdmin, deleteUserById);
 router.post('/registering', creatUserValidator, runValidation, registerUser);
 // router.post('/add-user', addUser);
-router.post('/activate', activateUser);
+router.post('/activate/:token', activateUser);
 router.post('/forget-password', isLoggedOut, forgetPassword);
 router.post('/reset-password', resetPassword);
 router.put('/:userId', updateUser);

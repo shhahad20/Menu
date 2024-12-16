@@ -14,6 +14,7 @@ import menuRouter from '../src/routers/menuRouter.js';
 import FAQsRouter from '../src/routers/FAQsRouter.js';
 import categoryRouter from '../src/routers/menuRouters/categoryRouter.js';
 import menuItemRouter from '../src/routers/menuRouters/menuItemRouter.js';
+import schemaRouter from '../src/routers/userRouters/schemaRouter.js';
 import apiErrorHandler from '../src/middleware/errorHandler.js';
 config();
 const app = express();
@@ -23,7 +24,7 @@ app.use(cookieParser());
 // app.use(myLogger)
 app.use(morgan('dev'));
 app.use(cors({
-    // origin: 'http://localhost:3000',
+    origin: 'http://localhost:5173',
     credentials: true,
 }));
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +37,7 @@ app.use('/menus', menuRouter);
 app.use('/menu/categories', categoryRouter);
 app.use('/menu/menu-items', menuItemRouter);
 app.use('/FAQs', FAQsRouter);
-// app.use('/menu-tamplate',)
+app.use('/schema', schemaRouter);
 // app.use('/categories', categoriesRouter)
 app.use(apiErrorHandler);
 app.listen(PORT, async () => {

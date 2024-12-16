@@ -10,10 +10,10 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
+  color: #1d2126;
 }
 
 .faq-items {
-  border: 1px solid #f0f0f0;
   border-radius: 8px;
 }
 
@@ -32,6 +32,7 @@
           justify-content: space-between;
   cursor: pointer;
   font-size: 1.2rem;
+  color: #1d2126;
 }
 
 .faq-answer {
@@ -43,5 +44,6 @@
 .faq-question span:last-child {
   font-size: 1.5rem;
   font-weight: bold;
+  color: #1d2126;
 }
 /*# sourceMappingURL=faqs.css.map */

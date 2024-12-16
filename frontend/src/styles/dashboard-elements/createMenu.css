@@ -1,0 +1,295 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+.create-menu-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 2rem 21rem;
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.create-menu-section .top-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.create-menu-section .add-product-button {
+  padding: 5px 20px;
+  background-color: #027368;
+  color: #fff;
+  color: #ccf2c2;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.create-menu-section .sort-container {
+  color: #027368;
+}
+
+.create-menu-section .sort-container label {
+  color: #072326;
+  padding: 0 2px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  color: #072326;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+  -webkit-box-shadow: 0 1px 10px rgba(145, 145, 145, 0.2);
+          box-shadow: 0 1px 10px rgba(145, 145, 145, 0.2);
+}
+
+.modal-content .form-header {
+  color: #072326;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal-content form {
+  color: #072326;
+}
+
+.modal-content form .element-contanier {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  text-align: right;
+}
+
+.modal-content form .element-contanier label {
+  padding: 5px 0;
+}
+
+.modal-content form .element-contanier input {
+  margin: 2px 0;
+  padding: 3px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  text-align: right;
+  color: #072326;
+}
+
+.modal-content form .element-contanier #category {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 2px 0;
+}
+
+.modal-content form .image-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.modal-content form .image-container label {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  /* Align label to the right */
+  margin-bottom: 5px;
+  padding: 5px 0;
+  /* Adds a bit of space below the label */
+}
+
+.modal-content form .image-container input[type="file"] {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  /* Align input to the right */
+  max-width: 200px;
+  /* Optional: limits the input width */
+  text-align: right;
+  /* Aligns text to the right within input */
+}
+
+.modal-content form .checkbox-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  text-align: right;
+  padding: 5px 0;
+}
+
+.modal-content form .checkbox-container .chcekbox {
+  padding: 0 10px;
+}
+
+.modal-content form .button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-top: 8px;
+}
+
+.modal-content form .submit-button {
+  margin: 8px;
+  background-color: #027368;
+  color: #ccf2c2;
+  padding: 5px 25px;
+  border-radius: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.modal-content form .submit-button:hover {
+  background-color: #ccf2c2;
+  color: #027368;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: #072326;
+  cursor: pointer;
+}
+
+.bottom-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+.bottom-container .product-list {
+  grid-column: span 2;
+  display: -ms-grid;
+  display: grid;
+  gap: 15px;
+  -ms-grid-columns: (minmax(200px, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  direction: rtl;
+}
+
+.bottom-container .product-list ul {
+  list-style-type: none;
+  padding: 0;
+  display: -ms-grid;
+  display: grid;
+  gap: 15px;
+  -ms-grid-columns: (minmax(200px, 1fr))[5];
+      grid-template-columns: repeat(5, minmax(200px, 1fr));
+  direction: rtl;
+}
+
+.bottom-container .product-list ul .product-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px 0;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 8px;
+}
+
+.bottom-container .product-list ul .product-item img {
+  border-bottom: 1px solid #ddd;
+  width: 70%;
+  padding: 20px;
+}
+
+.bottom-container .product-list ul .product-item h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #072326;
+  text-align: right;
+}
+
+.bottom-container .product-list ul .product-item p {
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.bottom-container .product-list ul .product-item.popular {
+  border-left: 4px solid #ffa500;
+}
+
+.bottom-container .product-list ul .product-item.new {
+  border-left: 4px solid #4caf50;
+}
+
+.bottom-container .product-list ul .product-item .item-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+/*# sourceMappingURL=createMenu.css.map */

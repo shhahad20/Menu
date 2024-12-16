@@ -11,7 +11,7 @@ import ApiError from "../errors/ApiError.js";
 // } from "../services/userServices.js";
 import generateToken from "../util/generateToken.js";
 import { emailSender } from "../helper/sendEmail.js";
-import { forgetPasswordEmail } from "../helper/emails.js";
+import { forgetPasswordEmail, registeringEmail } from "../helper/emails.js";
 // import {
 //   deleteFromCloudinary,
 //   uploadToCloudinary,
@@ -96,9 +96,11 @@ export const registerUser = async (req, res, next) => {
         if (existError || userExists?.length > 0) {
             return res.status(400).json({ message: "A user with this email already exists." });
         }
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        const tokenPayload = { first_name, last_name, email, password: hashedPassword, phone, address, age, country, city };
+        // const hashedPassword = bcrypt.hashSync(password, 10);
+        const tokenPayload = { first_name, last_name, email, password, phone, address, age, country, city };
         const token = jwt.sign(tokenPayload, dev.jwt.reset_k, { expiresIn: '1h' });
+        const emailToSend = registeringEmail(email, first_name, last_name, token);
+        await emailSender(emailToSend);
         // Send email logic here...
         res.status(200).json({
             message: "Verification email sent. Please check your email to complete registration.",
@@ -111,10 +113,9 @@ export const registerUser = async (req, res, next) => {
 };
 export const activateUser = async (req, res, next) => {
     try {
-        const { token } = req.body;
+        const { token } = req.params;
         if (!token) {
-            next(ApiError.notFound("Please provide a valid token"));
-            return;
+            return res.status(404).json({ message: "Please provide a valid token" });
         }
         // Verify the token
         jwt.verify(token, dev.jwt.reset_k, async (err, decoded) => {
@@ -129,37 +130,45 @@ export const activateUser = async (req, res, next) => {
             const { email, first_name, last_name, password, phone, address, age, country, city } = payloadUser;
             // Check if user already exists
             const { data: existingUser, error: fetchError } = await supabase
-                .from('users')
-                .select('*')
-                .eq('email', email);
+                .from("users")
+                .select("*")
+                .eq("email", email);
             if (fetchError) {
                 console.error("Error fetching user:", fetchError);
                 return res.status(500).json({ message: "Error checking user existence" });
             }
+            console.log(existingUser);
             if (existingUser.length > 0) {
-                return res.status(400).json({ message: "User already registered with this email" });
+                return res.status(400).json({ message: "User already activated. Please log in." });
             }
+            // Hash the password before storing
+            const hashedPassword = await bcrypt.hash(password, 10);
             // Insert user into the main users table
-            const { error: insertError } = await supabase
-                .from('users')
+            const { data: insertedUser, error: insertError } = await supabase
+                .from("users")
                 .insert([
                 {
                     first_name,
                     last_name,
                     email,
-                    password,
+                    password: hashedPassword,
                     phone,
                     address,
                     age,
                     country,
                     city,
-                }
-            ]);
+                },
+            ])
+                .select();
             if (insertError) {
                 console.error("Error inserting user:", insertError);
                 return res.status(500).json({ message: "Failed to register user" });
             }
-            res.status(200).json({ message: "User successfully verified and registered" });
+            console.log("Inserted user:", insertedUser);
+            if (!insertedUser) {
+                return res.status(500).json({ message: "Failed to retrieve inserted user" });
+            }
+            return res.status(200).json({ message: "User successfully verified and registered." });
         });
     }
     catch (error) {

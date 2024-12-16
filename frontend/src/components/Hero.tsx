@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import "../styles/hero.scss";
-import Intro from "./Intro";
+// import Intro from "./Intro";
 
 
 const Hero: React.FC = () => {
  
   return (
-    <>
+  
     <section id="hero-section">
     <div id="hero_heading_section">
 
@@ -28,19 +29,15 @@ const Hero: React.FC = () => {
       <div className="hero_heading_two">
       <h1 className="text">Your Menu </h1>
       </div>
-      <h1 className="hero-description">Our platform empowers restaurants and cafes to create stunning menus.</h1>
       <div className="explore-container">
-        <h2 className="her-btn">Try it for free</h2>
+      <h1 className="hero-description">Our platform empowers restaurants and cafes to create stunning menus.</h1>
+
+        <button className="her-btn"><Link to="/pricing">Try it for free</Link></button>
       </div>
     </div>
-    {/* <div className="hero-img-container">
-    <img src="/Corsan.svg" alt="corsan" className="corsan" width="150px" />
-    <img src="/rice.svg" alt="corsan" className="corsan" width="150px" />
-
-    </div> */}
+    {/* <Intro/> */}
     </section>
-    <Intro/>
-    </>
+    
   );
 };
 

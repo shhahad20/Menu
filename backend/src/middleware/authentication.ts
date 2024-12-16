@@ -29,7 +29,7 @@ export const isLoggedIn = async (req: Request, res: Response, next: NextFunction
 
 export const isLoggedOut = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const accessToken = req.cookies?.access_token;
+        const accessToken = req.cookies.access_token;
         if (accessToken) {
             throw ApiError.unauthorized("You are already logged in.");
         }

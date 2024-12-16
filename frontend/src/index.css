@@ -2,15 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* html[data-theme="light"] {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+html[data-theme="dark"] {
+  background-color: #171717;
+  color: #ffffff;
+} */
+
 body {
   margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: white;
   height: 100%;
-  /* display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh; */
 }
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

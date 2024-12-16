@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import ApiError from '../errors/ApiError.js';
 import { dev } from '../config/index.js';
 import { supabase } from '../config/supabaseClient.js';
+import { token } from 'morgan';
 
 
 export const handleLogin = async (req: Request, res: Response, next: NextFunction) => {
@@ -31,26 +32,34 @@ export const handleLogin = async (req: Request, res: Response, next: NextFunctio
         res.cookie('access_token', accessToken, {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,
-            sameSite: 'none',
+            // !!!! sameSite: none requires HTTPS !!!! 
+            // sameSite: 'none',
             secure: process.env.NODE_ENV === 'production',
         });
 
         res.status(200).json({
             status: 200,
             message: `Welcome ${user.first_name} as ${user.role}`,
+            user: {
+                id: user.id,
+                first_name: user.first_name,
+                role: user.role,
+                email: user.email,
+            },
+            token: accessToken,
         });
     } catch (error) {
-        console.error('Login Error:', error);
         next(error);
     }
 };
 
 export const handleLogout = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.cookie('access_token', '', {
-            expires: new Date(0),
+        res.clearCookie('access_token', {
+            // expires: new Date(0),
             httpOnly: true,
-            sameSite: 'none',
+            // !!!! sameSite: none requires HTTPS !!!! 
+            // sameSite: 'none', 
             secure: process.env.NODE_ENV === 'production',
         });
 
