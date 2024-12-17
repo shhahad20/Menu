@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 html[data-theme="light"] {
   background-color: #ffffff;
   color: #1d2126;
+  font-family: "Poppins", sans-serif;
 }
 
 html[data-theme="light"] #hero-section #hero_heading_section .hero-description {
@@ -13,6 +15,25 @@ html[data-theme="light"] #hero-section #hero_heading_section .hero-description {
 
 html[data-theme="light"] .whowe-section {
   background-color: #fffbf6;
+}
+
+html[data-theme="light"] .feature-container {
+  background-color: #fffbf6;
+}
+
+html[data-theme="light"] .feature-section .feature-item {
+  border: 1px solid #555;
+  background-color: #F9F4ED;
+}
+
+html[data-theme="light"] .feature-section .feature-item h3 {
+  color: #121212;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+html[data-theme="light"] .feature-section .feature-item p {
+  color: #121212;
 }
 
 html[data-theme="light"] #mobile_menu {
@@ -31,9 +52,18 @@ html[data-theme="light"] button {
   cursor: pointer;
 }
 
+html[data-theme="light"] #menus-section h1 {
+  color: #1d2126;
+}
+
+html[data-theme="light"] #menus-section .template-item {
+  background-color: white;
+}
+
 html[data-theme="dark"] {
   background-color: #121212;
   color: #fffbf6;
+  font-family: "Poppins", sans-serif;
 }
 
 html[data-theme="dark"] #hero-section #hero_heading_section .hero-description {

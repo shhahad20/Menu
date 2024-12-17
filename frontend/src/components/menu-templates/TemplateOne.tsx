@@ -1,72 +1,113 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../../styles/menus-style/template1.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store"; // Import your own RootState
-import { fetchMenuData, MenuItem } from "../../redux/menu/menuSlice";
 
 const Template1 = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { categories, menuItems, loading, error } = useSelector(
-    (state: RootState) => state.menu // Use your own RootState here
-  );
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [currentListIndex, setCurrentListIndex] = useState(0);
+  const lists = [
+    {
+      header: "- Hot Drinks",
+      items: [
+        { title: "Espresso", description: "A shot of rich, aromatic coffee.", price: "$3" },
+        { title: "Latte", description: "Espresso blended with steamed milk and a touch of foam.", price: "$3" },
+        { title: "Cappuccino", description: "A perfect balance of espresso, steamed milk, and foam.", price: "$3" },
+        { title: "Mocha", description: "Espresso, chocolate syrup, and steamed milk topped with whipped cream.", price: "$3" },
+        { title: "Matcha Latte", description: "Matcha with steamed milk and a sprinkle of cinnamon.", price: "$3" },
+        { title: "Amerciano", description: "Espresso with water.", price: "$3" },
+        { title: "V60", description: "Brewed coffee", price: "$5" },
+      ],
+    },
+    {
+      header: "- Cold Drinks",
+      items: [
 
-  // Fetch menu data on component mount
-  useEffect(() => {
-    dispatch(fetchMenuData());
-  }, [dispatch]);
+        { title: "Iced Coffee", description: "Cold-brewed coffee served over ice.", price: "$4" },
+        { title: "Smoothie", description: "A blend of fresh fruits and yogurt.", price: "$5" },
+        { title: "Iced Latte", description: "Latte served cold with ice.", price: "$4" },
+        { title: "Iced V60", description: "Cold-brewed coffee served over ice.", price: "$5" },
+      ],
+    },
+    {
+      header: "- Pastries & Desserts",
+      items: [
 
-  // Handle category change
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+        { title: "Croissant ", description: "Buttery and flaky, baked fresh daily.", price: "$4" },
+        { title: "Muffins", description: "Choose from blueberry, chocolate chip, or classic.", price: "$5" },
+        { title: "Cheesecake Slice", description: "Rich and creamy, served plain or topped with fruit.", price: "$4" },
+        { title: "Brownie", description: "Decadent chocolate fudge.", price: "$5" },
+        { title: "Cookies", description: "Soft-baked with your choice of chocolate chip or oatmeal raisin.", price: "$5" },
+
+      ],
+    },
+  ];
+  const handlePrevious = () => {
+    setCurrentListIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : lists.length - 1
+    );
   };
 
-  // Filter menu items based on selected category
-  const filteredMenuItems =
-  selectedCategory === "All"
-    ? menuItems
-    : menuItems.filter((item: MenuItem) => item.category.name === selectedCategory);
-
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleNext = () => {
+    setCurrentListIndex((prevIndex) =>
+      prevIndex < lists.length - 1 ? prevIndex + 1 : 0
+    );
+  };
 
   return (
     <div className="menu-container">
-      <h1>Brand Name</h1>
-      <div className="category-nav">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`category-button ${
-              selectedCategory === category ? "active" : ""
-            }`}
-            onClick={() => handleCategoryChange(category)}
-          >
-            {category}
-          </button>
-        ))}
+      <div className="menu-navbar">
+        <ul className="ul-container">
+          <li>Menu</li>
+          <li>Offers</li>
+          <li>Contact</li>
+        </ul>
       </div>
-      <div className="menu-grid">
-        {filteredMenuItems.map((item, index) => (
-          <div key={index} className="menu-item">
-            {item.isPopular && <span className="badge popular">Popular</span>}
-            {item.isOnlineOnly && (
-              <span className="badge online-only">Online Only</span>
-            )}
-            <img src={item.image} alt={item.name} className="menu-image" />
-            <h3 className="menu-item-title">{item.name}</h3>
-            <p className="menu-item-description">{item.description}</p>
-            <div className="menu-item-price">Price: ${item.price.toFixed(2)}</div>
-            <div className="menu-item-info">
-              <span>{item.calories} Calories</span>
-              <span>{item.protein}g Protein</span>
-              <span>{item.carbs}g Carbs</span>
-              <span>{item.fat}g Fat</span>
-            </div>
+      <div className="menu-top-container">
+        <div className="top-item">
+          <div className="news-container">
+            <h1>TODAY’S MOOD IS SPONSORED BY COFFEE</h1>
+            <p>Try our NEW Coffee Latte</p>
           </div>
-        ))}
+        </div>
+        <div className="top-item top-img">
+          <img className="menu-img" src="/temp1img_1.svg" alt="" />
+        </div>
       </div>
+
+      <div className="menu-bottom-container">
+        <div className="t1-bottom-container">
+        <div className="arrows">
+          <button className="arrow-button left" onClick={handlePrevious}>
+            {/* &#8592; Left arrow */}
+            <img src="/left-arow.svg" alt=""/>
+
+          </button>
+        </div>
+        <div className="temp1-list-container">
+          <h1 className="t1-list-header">{lists[currentListIndex].header}</h1>
+
+          <div className="t1-list-items">
+            {lists[currentListIndex].items.map((item, index) => (
+              <div className="t1-item" key={index}>
+                <div className="t1-item-content">
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </div>
+                <p className="t1-price">{item.price}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="arrows">
+          <button className="arrow-button right" onClick={handleNext}>
+            {/* &#8594; Right arrow */}
+            <img src="/right-arow.svg" alt=""/>
+          </button>
+        </div>
+      </div>
+      </div>
+      <footer className="t1-footer">
+        <p>Powered by Shahad Altharwa </p>
+      </footer>
+      
     </div>
   );
 };
