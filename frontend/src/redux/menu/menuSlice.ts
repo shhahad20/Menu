@@ -54,6 +54,11 @@ export const updateMenuData = createAsyncThunk(
   }
 );
 
+export const copyMenuTemplate = async(templateId: string)=>{
+  const response = await axios.post(`${API_URL}/menus/copy-template`, templateId)
+  console.log("Copying template redux" + response.data)
+  return response.data;
+}
 const menuSlice = createSlice({
   name: 'menu',
   initialState,

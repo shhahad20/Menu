@@ -14,7 +14,7 @@
 }
 
 #signup-section .signup-container, #signup-section .login-container, #login-section .signup-container, #login-section .login-container {
-  background-color: white;
+  background-color: #1d2126;
   padding: 4rem;
   border-radius: 8px;
   -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,6 @@
 }
 
 #signup-section .signup-container .signup-header, #signup-section .signup-container .login-header, #signup-section .login-container .signup-header, #signup-section .login-container .login-header, #login-section .signup-container .signup-header, #login-section .signup-container .login-header, #login-section .login-container .signup-header, #login-section .login-container .login-header {
-  color: #1d2126;
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
@@ -64,7 +63,7 @@
 }
 
 #signup-section .signup-container .signup-form .input-pair .input-container .label, #signup-section .login-container .signup-form .input-pair .input-container .label, #login-section .signup-container .signup-form .input-pair .input-container .label, #login-section .login-container .signup-form .input-pair .input-container .label {
-  color: #1d2126;
+  color: white;
   font-size: 0.875rem;
 }
 
@@ -73,7 +72,6 @@
   padding: 0.5rem;
   border: 1px solid #475463;
   border-radius: 4px;
-  color: #1d2126;
   outline: none;
 }
 
@@ -96,7 +94,7 @@
 }
 
 #signup-section .signup-container .signup-form .submit-btn:hover, #signup-section .login-container .signup-form .submit-btn:hover, #login-section .signup-container .signup-form .submit-btn:hover, #login-section .login-container .signup-form .submit-btn:hover {
-  background-color: #1d2126;
+  background-color: #121212;
 }
 
 #signup-section .policy-link, #login-section .policy-link {
@@ -159,7 +157,6 @@
 }
 
 #signup-section .login-form .login-pair .login-input-container .label, #login-section .login-form .login-pair .login-input-container .label {
-  color: #1d2126;
   font-size: 0.875rem;
 }
 
@@ -168,7 +165,6 @@
   padding: 0.5rem;
   border: 1px solid #475463;
   border-radius: 4px;
-  color: #1d2126;
   outline: none;
 }
 
@@ -191,7 +187,7 @@
 }
 
 #signup-section .login-form .login-submit-btn:hover, #login-section .login-form .login-submit-btn:hover {
-  background-color: #1d2126;
+  background-color: #121212;
 }
 
 /* Responsive design for mobile */
