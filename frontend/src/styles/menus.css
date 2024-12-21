@@ -34,6 +34,7 @@
   background: #0D0D0D;
   border: 1px solid #333;
   padding: 1rem;
+  overflow: hidden;
   border-radius: 8px;
   -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -41,6 +42,7 @@
   transition: -webkit-transform 0.3s ease, -webkit-box-shadow 0.3s ease;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   transition: transform 0.3s ease, box-shadow 0.3s ease, -webkit-transform 0.3s ease, -webkit-box-shadow 0.3s ease;
+  position: relative;
 }
 
 #menus-section .template-item:hover {
@@ -51,18 +53,21 @@
 }
 
 #menus-section .template-item .template-preview {
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 8px;
+  width: 100%;
   height: 400px;
+  overflow: hidden;
+  position: relative;
 }
 
-#menus-section .template-item .template-preview .preview-image {
+#menus-section .template-item .template-preview .preview-iframe {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border: 1px solid #333;
+  border: none;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transform-origin: top left;
+          transform-origin: top left;
+  pointer-events: none;
 }
 
 #menus-section .template-item .template-name {
