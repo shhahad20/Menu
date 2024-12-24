@@ -18,6 +18,7 @@ import Dashboard from './components/Dashboard.tsx';
 import ItemTool from './components/dashboard/itemTool.tsx';
 import Activate from './components/Activation.tsx';
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import CopyAndEditTemplatePage from './pages/MenuEditing.tsx';
 // import Logout from './pages/Logout.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/items" element={<ItemTool />} />
+        <Route path="/dashboard/edit/:templateId" element={<CopyAndEditTemplatePage />} />
 
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/faqs" element={<FAQs />} />

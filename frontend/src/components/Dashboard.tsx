@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../src/redux/store";
-import { fetchMenuData } from "../../src/redux/menu/menuSlice";
+import { fetchAllMenuTemplates } from "../../src/redux/menu/menuSlice";
 // import MenuList from "./MenuList";
 // import EditMenuItemForm from "./EditMenuItemForm";
 import "../styles/dashboard.scss";
@@ -68,7 +68,7 @@ const Dashboard: React.FC<DashboardProps> = ({ leftPanelContent }) => {
   // };
 
   useEffect(() => {
-    dispatch(fetchMenuData());
+    dispatch(fetchAllMenuTemplates());
   }, [dispatch]);
 
   return (

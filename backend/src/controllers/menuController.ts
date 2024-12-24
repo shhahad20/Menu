@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import ApiError from "../errors/ApiError.js";
 import { supabase } from "../config/supabaseClient.js";
+import { header } from "express-validator";
 
 interface Item {
   title: string;
@@ -268,12 +269,21 @@ export const copyMenuTemplate = async (
       .eq("id", templateId)
       .single();
 
-    if (error) {
-      return next(ApiError.internal(`Error retrieving original template: ${error.message}`));
+    if ( !originalTemplate ||  error) {
+      return next(ApiError.internal(`Error retrieving original template: ${error?.message}`));
     }
 
-    if (!originalTemplate) {
-      return next(ApiError.notFound("Menu template not found!"));
+    // if (!originalTemplate) {
+    //   return next(ApiError.notFound("Menu template not found!"));
+    // }
+    // Fetch the sections of the original template
+    const {data:originalSections, error: sectionError} = await supabase
+    .from("template_sections")
+    .select("*")
+    .eq("template_id",templateId);
+
+    if(sectionError){
+      return next(ApiError.internal(`Error retrieving template sections: ${sectionError.message}` ));
     }
 
     // Create a copy of the original template
@@ -287,12 +297,59 @@ export const copyMenuTemplate = async (
           updated_at: new Date(),
         },
       ])
-      .select();
+      .select()
+      .single();
 
     if (insertError) {
       return next(ApiError.internal(`Error copying template: ${insertError.message}`));
     }
 
+    const newTemplateId = newTemplate.id;
+
+    // Copy sections and items of the template
+    for(const section of originalSections || []){
+      const { data: newSection, error} = await supabase
+      .from("template_sections")
+      .insert([{
+        header: section.header,
+        template_id: newTemplateId, // Here we make the (Link) to the new template
+        section_order: section.section_order,
+      },])
+      .select()
+      .single();
+
+      if(error){
+        return next(ApiError.internal(`Error copying section '${section.header}' : ${error.message}`))
+      }
+
+      const sectionId = newSection.section_id;
+      // Fetch items for the current section
+      const {data: originalItems, error: itemsError} = await supabase
+      .from("template_items")
+      .select("*")
+      .eq("section_id", section.section_id);
+
+      if(itemsError){
+        return next(ApiError.internal(`Error retrieving items for section '${section.header}' : ${itemsError.message}`))
+      }
+
+      // Copy items 
+      for(const item of originalItems || []){
+        const{ error: insertItemError} = await supabase
+        .from("template_items")
+        .insert([{
+          title: item.title,
+          price: item.price,
+          section_id: sectionId,
+          description: item.description,
+        }]);
+
+        if(insertItemError){
+          return next(ApiError.internal(`Error copying item '${item.title}' in section '${section.header}' : ${insertItemError.message}`))
+        }
+
+      }
+    }
     res.status(201).json({
       message: "Template copied successfully.",
       payload: newTemplate,

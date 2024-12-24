@@ -8,7 +8,7 @@ import "../styles/navbar.scss";
 import { AppDispatch, RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import { useTheme } from "../context/ThemeContext";
-
+ 
 function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
