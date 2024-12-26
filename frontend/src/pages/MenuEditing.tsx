@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom"; // Import useParams
 import {
   clearCurrentTemplate,
   copyMenuTemplate,
+  TemplateItem,
+  TemplateSection,
   updateMenuTemplate,
 } from "../redux/menu/menuSlice";
 import '../styles/dashboard-elements/menuEditing.scss';
@@ -21,13 +23,13 @@ const CopyAndEditTemplatePage: React.FC = () => {
 
   // Handle Copy and Load Template
   useEffect(() => {
-    const handleCopyTemplate = async () => {
+    // const handleCopyTemplate = async () => {
       if (templateId) {
-        await dispatch(copyMenuTemplate(templateId));
+         dispatch(copyMenuTemplate(templateId));
       }
-    };
+    // };
 
-    handleCopyTemplate();
+    // handleCopyTemplate();
     // Cleanup to clear currentTemplate when leaving the page
     return () => {
       dispatch(clearCurrentTemplate());
@@ -41,102 +43,160 @@ const CopyAndEditTemplatePage: React.FC = () => {
     }
   }, [currentTemplate]);
 
-  // Handle input changes
-  const handleInputChange = (field: string, value: string) => {
-    if (editingTemplate) {
-      setEditingTemplate({
-        ...editingTemplate,
-        [field]: value,
-      });
-    }
-  };
+// Handle template name and section updates
+const handleInputChange = (field: string, value: string) => {
+  setEditingTemplate((prev) => {
+    if (!prev) return prev; // If prev is null, return it as is
+    return {
+      ...prev,
+      [field]: value,
+    };
+  });
+};
 
-  // Save changes
-  const handleSaveChanges = async () => {
-    if (editingTemplate) {
-      setIsSaving(true);
-      try {
-        await dispatch(updateMenuTemplate(editingTemplate));
-        alert("Template saved successfully!");
-      } catch (err) {
-        console.error("Failed to save changes:", err);
-      } finally {
-        setIsSaving(false);
-      }
-    }
-  };
 
-  if (loading || !editingTemplate) return <p>Loading template...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+const handleSectionChange = (
+  sectionIndex: number,
+  key: keyof TemplateSection,
+  value: string
+) => {
+  setEditingTemplate((prev) => {
+    if (!prev) return prev;
+    const updatedSections = [...prev.template_sections];
+    updatedSections[sectionIndex] = {
+      ...updatedSections[sectionIndex],
+      [key]: value,
+    };
+    return { ...prev, template_sections: updatedSections };
+  });
+};
+
+const handleItemChange = (
+  sectionIndex: number,
+  itemIndex: number,
+  key: keyof TemplateItem,
+  value: string
+) => {
+  setEditingTemplate((prev) => {
+    if (!prev) return prev;
+
+    // Create a deep copy of the section and items to ensure immutability
+    const updatedSections = prev.template_sections.map((section, idx) => {
+      if (idx !== sectionIndex) return section;
+
+      return {
+        ...section,
+        template_items: section.template_items.map((item, iIdx) => {
+          if (iIdx !== itemIndex) return item;
+          return { ...item, [key]: value };
+        }),
+      };
+    });
+
+    return { ...prev, template_sections: updatedSections };
+  });
+};
+
+
+// Save changes to the template
+const handleSaveChanges = async () => {
+  if (editingTemplate) {
+    setIsSaving(true);
+    try {
+      await dispatch(updateMenuTemplate(editingTemplate));
+      alert("Template saved successfully!");
+    } catch (err) {
+      console.error("Failed to save changes:", err);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+};
+
+if (loading || !editingTemplate) return <p>Loading template...</p>;
+if (error) return <p style={{ color: "red" }}>{error}</p>;
+
 
   return (
-    <div className="menu-edting-section">
+    <div className="menu-editing-section">
       <h1>Edit Template</h1>
-      <div>
-        <label>
-          Name:
+      <div className="template-editor">
+        {/* Template Name */}
+        <div className="template-field">
+          <label>Template Name:</label>
           <input
-          className="name-input"
             type="text"
             value={editingTemplate.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
           />
-        </label>
+        </div>
 
-        {/* Example: Rendering sections and items */}
+        {/* Sections and Items */}
         {editingTemplate.template_sections.map((section, sectionIndex) => (
-          <div key={section.section_id}>
-            <h2>
-              Section {sectionIndex + 1}:{" "}
-              <input
-                type="text"
-                value={section.header}
-                onChange={(e) =>
-                  setEditingTemplate((prev) => {
-                    if (!prev) return prev;
-                    const sections = [...prev.template_sections];
-                    sections[sectionIndex].header = e.target.value;
-                    return { ...prev, template_sections: sections };
-                  })
-                }
-              />
-            </h2>
-            <ul>
+          <div className="section-editor" key={section.section_id}>
+            <h2>Section {sectionIndex + 1}</h2>
+            <input
+              type="text"
+              value={section.header}
+              onChange={(e) =>
+                handleSectionChange(sectionIndex, "header", e.target.value)
+              }
+              placeholder="Section Header"
+            />
+
+            <div className="items-editor">
               {section.template_items.map((item, itemIndex) => (
-                <li key={item.item_id}>
+                <div className="item-editor" key={item.item_id}>
                   <input
                     type="text"
                     value={item.title}
                     onChange={(e) =>
-                      setEditingTemplate((prev) => {
-                        if (!prev) return prev;
-                        const sections = [...prev.template_sections];
-                        sections[sectionIndex].template_items[itemIndex].title =
-                          e.target.value;
-                        return { ...prev, template_sections: sections };
-                      })
+                      handleItemChange(
+                        sectionIndex,
+                        itemIndex,
+                        "title",
+                        e.target.value
+                      )
                     }
+                    placeholder="Item Title"
                   />
                   <input
                     type="text"
                     value={item.price}
                     onChange={(e) =>
-                      setEditingTemplate((prev) => {
-                        if (!prev) return prev;
-                        const sections = [...prev.template_sections];
-                        sections[sectionIndex].template_items[itemIndex].price =
-                          e.target.value;
-                        return { ...prev, template_sections: sections };
-                      })
+                      handleItemChange(
+                        sectionIndex,
+                        itemIndex,
+                        "price",
+                        e.target.value
+                      )
                     }
+                    placeholder="Item Price"
                   />
-                </li>
+                  <textarea
+                    value={item.description}
+                    onChange={(e) =>
+                      handleItemChange(
+                        sectionIndex,
+                        itemIndex,
+                        "description",
+                        e.target.value
+                      )
+                    }
+                    placeholder="Item Description"
+                  />
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
 
-        <button onClick={handleSaveChanges} disabled={isSaving}>
+        {/* Save Button */}
+        <button
+          className="save-button"
+          onClick={handleSaveChanges}
+          disabled={isSaving}
+        >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
       </div>

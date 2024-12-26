@@ -110,16 +110,16 @@ console.log(items)
     <div className="create-menu-section">
       <div className="top-container">
         <div className="sort-container">
+        <label>Sort</label>
           <select>
-            <option value="1">مضاف مؤخراً</option>
-            <option value="1">الاعلى سعراَ</option>
-            <option value="1">الادنى سعراَ</option>
+            <option value="1">Recently</option>
+            <option value="1">Highest Price</option>
+            <option value="1">Lowest Price</option>
           </select>
-          <label>تصفية</label>
         </div>
 
         <button onClick={handleOpenModal} className="add-product-button">
-          إضافة منتج جديد
+          Add New Item
         </button>
       </div>
       {isModalOpen && (
@@ -128,14 +128,14 @@ console.log(items)
             <span className="close-button" onClick={handleCloseModal}>
               &times;
             </span>
-            <h2 className="form-header">أضف منتج جديد</h2>
+            <h2 className="form-header">New Item</h2>
             <form onSubmit={handleSubmit}>
               <div className="element-container">
-                <label htmlFor="name">اسم المنتج</label>
+                <label htmlFor="name" className="item-label">Name</label>
                 <input type="text" id="name" name="name" value={newItem.name} onChange={handelChange} required />
               </div>
               <div className="element-container">
-                <label htmlFor="description">الوصف</label>
+                <label htmlFor="description">Description</label>
                 <input
                   type="text"
                   id="description"
@@ -146,11 +146,11 @@ console.log(items)
                 />
               </div>
               <div className="element-container">
-                <label htmlFor="price">السعر</label>
+                <label htmlFor="price">Price</label>
                 <input type="number" id="price" name="price" value={newItem.price} onChange={handelChange} required />
               </div>
               <div className="element-container">
-                <label htmlFor="category">تصنيف المنتج</label>
+                <label htmlFor="category">Item Catgeory</label>
                 <select id="category" name="categoryId" onChange={handleOptions} required>
                   <option value="default">-</option>
                   <option value="1">Salads</option>
@@ -159,11 +159,11 @@ console.log(items)
                 </select>
               </div>
               <div className="element-container">
-                <label htmlFor="calories">السعرات الحرارية</label>
+                <label htmlFor="calories">Calories</label>
                 <input type="number" id="calories" name="calories" value={newItem.calories} onChange={handelChange} required />
               </div>
               <div className="image-container">
-                <label htmlFor="image">صورة المنتج</label>
+                <label htmlFor="image">Image</label>
                 <input
                   type="file"
                   id="image"
@@ -179,7 +179,7 @@ console.log(items)
                     checked={isPopular}
                     onChange={() => setIsPopular(!isPopular)}
                   />
-                  منتج شائع
+                   Is Popular
                 </label>
                 <label>
                   <input
@@ -187,12 +187,12 @@ console.log(items)
                     checked={isNew}
                     onChange={() => setIsNew(!isNew)}
                   />
-                  منتج جديد
+                  Is New
                 </label>
               </div>
               <div className="button-container">
                 <button className="submit-button" type="submit">
-                  إضافة المنتج
+                   Add
                 </button>
               </div>
             </form>

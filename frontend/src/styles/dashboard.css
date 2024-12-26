@@ -24,10 +24,9 @@
   /* Fixed width for the editing tools */
   overflow-y: auto;
   height: 100vh;
-  background-color: #072326;
-  /* Slightly darker background for the tools */
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-left: 1px solid #333;
+  -webkit-box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
+          box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
 }
 
 .right-panel::-webkit-scrollbar {
@@ -36,17 +35,17 @@
 }
 
 .right-panel::-webkit-scrollbar-track {
-  background: #072326;
+  background: #333;
   /* Background of the scrollbar track */
 }
 
 .right-panel::-webkit-scrollbar-thumb {
-  background-color: #EEF26B;
+  background-color: #C4D977;
   /* Color of the scrollbar handle */
 }
 
 .right-panel::-webkit-scrollbar-thumb:hover {
-  background-color: #EEF26B;
+  background-color: #C4D977;
   /* Handle color on hover */
 }
 
@@ -91,14 +90,14 @@ h1, h2 {
   height: 60px;
   -o-object-fit: cover;
      object-fit: cover;
-  border: 1.8px solid #EEF26B;
+  border: 1.8px solid #C4D977;
   border-radius: 20%;
   /* Makes the image circular */
   margin-left: 20px;
 }
 
 .subscription {
-  color: #EEF26B;
+  color: #C4D977;
   font-weight: 500;
   font-size: 15px;
 }
@@ -136,7 +135,7 @@ li, .tool-link {
 }
 
 .tool-link.selected .tool-name {
-  color: #EEF26B;
+  color: #C4D977;
 }
 
 .tool-link.selected .tool-icon {
@@ -147,11 +146,12 @@ li, .tool-link {
 .tool-header {
   text-align: right;
   padding: 0 30px;
-  color: #ACBEF2;
+  color: #555;
+  font-weight: 600;
 }
 
 .tool-item.selected .tool-name {
-  color: #EEF26B;
+  color: #C4D977;
 }
 
 .tool-item.selected .tool-icon {

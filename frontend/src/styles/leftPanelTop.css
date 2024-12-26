@@ -2,7 +2,7 @@
 .left-panel-section {
   font-family: "Rubik", sans-serif;
   font-optical-sizing: auto;
-  background-color: #fcfcfc;
+  border-bottom: 1px solid #333;
 }
 
 .left-panel-wrapper {
@@ -25,7 +25,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #f1f1f1;
+  background-color: #333;
   border-radius: 3px;
   padding: 5px 10px;
   width: 20%;

@@ -11,7 +11,7 @@ router.get('/my-menus',isLoggedIn, getAllUserMenus);
 
 router.get('/:id', getMenuById);
 router.post('/add-menu', isLoggedIn, isSuperAdmin, createMenu);
-router.put('/:id',isLoggedIn, isSuperAdmin, updateMenu);
+router.put('/:id',isLoggedIn, updateMenu);
 router.delete('/:id',isLoggedIn, isSuperAdmin, deleteMenu);
 router.post('/copy-template', isLoggedIn, copyMenuTemplate);
 
