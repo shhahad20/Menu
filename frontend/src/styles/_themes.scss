@@ -6,7 +6,7 @@ $light-text: #1d2126;
 $light-hover-bg: #f0f0f0;
 $light-hover-color: #333;
 $light-gradient: linear-gradient(0deg, #635EF2, #252273);
-
+ 
 // Dark Theme Variables
 $dark-bg: #121212;
 $dark-text: rgb(255, 251, 246);
@@ -125,6 +125,15 @@ html[data-theme="light"] {
     #footer-section{
       background-color: #0D0D0D;
   }
+  // input{
+  //   background-color: #333;
+  //   padding: 3px;
+  //   margin-right: 1rem;
+  //   font-size: 0.9rem;
+  //   border-radius: 4px;
+  //   border: 1px solid #444;
+
+  // }
     button {
         // background-color: #C4D977;
         // color: #121212;

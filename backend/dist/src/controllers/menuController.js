@@ -2,7 +2,10 @@ import ApiError from "../errors/ApiError.js";
 import { supabase } from "../config/supabaseClient.js";
 export const getAllMenuTemplates = async (req, res, next) => {
     try {
-        const { data, error } = await supabase.from("templates").select("*").eq("user_id", 1);
+        const { data, error } = await supabase
+            .from("templates")
+            .select("*")
+            .eq("user_id", 1);
         if (error) {
             return next(ApiError.internal("Error retrieving templates data"));
         }
@@ -117,31 +120,79 @@ export const createMenu = async (req, res, next) => {
 };
 export const updateMenu = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const { name, sections } = req.body;
-        const userId = req.user?.id;
+        const { id } = req.params; // Template ID
+        const { name, sections } = req.body; // Template name and sections
+        const userId = req.user?.id; // User ID from authentication
         if (!id || !name || !sections) {
             return next(ApiError.badRequest("Missing required fields!"));
         }
-        const { error, data } = await supabase
+        // Update template name
+        const { error: templateError } = await supabase
             .from("templates")
-            .update({ name, sections })
+            .update({ name, updated_at: new Date() })
             .eq("id", id)
-            .eq("user_id", userId)
-            .select();
-        if (error) {
-            return next(ApiError.internal("Error updating menu template"));
+            .eq("user_id", userId);
+        if (templateError) {
+            return next(ApiError.internal("Error updating template name!"));
         }
-        if (!data || !Array.isArray(data) || data.length === 0) {
-            return next(ApiError.notFound("Menu template not found"));
+        // Iterate over sections to update or add new ones
+        for (const section of sections) {
+            const { section_id, header, items } = section;
+            if (section_id) {
+                // Update existing section
+                const { error: sectionError } = await supabase
+                    .from("template_sections")
+                    .update({ header })
+                    .eq("section_id", section_id)
+                    .eq("template_id", id);
+                if (sectionError) {
+                    return next(ApiError.internal(`Error updating section '${header}': ${sectionError.message}`));
+                }
+            }
+            else {
+                // Add new section
+                const { data: newSection, error: newSectionError } = await supabase
+                    .from("template_sections")
+                    .insert([{ header, template_id: id }])
+                    .select()
+                    .single();
+                if (newSectionError) {
+                    return next(ApiError.internal(`Error adding new section '${header}': ${newSectionError.message}`));
+                }
+                section.section_id = newSection.section_id; // Assign new section ID for items
+            }
+            // Update or add items within the section
+            for (const item of items || []) {
+                const { item_id, title, price, description } = item;
+                if (item_id) {
+                    // Update existing item
+                    const { error: itemError } = await supabase
+                        .from("template_items")
+                        .update({ title, price, description })
+                        .eq("item_id", item_id)
+                        .eq("section_id", section.section_id);
+                    if (itemError) {
+                        return next(ApiError.internal(`Error updating item '${title}' in section '${header}': ${itemError.message}`));
+                    }
+                }
+                else {
+                    // Add new item
+                    const { error: newItemError } = await supabase
+                        .from("template_items")
+                        .insert([{ title, price, description, section_id: section.section_id }]);
+                    if (newItemError) {
+                        return next(ApiError.internal(`Error adding item '${title}' to section '${header}': ${newItemError.message}`));
+                    }
+                }
+            }
         }
         res.status(200).json({
             message: "Menu template updated successfully.",
-            payload: data,
         });
     }
     catch (error) {
-        next(error);
+        console.error(error);
+        next(ApiError.internal("Failed to update menu template."));
     }
 };
 export const deleteMenu = async (req, res, next) => {
@@ -188,11 +239,19 @@ export const copyMenuTemplate = async (req, res, next) => {
             .select("*")
             .eq("id", templateId)
             .single();
-        if (error) {
-            return next(ApiError.internal(`Error retrieving original template: ${error.message}`));
+        if (!originalTemplate || error) {
+            return next(ApiError.internal(`Error retrieving original template: ${error?.message}`));
         }
-        if (!originalTemplate) {
-            return next(ApiError.notFound("Menu template not found!"));
+        // if (!originalTemplate) {
+        //   return next(ApiError.notFound("Menu template not found!"));
+        // }
+        // Fetch the sections of the original template
+        const { data: originalSections, error: sectionError } = await supabase
+            .from("template_sections")
+            .select("*")
+            .eq("template_id", templateId);
+        if (sectionError) {
+            return next(ApiError.internal(`Error retrieving template sections: ${sectionError.message}`));
         }
         // Create a copy of the original template
         const { data: newTemplate, error: insertError } = await supabase
@@ -205,9 +264,53 @@ export const copyMenuTemplate = async (req, res, next) => {
                 updated_at: new Date(),
             },
         ])
-            .select();
+            .select()
+            .single();
         if (insertError) {
             return next(ApiError.internal(`Error copying template: ${insertError.message}`));
+        }
+        const newTemplateId = newTemplate.id;
+        // Copy sections and items of the template
+        for (const section of originalSections || []) {
+            const { data: newSection, error } = await supabase
+                .from("template_sections")
+                .insert([
+                {
+                    header: section.header,
+                    template_id: newTemplateId,
+                    section_order: section.section_order,
+                },
+            ])
+                .select()
+                .single();
+            if (error) {
+                return next(ApiError.internal(`Error copying section '${section.header}' : ${error.message}`));
+            }
+            const sectionId = newSection.section_id;
+            // Fetch items for the current section
+            const { data: originalItems, error: itemsError } = await supabase
+                .from("template_items")
+                .select("*")
+                .eq("section_id", section.section_id);
+            if (itemsError) {
+                return next(ApiError.internal(`Error retrieving items for section '${section.header}' : ${itemsError.message}`));
+            }
+            // Copy items
+            for (const item of originalItems || []) {
+                const { error: insertItemError } = await supabase
+                    .from("template_items")
+                    .insert([
+                    {
+                        title: item.title,
+                        price: item.price,
+                        section_id: sectionId,
+                        description: item.description,
+                    },
+                ]);
+                if (insertItemError) {
+                    return next(ApiError.internal(`Error copying item '${item.title}' in section '${section.header}' : ${insertItemError.message}`));
+                }
+            }
         }
         res.status(201).json({
             message: "Template copied successfully.",
@@ -225,7 +328,10 @@ export const getAllUserMenus = async (req, res, next) => {
         if (!userId) {
             return next(ApiError.badRequest("Please login first!"));
         }
-        const { data, error } = await supabase.from("templates").select("*").eq("user_id", userId);
+        const { data, error } = await supabase
+            .from("templates")
+            .select("*")
+            .eq("user_id", userId);
         if (error) {
             return next(ApiError.internal("Error retrieving templates data: " + error.message));
         }

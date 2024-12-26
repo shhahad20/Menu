@@ -9,7 +9,8 @@
     // padding: 0 50px;
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
-    background-color: #fcfcfc; 
+    // background-color: #fcfcfc; 
+    border-bottom: 1px solid #333;
     // padding: 15px 200px;
     // width: 100%;
   } 
@@ -24,7 +25,7 @@
   .search-bar {
     display: flex;
     align-items: center;
-    background-color: #f1f1f1;
+    background-color: #333;
     border-radius: 3px;
     padding: 5px 10px;
     width: 20%;

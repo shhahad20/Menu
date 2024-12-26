@@ -1,53 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/menus-style/template1.scss";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchMenuTemplateById,
+  TemplateItem,
+} from "../../redux/menu/menuSlice";
 
 const Template1 = () => {
-  const [currentListIndex, setCurrentListIndex] = useState(0);
-  const lists = [
-    {
-      header: "- Hot Drinks",
-      items: [
-        { title: "Espresso", description: "A shot of rich, aromatic coffee.", price: "$3" },
-        { title: "Latte", description: "Espresso blended with steamed milk and a touch of foam.", price: "$3" },
-        { title: "Cappuccino", description: "A perfect balance of espresso, steamed milk, and foam.", price: "$3" },
-        { title: "Mocha", description: "Espresso, chocolate syrup, and steamed milk topped with whipped cream.", price: "$3" },
-        { title: "Matcha Latte", description: "Matcha with steamed milk and a sprinkle of cinnamon.", price: "$3" },
-        { title: "Amerciano", description: "Espresso with water.", price: "$3" },
-        { title: "V60", description: "Brewed coffee", price: "$5" },
-      ],
-    },
-    {
-      header: "- Cold Drinks",
-      items: [
+  const { currentTemplate } = useSelector((state: RootState) => state.menu);
+  const dispatch: AppDispatch = useDispatch();
 
-        { title: "Iced Coffee", description: "Cold-brewed coffee served over ice.", price: "$4" },
-        { title: "Smoothie", description: "A blend of fresh fruits and yogurt.", price: "$5" },
-        { title: "Iced Latte", description: "Latte served cold with ice.", price: "$4" },
-        { title: "Iced V60", description: "Cold-brewed coffee served over ice.", price: "$5" },
-      ],
-    },
-    {
-      header: "- Pastries & Desserts",
-      items: [
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
 
-        { title: "Croissant ", description: "Buttery and flaky, baked fresh daily.", price: "$4" },
-        { title: "Muffins", description: "Choose from blueberry, chocolate chip, or classic.", price: "$5" },
-        { title: "Cheesecake Slice", description: "Rich and creamy, served plain or topped with fruit.", price: "$4" },
-        { title: "Brownie", description: "Decadent chocolate fudge.", price: "$5" },
-        { title: "Cookies", description: "Soft-baked with your choice of chocolate chip or oatmeal raisin.", price: "$5" },
+  // Fetch data on component mount
+  useEffect(() => {
+    dispatch(fetchMenuTemplateById("3491c484-c425-41b1-9537-841328278931"));
+  }, [dispatch]);
 
-      ],
-    },
-  ];
+  const templateSections = currentTemplate?.template_sections || [];
+
   const handlePrevious = () => {
-    setCurrentListIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : lists.length - 1
+    setCurrentSectionIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : templateSections.length - 1
     );
   };
 
   const handleNext = () => {
-    setCurrentListIndex((prevIndex) =>
-      prevIndex < lists.length - 1 ? prevIndex + 1 : 0
+    setCurrentSectionIndex((prevIndex) =>
+      prevIndex < templateSections.length - 1 ? prevIndex + 1 : 0
     );
   };
 
@@ -68,46 +49,59 @@ const Template1 = () => {
           </div>
         </div>
         <div className="top-item top-img">
-          <img className="menu-img" src="/temp1img_1.svg" alt="" />
+          <img
+            className="menu-img"
+            src="https://cdacqfsioxqvhkvqsxjs.supabase.co/storage/v1/object/public/menu_images/menuTemplates/template1/temp1img.svg?t=2024-12-21T11%3A13%3A09.724Z"
+            alt=""
+          />
         </div>
       </div>
 
       <div className="menu-bottom-container">
         <div className="t1-bottom-container">
-        <div className="arrows">
-          <button className="arrow-button left" onClick={handlePrevious}>
-            {/* &#8592; Left arrow */}
-            <img src="/left-arow.svg" alt=""/>
-
-          </button>
-        </div>
-        <div className="temp1-list-container">
-          <h1 className="t1-list-header">{lists[currentListIndex].header}</h1>
-
-          <div className="t1-list-items">
-            {lists[currentListIndex].items.map((item, index) => (
-              <div className="t1-item" key={index}>
-                <div className="t1-item-content">
-                  <h2>{item.title}</h2>
-                  <p>{item.description}</p>
-                </div>
-                <p className="t1-price">{item.price}</p>
+          {templateSections.length > 0 && (
+            <>
+              <div className="arrows">
+                <button className="arrow-button left" onClick={handlePrevious}>
+                  <img
+                    src="https://cdacqfsioxqvhkvqsxjs.supabase.co/storage/v1/object/public/menu_images/menuTemplates/template1/left-arow.svg?t=2024-12-21T11%3A08%3A34.543Z"
+                    alt="Left Arrow"
+                  />
+                </button>
               </div>
-            ))}
-          </div>
+              <div className="temp1-list-container">
+                <h1 className="t1-list-header">
+                  {templateSections[currentSectionIndex]?.header || ""}
+                </h1>
+                <div className="t1-list-items">
+                  {templateSections[currentSectionIndex]?.template_items?.map(
+                    (item: TemplateItem, index: number) => (
+                      <div className="t1-item" key={index}>
+                        <div className="t1-item-content">
+                          <h2>{item.title}</h2>
+                          <p>{item.description}</p>
+                        </div>
+                        <p className="t1-price">{item.price} SAR</p>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+              <div className="arrows">
+                <button className="arrow-button right" onClick={handleNext}>
+                  <img
+                    src="https://cdacqfsioxqvhkvqsxjs.supabase.co/storage/v1/object/public/menu_images/menuTemplates/template1/arow-right.svg?t=2024-12-21T11%3A08%3A24.596Z"
+                    alt="Right Arrow"
+                  />
+                </button>
+              </div>
+            </>
+          )}
         </div>
-        <div className="arrows">
-          <button className="arrow-button right" onClick={handleNext}>
-            {/* &#8594; Right arrow */}
-            <img src="/right-arow.svg" alt=""/>
-          </button>
-        </div>
-      </div>
       </div>
       <footer className="t1-footer">
-        <p>Powered by Shahad Altharwa </p>
+        <p>Powered by MenuCraft</p>
       </footer>
-      
     </div>
   );
 };
