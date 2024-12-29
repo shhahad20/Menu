@@ -1,26 +1,30 @@
-// Breadcrumb.tsx
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import "../styles/breadcrumb.scss";
 
-interface BreadcrumbProps {
-  items: { name: string; path: string }[];
-}
+const Breadcrumb: React.FC = () => {
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/").filter((segment) => segment);
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
     <nav className="breadcrumb">
-      {items.map((item, index) => (
-        <span key={index} className="breadcrumb-item">
-          {index < items.length - 1 ? (
-            <>
-              <a href={item.path}>{item.name}</a>
-              <span className="breadcrumb-separator"> / </span>
-            </>
-          ) : (
-            <span>{item.name}</span>
-          )}
-        </span>
-      ))}
+      {pathSegments.map((segment, index) => {
+        const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
+        const isLast = index === pathSegments.length - 1;
+
+        return (
+          <span key={index} className="breadcrumb-item">
+            {!isLast ? (
+              <>
+                <Link to={path}>{segment}</Link>
+                <span className="breadcrumb-separator"> / </span>
+              </>
+            ) : (
+              <span>{segment}</span>
+            )}
+          </span>
+        );
+      })}
     </nav>
   );
 };

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 export interface TemplateItem {
+  id: string;
   price: string;
   title: string;
   item_id: string;
@@ -61,9 +62,15 @@ export const fetchMenuTemplateById = createAsyncThunk(
 export const fetchMenuTemplatesForUser = createAsyncThunk(
   'menu/fetchMenuTemplatesForUser',
   async () => {
-    const response = await axios.get(`${API_URL}/menus/my-menus`);
-    console.log(response.data.payload)
-    return response.data.payload;
+    try {
+      const response = await axios.get(`${API_URL}/menus/my-menus`);
+      console.log("From slice: "+ JSON.stringify(response.data.payload))
+      return response.data.payload;
+    } catch (error) {
+      console.error("Error Fetching user templates:", error);
+      throw error;
+    }
+
   }
 );
 
@@ -81,7 +88,7 @@ export const copyMenuTemplate = createAsyncThunk(
     }
   }
 );
-
+ 
 // Update a menu template (e.g., section or item)
 export const updateMenuTemplate = createAsyncThunk(
   'menu/updateMenuTemplate',
@@ -117,6 +124,16 @@ const menuSlice = createSlice({
       .addCase(fetchMenuTemplateById.pending, (state) => {
         state.loading = true;
         state.error = null;
+      })
+      .addCase(fetchMenuTemplatesForUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMenuTemplatesForUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.templates = action.payload;
+      })
+      .addCase(fetchMenuTemplatesForUser.rejected, (state) => {
+        state.loading = false;
       })
       .addCase(fetchMenuTemplateById.fulfilled, (state, action: PayloadAction<MenuTemplate>) => {
         state.loading = false;

@@ -1,0 +1,112 @@
+.d-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #0a0a0a;
+  .d-home-container {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1300px;
+    .d-home-topbar {
+      display: flex;
+      // justify-content: center;
+      // align-items: center;
+      gap: 2rem;
+      margin-bottom: 20px;
+
+      .search-bar {
+        padding: 8px;
+        font-size: 14px;
+        width: 905px;
+        background-color: #121212;
+        border: 1px solid #333;
+        border-radius: 5px;
+      }
+
+      .sort-dropdown {
+        padding: 8px;
+        font-size: 14px;
+        background-color: #121212;
+        border: 1px solid #333;
+        border-radius: 5px;
+      }
+
+      .view-options {
+        display: flex;
+        gap: 10px;
+        background-color: #121212;
+        border: 1px solid #333;
+        border-radius: 5px;
+        .view-btn {
+          padding: 8px 12px;
+          cursor: pointer;
+          &.active {
+            background-color: #333;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+
+    .menus-list {
+        &.list {
+            .menus-wrapper{
+                display: block;
+                .menu-items {
+                    background-color: #121212;
+                    border: 1px solid #333;
+                    border-radius: 8px; 
+                    margin-bottom: 10px; 
+                }
+            } 
+        }
+  
+        &.grid {
+            .menus-wrapper{
+                display: grid;
+                grid-template-columns: repeat(3, minmax(200px, 1fr));
+                gap: 20px;
+            }
+          .menu-items {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            color: #fff;
+            height: 140px;
+            &:hover {
+                border: 1px solid #555;
+  
+            }
+  
+            .child-item {
+              h3 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+                color: #fff;
+              }
+  
+              .sections-list {
+                .section-item {
+                  margin-bottom: 10px;
+  
+                  h4 {
+                    font-size: 1rem;
+                    color: #ddd;
+                  }
+  
+                  .items-list {
+                    .item {
+                      font-size: 0.9rem;
+                      color: #bbb;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  }
+}

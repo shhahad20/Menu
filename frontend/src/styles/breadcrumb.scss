@@ -2,15 +2,12 @@
 
 .breadcrumb {
     display: flex;
-    justify-content: flex-end;
-    font-family: "Rubik", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    // align-items: right;
-    text-align: right;
+    font-weight: 400;
+    text-align: left;
     font-size: 14px;
     color: #aaa;
-    padding: 10px 21rem;
+    padding-left: 20rem;
+
   }
   
   .breadcrumb-item {
@@ -25,7 +22,6 @@
   }
   
   .breadcrumb-item a {
-    color: #027368;
     text-decoration: none;
   }
   

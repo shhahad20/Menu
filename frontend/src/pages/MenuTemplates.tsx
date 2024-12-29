@@ -44,7 +44,7 @@ const MenusTemplates: React.FC = () => {
   const handleSelect = (templateId: string) => {
     setSelectedTemplate(templateId);
   };
-console.log(isLoggedIn + " selected temp : " +selectedTemplate)
+console.log(isLoggedIn + " selected temp : " + selectedTemplate)
 
   const confirmSelection = async () => {
     if (selectedTemplate) {
@@ -54,9 +54,10 @@ console.log(isLoggedIn + " selected temp : " +selectedTemplate)
       try {
         // Dispatch the copyMenuTemplate action and get the new menu ID
         await dispatch(copyMenuTemplate(selectedTemplate));
+       
         // Navigate to the editing page with the new menu ID
-        navigate(`/dashboard/edit/${selectedTemplate}`);
-
+        navigate(`/dashboard/menus`);
+ 
       } catch (err) {
         setError("Failed to copy the menu. Please try again.");
         console.error(err);

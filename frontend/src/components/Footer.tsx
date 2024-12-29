@@ -4,10 +4,10 @@ const Footer: React.FC = () => {
   const cureentYear = new Date().getFullYear();
   return (
     <section id="footer-section">
-      <footer className="text-white py-10">
-        <div className="container mx-auto px-4">
+      <footer className="text-white py-5">
+        <div className="container mx-auto px-5">
           {/* Footer content */}
-          <div className="flex flex-col md:flex-row justify-between space-y-10 md:space-y-0">
+          <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0">
             {/* Company Column */}
             <div>
               <h3 className="font-bold mb-4">Company</h3>
@@ -110,7 +110,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Footer bottom content */}
-          <div className="mt-10 flex justify-between items-center">
+          <div className="mt-1 flex justify-between items-center">
             <div className="text-sm text-gray-500">
               © {cureentYear} MenuCraft. All rights reserved.
             </div>
