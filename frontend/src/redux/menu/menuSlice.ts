@@ -64,7 +64,6 @@ export const fetchMenuTemplatesForUser = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(`${API_URL}/menus/my-menus`);
-      console.log("From slice: "+ JSON.stringify(response.data.payload))
       return response.data.payload;
     } catch (error) {
       console.error("Error Fetching user templates:", error);

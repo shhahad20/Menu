@@ -1,27 +1,26 @@
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { API_URL } from '../../api/api';
 import axios from 'axios';
 
 export interface Item {
-  id: number;
-  name: string;
-  description: string;
-  calories: number;
-  // protein: number;
-  // carbs: number;
-  // fat: number;
-  price: number;
-  image_url: string;
-  category:{
-    name: string;
-  };
-  isPopular?: boolean;
-  isNew?: boolean;
+  itemId: string;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: string;
 }
 
-export interface ItemsState {
+export interface Section {
+  sectionName: string;
   items: Item[];
+}
+
+export interface Template {
+  templateName: string;
+  sections: Section[];
+}
+export interface ItemsState {
+  items: Template[];
   loading: boolean;
   error: string | null;
 }
@@ -29,6 +28,7 @@ export interface ItemsState {
 // Fetch items from backend
 export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
   const response = await axios.get(`${API_URL}/menu/menu-items`);
+  console.log(response.data)
   return response.data;
 });
 
@@ -48,7 +48,7 @@ export const createItem = createAsyncThunk('items/createItem', async (item: Form
 });
 
 export const editItem = createAsyncThunk('items/editItem', async (item: Item) => {
-  const response = await axios.put(`${API_URL}/menu/menu-items/${item.id}`, item);
+  const response = await axios.put(`${API_URL}/menu/menu-items/${item.itemId}`, item);
   return response.data;
 });
 export const removeItem = createAsyncThunk('items/removeItem', async (id: number) => {
@@ -65,16 +65,16 @@ const itemsSlice = createSlice({
     error: null,
   } as ItemsState,
   reducers: {
-    addItem: (state, action: PayloadAction<Item>) => {
-      state.items.push(action.payload);
-    },
-    updateItem: (state, action: PayloadAction<Item>) => {
-      const index = state.items.findIndex(item => item.id === action.payload.id);
-      if (index !== -1) state.items[index] = action.payload;
-    },
-    deleteItem: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
-    },
+    // addItem: (state, action: PayloadAction<Item>) => {
+    //   state.items.push(action.payload);
+    // },
+    // updateItem: (state, action: PayloadAction<Item>) => {
+    //   const index = state.items.findIndex(item => item.itemId === action.payload.itemId);
+    //   if (index !== -1) state.items[index] = action.payload;
+    // },
+    // deleteItem: (state, action: PayloadAction<number>) => {
+    //   state.items = state.items.filter(item => item.itemId !== action.payload);
+    // },
   },
   extraReducers: builder => {
     builder
@@ -86,15 +86,15 @@ const itemsSlice = createSlice({
       console.log(action.payload)
       state.items.push(action.payload);
     })
-    .addCase(editItem.fulfilled, (state, action) => {
-      const index = state.items.findIndex(item => item.id === action.payload.id);
-      if (index !== -1) state.items[index] = action.payload;
-    })
-    .addCase(removeItem.fulfilled, (state, action) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
-    });
+    // .addCase(editItem.fulfilled, (state, action) => {
+    //   const index = state.items.findIndex(item => item.itemId === action.payload.id);
+    //   if (index !== -1) state.items[index] = action.payload;
+    // })
+    // .addCase(removeItem.fulfilled, (state, action) => {
+    //   state.items = state.items.filter(item => item.itemId !== action.payload);
+    // });
   }
 });
 
-export const { addItem, updateItem, deleteItem } = itemsSlice.actions;
+// export const { addItem, updateItem } = itemsSlice.actions;
 export default itemsSlice.reducer;
