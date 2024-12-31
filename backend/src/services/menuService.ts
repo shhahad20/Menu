@@ -9,7 +9,9 @@ export const getAllMenus = async (
   searchField: string,
   pageNo: number = 1,
   limit: number = 5,
-  searchQuery?: string
+  sortField: string, // Default sort field
+  sortOrder: string ,
+  searchQuery?: string,
 ) => {
   try {
     const offset = (pageNo - 1) * limit;
@@ -19,7 +21,8 @@ export const getAllMenus = async (
       .select(` *
       `, { count: 'exact' })
       .eq('user_id', userId) 
-      .range(offset, offset + limit - 1); 
+      .range(offset, offset + limit - 1)
+      .order(sortField, { ascending: sortOrder === 'asc' });
 
     if (searchQuery) {
       query = query.ilike(searchField, `%${searchQuery}%`); 
@@ -37,7 +40,7 @@ export const getAllMenus = async (
     }
 
     return {
-      data,
+      templates: data,
       totalItems: count || 0,
       currentPage: pageNo,
       totalPages: Math.ceil((count || 0) / limit),

@@ -3,7 +3,6 @@ import ApiError from "../errors/ApiError.js";
 import { supabase } from "../config/supabaseClient.js";
 import * as menuService from "../services/menuService.js";
 
-
 interface Item {
   title: string;
   description: string;
@@ -28,12 +27,23 @@ export const getAllMenuTemplates = async (
   next: NextFunction
 ) => {
   try {
-    const userId = '1';
+    const userId = "1";
     let pageNo = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
     const search = req.query.search as string | undefined;
+    const sortField = (req.query.sortField as string) || "name";
+    const sortOrder = req.query.sortOrder as string | "asc" | "desc";
 
-    const data = await menuService.getAllMenus(userId,'templates', 'name',pageNo, limit, search );
+    const data = await menuService.getAllMenus(
+      userId,
+      "templates",
+      "name",
+      pageNo,
+      limit,
+      sortField,
+      sortOrder,
+      search
+    );
 
     res.status(200).json({
       message: "Templates retrieved successfully.",
@@ -211,7 +221,9 @@ export const updateMenu = async (
 
         if (sectionError) {
           return next(
-            ApiError.internal(`Error updating section '${header}': ${sectionError.message}`)
+            ApiError.internal(
+              `Error updating section '${header}': ${sectionError.message}`
+            )
           );
         }
       } else {
@@ -224,7 +236,9 @@ export const updateMenu = async (
 
         if (newSectionError) {
           return next(
-            ApiError.internal(`Error adding new section '${header}': ${newSectionError.message}`)
+            ApiError.internal(
+              `Error adding new section '${header}': ${newSectionError.message}`
+            )
           );
         }
 
@@ -254,7 +268,9 @@ export const updateMenu = async (
           // Add new item
           const { error: newItemError } = await supabase
             .from("template_items")
-            .insert([{ title, price, description, section_id: section.section_id }]);
+            .insert([
+              { title, price, description, section_id: section.section_id },
+            ]);
 
           if (newItemError) {
             return next(
@@ -456,19 +472,34 @@ export const getAllUserMenus = async (
   res: Response,
   next: NextFunction
 ) => {
-  try { 
+  try {
     const userId = req.user?.id;
     let pageNo = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
     const search = req.query.search as string | undefined;
+    const sortField = (req.query.sortField as string) || "name";
+    const sortOrder = req.query.sortOrder as string | "asc" | "desc";
 
     if (!userId) {
       return next(ApiError.badRequest("Please login first!"));
     }
-    const data = await menuService.getAllMenus(userId,'templates', 'name',pageNo, limit, search );
+    const data = await menuService.getAllMenus(
+      userId,
+      "templates",
+      "name",
+      pageNo,
+      limit,
+      sortField,
+      sortOrder,
+      search
+    );
     res.status(200).json({
       message: "Templates retrieved successfully.",
-      payload: data,
+      payload: {
+        templates: data.templates,
+        currentPage: data.currentPage,
+        totalPages: data.totalPages,
+      },
     });
   } catch (error) {
     next(error);

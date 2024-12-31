@@ -3,11 +3,13 @@ import { supabase } from "../config/supabaseClient.js";
 import * as menuService from "../services/menuService.js";
 export const getAllMenuTemplates = async (req, res, next) => {
     try {
-        const userId = '1';
+        const userId = "1";
         let pageNo = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 5;
         const search = req.query.search;
-        const data = await menuService.getAllMenus(userId, 'templates', 'name', pageNo, limit, search);
+        const sortField = req.query.sortField || "name";
+        const sortOrder = req.query.sortOrder;
+        const data = await menuService.getAllMenus(userId, "templates", "name", pageNo, limit, sortField, sortOrder, search);
         res.status(200).json({
             message: "Templates retrieved successfully.",
             payload: data,
@@ -175,7 +177,9 @@ export const updateMenu = async (req, res, next) => {
                     // Add new item
                     const { error: newItemError } = await supabase
                         .from("template_items")
-                        .insert([{ title, price, description, section_id: section.section_id }]);
+                        .insert([
+                        { title, price, description, section_id: section.section_id },
+                    ]);
                     if (newItemError) {
                         return next(ApiError.internal(`Error adding item '${title}' to section '${header}': ${newItemError.message}`));
                     }
@@ -324,13 +328,19 @@ export const getAllUserMenus = async (req, res, next) => {
         let pageNo = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 5;
         const search = req.query.search;
+        const sortField = req.query.sortField || "name";
+        const sortOrder = req.query.sortOrder;
         if (!userId) {
             return next(ApiError.badRequest("Please login first!"));
         }
-        const data = await menuService.getAllMenus(userId, 'templates', 'name', pageNo, limit, search);
+        const data = await menuService.getAllMenus(userId, "templates", "name", pageNo, limit, sortField, sortOrder, search);
         res.status(200).json({
             message: "Templates retrieved successfully.",
-            payload: data,
+            payload: {
+                templates: data.templates,
+                currentPage: data.currentPage,
+                totalPages: data.totalPages,
+            },
         });
     }
     catch (error) {

@@ -5,32 +5,49 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 
 const HomeDashboard = () => {
-  const { templates, loading } = useSelector((state: RootState) => state.menu);
+  const { templates,totalPages, currentPage, loading } = useSelector((state: RootState) => state.menu);
   const dispatch = useDispatch<AppDispatch>();
 
+  const [sortOrder, setsortOrder] = useState<"asc" | "desc">("asc");
+  const [limit, setLimit] = useState(8); 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState("name"); // Default sort by name
+  const [sortOption, setSortOption] = useState("name"); 
   const [viewOption, setViewOption] = useState("list"); // Default view is list
+  const [page, setPage] = useState(currentPage); // Current page
 
   useEffect(() => {
-    dispatch(fetchMenuTemplatesForUser());
-  }, [dispatch]);
-  if (loading) return <p>Loading menus...</p>;
+    const validatedSortOrder = sortOrder === "asc" || sortOrder === "desc" ? sortOrder : undefined;
+    dispatch(fetchMenuTemplatesForUser({ page, searchTerm, sortOption, sortOrder: validatedSortOrder, limit }));
+  }, [dispatch, page, searchTerm, sortOption, sortOrder, limit]);
 
+  if (loading) return <p>Loading menus...</p>;
+ 
   // Filter templates based on the search term
   const filteredTemplates = templates?.filter((template) =>
     template.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  
   // Sort templates based on the selected option
   const sortedTemplates = filteredTemplates?.sort((a, b) => {
     if (sortOption === "name") {
-      return a.name.localeCompare(b.name);
+      return sortOrder === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
     } else if (sortOption === "date") {
-      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      return sortOrder === "asc"
+        ? new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        : new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     }
     return 0;
   });
+ // Handle Pagination
+  const handleNextPage = () => {
+    if (page < totalPages) setPage(page + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   return (
     <div className="d-home">
@@ -51,6 +68,23 @@ const HomeDashboard = () => {
           <option value="name">Sort by Name</option>
           <option value="date">Sort by Date</option>
         </select>
+        <select
+            value={sortOrder}
+            onChange={(e) => setsortOrder(e.target.value as "asc" | "desc")}
+            className="sort-order-dropdown"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+          <select
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
+            className="limit-dropdown"
+          >
+            <option value={4}>Show 4</option>
+            <option value={8}>Show 8</option>
+            <option value={12}>Show 12</option>
+          </select>
         <div className="view-options">
           <button
             className={`view-btn ${viewOption === "list" ? "active" : ""}`}
@@ -98,6 +132,18 @@ const HomeDashboard = () => {
           </ul>
         )}
       </div>
+      {/* Pagination Controls */}
+      <div className="pagination-controls">
+          <button disabled={page === 1} onClick={handlePreviousPage}>
+            {"<"}
+          </button>
+          <span>
+            Page {page} of {totalPages}
+          </span>
+          <button disabled={page === totalPages} onClick={handleNextPage}>
+          {">"}
+          </button>
+        </div>
       </div>
     </div>
   );

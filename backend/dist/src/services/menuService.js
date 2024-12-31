@@ -1,5 +1,6 @@
 import { supabase } from "../config/supabaseClient.js";
-export const getAllMenus = async (userId, tableName, searchField, pageNo = 1, limit = 5, searchQuery) => {
+export const getAllMenus = async (userId, tableName, searchField, pageNo = 1, limit = 5, sortField, // Default sort field
+sortOrder, searchQuery) => {
     try {
         const offset = (pageNo - 1) * limit;
         let query = supabase
@@ -7,7 +8,8 @@ export const getAllMenus = async (userId, tableName, searchField, pageNo = 1, li
             .select(` *
       `, { count: 'exact' })
             .eq('user_id', userId)
-            .range(offset, offset + limit - 1);
+            .range(offset, offset + limit - 1)
+            .order(sortField, { ascending: sortOrder === 'asc' });
         if (searchQuery) {
             query = query.ilike(searchField, `%${searchQuery}%`);
         }
@@ -20,7 +22,7 @@ export const getAllMenus = async (userId, tableName, searchField, pageNo = 1, li
             console.warn("No data found or the data is empty.");
         }
         return {
-            data,
+            templates: data,
             totalItems: count || 0,
             currentPage: pageNo,
             totalPages: Math.ceil((count || 0) / limit),
