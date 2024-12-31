@@ -1,17 +1,13 @@
 import ApiError from "../errors/ApiError.js";
 import { supabase } from "../config/supabaseClient.js";
+import * as menuService from "../services/menuService.js";
 export const getAllMenuTemplates = async (req, res, next) => {
     try {
-        const { data, error } = await supabase
-            .from("templates")
-            .select("*")
-            .eq("user_id", 1);
-        if (error) {
-            return next(ApiError.internal("Error retrieving templates data"));
-        }
-        if (!data || data.length === 0) {
-            return next(ApiError.notFound("Templates not found"));
-        }
+        const userId = '1';
+        let pageNo = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 5;
+        const search = req.query.search;
+        const data = await menuService.getAllMenus(userId, 'templates', 'name', pageNo, limit, search);
         res.status(200).json({
             message: "Templates retrieved successfully.",
             payload: data,
@@ -325,19 +321,13 @@ export const copyMenuTemplate = async (req, res, next) => {
 export const getAllUserMenus = async (req, res, next) => {
     try {
         const userId = req.user?.id;
+        let pageNo = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 5;
+        const search = req.query.search;
         if (!userId) {
             return next(ApiError.badRequest("Please login first!"));
         }
-        const { data, error } = await supabase
-            .from("templates")
-            .select("*")
-            .eq("user_id", userId);
-        if (error) {
-            return next(ApiError.internal("Error retrieving templates data: " + error.message));
-        }
-        if (!data || data.length === 0) {
-            return next(ApiError.notFound("Templates not found"));
-        }
+        const data = await menuService.getAllMenus(userId, 'templates', 'name', pageNo, limit, search);
         res.status(200).json({
             message: "Templates retrieved successfully.",
             payload: data,

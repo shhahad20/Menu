@@ -2,10 +2,16 @@ import ApiError from "../../errors/ApiError.js";
 import * as menuItemService from "../../services/menuItemService.js";
 export const getMenuItems = async (req, res, next) => {
     try {
+        let pageNo = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 5;
+        const search = req.query.search;
         const userId = req.user?.id;
-        const menuItems = await menuItemService.getAllMenuItems(userId);
-        if (menuItems) {
-            res.status(200).json(menuItems);
+        if (!userId) {
+            return next(ApiError.unauthorized("User not authenticated"));
+        }
+        const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo, limit, search);
+        if (result) {
+            res.status(200).json(result);
         }
         else {
             return next(ApiError.notFound("Items not found, or you do not have permission to access this page."));

@@ -3,49 +3,87 @@ import { supabase } from "../config/supabaseClient.js";
 import ApiError from "../errors/ApiError.js";
 import { header } from "express-validator";
 
-export const getAllMenuItems = async (userId: string | undefined) => {
+export const getAllMenuItems = async (
+  userId: string | undefined,
+  tableName: string,
+  searchField: string,
+  pageNo: number = 1,
+  limit: number = 5,
+  searchQuery?: string
+) => {
   try {
-    const { data, error } = await supabase
-      .from("templates")
-      .select(
-        `id, name, template_sections( section_id,header,template_items(item_id,title,price, description))`
-      )
-      .eq("user_id", userId);
+    const offset = (pageNo - 1) * limit;
 
-    if (error) throw error;
-    const result = data?.map(template =>({
-      templateName: template.name,
-      sections: template.template_sections?.map(section =>({
-        scetionName: section.header,
-        items: section.template_items?.map(item=>({
-          itemId: item.item_id,
-          itemName: item.title,
-          itemDescription: item.description,
-          itemPrice: item.price,
+    // Step 1: Query template_items and join template_sections and templates with user_id filter
+    let query = supabase
+      .from(tableName)
+      .select(`
+        item_id,
+        title,
+        description,
+        price,
+        section_id,
+        template_sections (
+          section_id,
+          header,
+          template_id,
+          templates (
+            id,
+            user_id
+          )
+        )
+      `, { count: 'exact' })
+      .eq('template_sections.templates.user_id', userId) // Filter based on user_id of templates table
+      .not('template_sections','is', null)
+      .not('template_sections.templates','is', null)
+      .range(offset, offset + limit - 1); // Pagination range
 
-        })),
-      })),
-    }))
+    if (searchQuery) {
+      query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
+    }
 
-    return result;
+    const { data, error, count } = await query;
+
+    // Debugging: Check if there's an error or no data
+    if (error) {
+      console.error("Error fetching menu items: ", error);
+      throw new Error(`Failed to fetch data: ${error.message}`);
+    }
+
+    // Debugging: Check if we have data or if it's empty
+    if (!data || data.length === 0) {
+      console.warn("No data found or the data is empty.");
+    }
+
+    return {
+      data,
+      totalItems: count || 0,
+      currentPage: pageNo,
+      totalPages: Math.ceil((count || 0) / limit),
+    };
   } catch (error) {
-    console.error(error);
+    console.error("Error in fetching data: ", error);
+    throw new Error(`Failed to fetch data: ${error}`);
   }
 };
+
 
 export const getMenuItemById = async (
   id: string,
   userId: string | undefined,
-  menuId : string
+  menuId: string
 ) => {
   try {
     console.log("Inputs:", { id, userId, menuId });
     if (!id || !userId || !menuId) {
-      throw new Error("Invalid input: id, userId, and menuId must all be provided.");
+      throw new Error(
+        "Invalid input: id, userId, and menuId must all be provided."
+      );
     }
     const { data, error } = await supabase
-    .from("templates")
-    .select(`
+      .from("templates")
+      .select(
+        `
       id,
       name,
       template_sections (
@@ -58,29 +96,30 @@ export const getMenuItemById = async (
           description
         )
       )
-    `)
-    .eq("id", menuId) // Match the menu ID
-    .eq("user_id", userId); // Match the user ID
+    `
+      )
+      .eq("id", menuId) // Match the menu ID
+      .eq("user_id", userId); // Match the user ID
 
-  if (error) {
-    console.error("Error fetching menu item:", error);
-    throw new Error(error.message);
-  }
+    if (error) {
+      console.error("Error fetching menu item:", error);
+      throw new Error(error.message);
+    }
 
-  if (!data || data.length === 0) {
-    throw new Error("Menu or sections not found");
-  }
+    if (!data || data.length === 0) {
+      throw new Error("Menu or sections not found");
+    }
 
-  // Find the specific item in the nested sections
-  const item = data[0].template_sections
-    ?.flatMap((section: any) => section.template_items)
-    ?.find((templateItem: any) => templateItem.item_id === id);
+    // Find the specific item in the nested sections
+    const item = data[0].template_sections
+      ?.flatMap((section: any) => section.template_items)
+      ?.find((templateItem: any) => templateItem.item_id === id);
 
-  if (!item) {
-    throw new Error("Item not found in the menu");
-  }
+    if (!item) {
+      throw new Error("Item not found in the menu");
+    }
 
-  return item;
+    return item;
   } catch (error) {
     console.error("Error in getMenuItemById:", error);
     throw new Error(`Failed to fetch the item: ${error}`);
@@ -88,27 +127,29 @@ export const getMenuItemById = async (
 };
 
 export const createMenuItem = async (menuItemData: {
-  templateId:string,
-  section_id:string,
-  title:string,
-  price:number,
-  description:string,
+  templateId: string;
+  section_id: string;
+  title: string;
+  price: number;
+  description: string;
   // image_url: string | File | null;
   user_id: string | undefined;
 }) => {
   try {
-    const { data, error} = await supabase
-    .from("template_items")
-    .insert([{
-      section_id: menuItemData.section_id,
-      title: menuItemData.title,
-      price: menuItemData.price,
-      description: menuItemData.description,
-    }])
-    .select("*");
+    const { data, error } = await supabase
+      .from("template_items")
+      .insert([
+        {
+          section_id: menuItemData.section_id,
+          title: menuItemData.title,
+          price: menuItemData.price,
+          description: menuItemData.description,
+        },
+      ])
+      .select("*");
 
-    if(error){
-      console.log(error.message)
+    if (error) {
+      console.log(error.message);
       throw new Error(error.message);
     }
     return data;
@@ -116,16 +157,15 @@ export const createMenuItem = async (menuItemData: {
     console.error("Error in createMenuItem:", error);
     throw new Error(`Failed to create menu item: ${error}`);
   }
-
 };
 
 export const updateMenuItem = async (
   userId: string | undefined,
 
-  item_id:string,
-  title:string,
-  price:number,
-  description:string,
+  item_id: string,
+  title: string,
+  price: number,
+  description: string
   // image_url: string | File | null;
 ) => {
   const { data, error } = await supabase
@@ -140,11 +180,13 @@ export const updateMenuItem = async (
 
   const { data: updatedItem, error: updateError } = await supabase
     .from("template_items")
-    .update([{
-      title: title,
-      price: price,
-      description: description
-    }])
+    .update([
+      {
+        title: title,
+        price: price,
+        description: description,
+      },
+    ])
     .eq("item_id", item_id)
     .select("*");
 
@@ -153,8 +195,7 @@ export const updateMenuItem = async (
   return updatedItem;
 };
 
-export const deleteMenuItem = async (
-  item_id: string) => {
+export const deleteMenuItem = async (item_id: string) => {
   const { error } = await supabase
     .from("template_items")
     .delete()
