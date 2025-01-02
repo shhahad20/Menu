@@ -9,7 +9,9 @@ export const getAllMenuItems = async (
   searchField: string,
   pageNo: number = 1,
   limit: number = 5,
-  searchQuery?: string
+  sortField: string, 
+  sortOrder: string ,
+  searchQuery?: string,
 ) => {
   try {
     const offset = (pageNo - 1) * limit;
@@ -36,7 +38,8 @@ export const getAllMenuItems = async (
       .eq('template_sections.templates.user_id', userId) // Filter based on user_id of templates table
       .not('template_sections','is', null)
       .not('template_sections.templates','is', null)
-      .range(offset, offset + limit - 1); // Pagination range
+      .range(offset, offset + limit - 1)
+      .order(sortField, { ascending: sortOrder === 'asc' });
 
     if (searchQuery) {
       query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
@@ -132,7 +135,7 @@ export const createMenuItem = async (menuItemData: {
   title: string;
   price: number;
   description: string;
-  // image_url: string | File | null;
+  // image_url: string | File | null; 
   user_id: string | undefined;
 }) => {
   try {

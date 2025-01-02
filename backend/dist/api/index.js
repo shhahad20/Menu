@@ -15,6 +15,7 @@ import FAQsRouter from '../src/routers/FAQsRouter.js';
 import categoryRouter from '../src/routers/menuRouters/categoryRouter.js';
 import menuItemRouter from '../src/routers/menuRouters/menuItemRouter.js';
 import schemaRouter from '../src/routers/userRouters/schemaRouter.js';
+import designRequestRoutes from "../src/routers/designRequestRoutes.js";
 import apiErrorHandler from '../src/middleware/errorHandler.js';
 config();
 const app = express();
@@ -38,7 +39,7 @@ app.use('/menu/categories', categoryRouter);
 app.use('/menu/menu-items', menuItemRouter);
 app.use('/FAQs', FAQsRouter);
 app.use('/schema', schemaRouter);
-// app.use('/categories', categoriesRouter)
+app.use('/request-design', designRequestRoutes);
 app.use(apiErrorHandler);
 app.listen(PORT, async () => {
     console.log('Server running http://localhost:' + PORT);

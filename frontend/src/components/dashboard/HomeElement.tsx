@@ -12,8 +12,8 @@ const HomeDashboard = () => {
   const [limit, setLimit] = useState(8); 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("name"); 
-  const [viewOption, setViewOption] = useState("list"); // Default view is list
-  const [page, setPage] = useState(currentPage); // Current page
+  const [viewOption, setViewOption] = useState("list");
+  const [page, setPage] = useState(currentPage); 
 
   useEffect(() => {
     const validatedSortOrder = sortOrder === "asc" || sortOrder === "desc" ? sortOrder : undefined;

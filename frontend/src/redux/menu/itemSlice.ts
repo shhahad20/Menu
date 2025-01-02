@@ -4,12 +4,21 @@ import { API_URL } from '../../api/api';
 import axios from 'axios';
 
 export interface Item {
-  itemId: string;
-  itemName: string;
-  itemDescription: string;
-  itemPrice: string;
+  item_id: string;
+  title: string;
+  description: string;
+  price: string;
+  template_sections:{
+    header: string;
+    section_id: string;
+    template_id: string;
+    templates:{
+      id: string;
+      user_id: number;
+    }
+  }
 }
-
+ 
 export interface Section {
   sectionName: string;
   items: Item[];
@@ -20,14 +29,37 @@ export interface Template {
   sections: Section[];
 }
 export interface ItemsState {
-  items: Template[];
+  items: Item[];
   loading: boolean;
   error: string | null;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
 }
 
 // Fetch items from backend
-export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
-  const response = await axios.get(`${API_URL}/menu/menu-items`);
+export const fetchItems = createAsyncThunk('items/fetchItems', async ({
+  page,
+  searchTerm,
+  sortOption,
+  sortOrder,
+  limit,
+}: {
+  page: number;
+  searchTerm: string;
+  sortOption: string;
+  sortOrder?: "asc" | "desc";
+  limit?: number;
+}) => {
+  const response = await axios.get(`${API_URL}/menu/menu-items`, {
+    params: {
+      page,
+      search: searchTerm,
+      sortField: sortOption,
+      sortOrder,
+      limit,
+    },
+  });
   console.log(response.data)
   return response.data;
 });
@@ -48,7 +80,7 @@ export const createItem = createAsyncThunk('items/createItem', async (item: Form
 });
 
 export const editItem = createAsyncThunk('items/editItem', async (item: Item) => {
-  const response = await axios.put(`${API_URL}/menu/menu-items/${item.itemId}`, item);
+  const response = await axios.put(`${API_URL}/menu/menu-items/${item.item_id}`, item);
   return response.data;
 });
 export const removeItem = createAsyncThunk('items/removeItem', async (id: number) => {
@@ -63,6 +95,9 @@ const itemsSlice = createSlice({
     items: [],
     loading: false,
     error: null,
+    totalPages: 1,
+    currentPage: 1,
+    totalItems: 0,
   } as ItemsState,
   reducers: {
     // addItem: (state, action: PayloadAction<Item>) => {
@@ -80,7 +115,11 @@ const itemsSlice = createSlice({
     builder
     .addCase(fetchItems.fulfilled, (state, action) => {
       state.loading = false;
-      state.items = action.payload; // Ensure this is the correct data
+      state.items = action.payload.data;
+      state.totalItems = action.payload.totalItems;
+      state.currentPage = action.payload.currentPage;
+      state.totalPages = action.payload.totalPages;
+
     })
     .addCase(createItem.fulfilled, (state, action) => {
       console.log(action.payload)

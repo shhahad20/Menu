@@ -20,12 +20,12 @@ const Sidebar = () => {
   ];
   const tools2 = [
     { icon: "/upgrade.svg", name: "Upgrade", path: "upgrade" },
-    { icon: "/setting.svg", name: "Menus", path: "setting" },
+    { icon: "/setting.svg", name: "settings", path: "setting" },
     { icon: "/notification.svg", name: "Notifications", path: "notifications" },
     { icon: "/wallet.svg", name: "Wallet & Bills", path: "wallet" },
   ];
   const tools3 = [
-    { icon: "/themes.svg", name: "Menu Themes", path: "themes" },
+    { icon: "/themes.svg", name: "Menu Themes", path: "menus" },
     { icon: "/design-r.svg", name: "Design Request", path: "request-design" },
   ];
   const tools4 = [

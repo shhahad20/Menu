@@ -17,6 +17,7 @@ import store from "./redux/store.ts";
 import Dashboard from "./components/Dashboard.tsx";
 import Activate from "./components/Activation.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
+import RequestDesign from "./pages/RequestDesign.tsx";
 
 // import Logout from './pages/Logout.tsx';
 
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />
+            <Route path="/request-design" element={<RequestDesign />} />
 
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />

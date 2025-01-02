@@ -2,14 +2,16 @@ import ApiError from "../../errors/ApiError.js";
 import * as menuItemService from "../../services/menuItemService.js";
 export const getMenuItems = async (req, res, next) => {
     try {
+        const userId = req.user?.id;
         let pageNo = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 5;
         const search = req.query.search;
-        const userId = req.user?.id;
+        const sortField = req.query.sortField || "title";
+        const sortOrder = req.query.sortOrder;
         if (!userId) {
             return next(ApiError.unauthorized("User not authenticated"));
         }
-        const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo, limit, search);
+        const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo, limit, sortField, sortOrder, search);
         if (result) {
             res.status(200).json(result);
         }

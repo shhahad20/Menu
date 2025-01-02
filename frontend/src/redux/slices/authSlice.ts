@@ -11,7 +11,7 @@ interface AuthState {
   loading: boolean;
   error: null | string;
 }
-
+ 
 const initialState: AuthState = {
   user: null,
   token: null,

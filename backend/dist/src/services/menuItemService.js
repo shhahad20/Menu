@@ -1,6 +1,6 @@
 import { supabase } from "../config/supabaseClient.js";
 import ApiError from "../errors/ApiError.js";
-export const getAllMenuItems = async (userId, tableName, searchField, pageNo = 1, limit = 5, searchQuery) => {
+export const getAllMenuItems = async (userId, tableName, searchField, pageNo = 1, limit = 5, sortField, sortOrder, searchQuery) => {
     try {
         const offset = (pageNo - 1) * limit;
         // Step 1: Query template_items and join template_sections and templates with user_id filter
@@ -25,7 +25,8 @@ export const getAllMenuItems = async (userId, tableName, searchField, pageNo = 1
             .eq('template_sections.templates.user_id', userId) // Filter based on user_id of templates table
             .not('template_sections', 'is', null)
             .not('template_sections.templates', 'is', null)
-            .range(offset, offset + limit - 1); // Pagination range
+            .range(offset, offset + limit - 1)
+            .order(sortField, { ascending: sortOrder === 'asc' });
         if (searchQuery) {
             query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
         }

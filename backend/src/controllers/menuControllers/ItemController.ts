@@ -6,23 +6,28 @@ import {
   deleteImageFromSupabase,
   uploadImageToSupabase,
 } from "../../helper/supabaseUploadFile.js";
-
+ 
 export const getMenuItems = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const userId = req.user?.id;
     let pageNo = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
     const search = req.query.search as string | undefined;
-    const userId = req.user?.id;
+    const sortField = (req.query.sortField as string) || "title";
+    const sortOrder = req.query.sortOrder as string | "asc" | "desc";
 
     if (!userId) {
       return next(ApiError.unauthorized("User not authenticated"));
     }
-    
-    const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo, limit, search);
+    const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo,
+      limit,
+      sortField,
+      sortOrder,
+      search);
     if (result) {
       res.status(200).json(result);
     } else {

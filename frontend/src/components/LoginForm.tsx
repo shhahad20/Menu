@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
-  });
+  }); 
   const dispatch: AppDispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
