@@ -6,8 +6,12 @@ import {
   fetchMenuTemplateById,
   TemplateItem,
 } from "../../redux/menu/menuSlice";
+import { useParams } from "react-router-dom";
 
-const Template1 = () => {
+
+const UserTemplate1 =() => {
+    const { templateId } = useParams<{ templateId: string }>();
+
   const { currentTemplate } = useSelector((state: RootState) => state.menu);
   const dispatch: AppDispatch = useDispatch();
 
@@ -15,8 +19,9 @@ const Template1 = () => {
  
   // Fetch data on component mount
   useEffect(() => {
-    dispatch(fetchMenuTemplateById("3491c484-c425-41b1-9537-841328278931"));
-  }, [dispatch]);
+    if(templateId){
+    dispatch(fetchMenuTemplateById(templateId));}
+  }, [dispatch,templateId]);
 
   const templateSections = currentTemplate?.template_sections || [];
 
@@ -106,4 +111,4 @@ const Template1 = () => {
   );
 };
 
-export default Template1;
+export default UserTemplate1;

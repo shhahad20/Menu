@@ -386,6 +386,7 @@ export const copyMenuTemplate = async (
           user_id: userId, // Assign the new user ID
           created_at: new Date(), // Add timestamps
           updated_at: new Date(),
+          original_id: templateId,
         },
       ])
       .select()
@@ -467,6 +468,7 @@ export const copyMenuTemplate = async (
     next(ApiError.badRequest("Failed to copy template."));
   }
 };
+
 export const getAllUserMenus = async (
   req: Request,
   res: Response,

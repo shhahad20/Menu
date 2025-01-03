@@ -262,6 +262,7 @@ export const copyMenuTemplate = async (req, res, next) => {
                 user_id: userId,
                 created_at: new Date(),
                 updated_at: new Date(),
+                original_id: templateId,
             },
         ])
             .select()

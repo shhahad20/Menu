@@ -18,6 +18,8 @@ import Dashboard from "./components/Dashboard.tsx";
 import Activate from "./components/Activation.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import RequestDesign from "./pages/RequestDesign.tsx";
+import ParentComponent from "./components/userMenu-templates/userTemplates.tsx";
+import UserTemplate1 from "./components/userMenu-templates/userTemplateOne.tsx";
 
 // import Logout from './pages/Logout.tsx';
 
@@ -37,6 +39,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/dashboard/*" element={<Dashboard />} />
             {/* <Route path="/dashboard/*" element={<MainDashboard />} /> */}
             {/* <Route path="/dashboard/menus" element={<Dashboard />} /> */}
+            <Route path="/templates" element={<ParentComponent />} />
+            <Route path="/templates/:templateId" element={<UserTemplate1 />} />
 
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />

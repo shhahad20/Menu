@@ -23,6 +23,7 @@ export interface MenuTemplate {
   created_at: string;
   updated_at: string;
   user_id: number;
+  original_id: string;
   template_sections: TemplateSection[];
 }
 
@@ -93,7 +94,7 @@ export const fetchMenuTemplatesForUser = createAsyncThunk(
       throw error;
     }
   }
-);
+); 
 
 // Copy a menu template
 export const copyMenuTemplate = createAsyncThunk(
