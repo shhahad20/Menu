@@ -15,7 +15,7 @@ export const getAllMenuItems = async (
 ) => {
   try {
     const offset = (pageNo - 1) * limit;
-
+ 
     // Step 1: Query template_items and join template_sections and templates with user_id filter
     let query = supabase
       .from(tableName)

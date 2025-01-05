@@ -20,6 +20,7 @@ import { ThemeProvider } from "./context/ThemeContext.tsx";
 import RequestDesign from "./pages/RequestDesign.tsx";
 import ParentComponent from "./components/userMenu-templates/userTemplates.tsx";
 import UserTemplate1 from "./components/userMenu-templates/userTemplateOne.tsx";
+import EditMenuForm from "./components/dashboard/EditMenuForm.tsx";
 
 // import Logout from './pages/Logout.tsx';
 
@@ -41,6 +42,7 @@ createRoot(document.getElementById("root")!).render(
             {/* <Route path="/dashboard/menus" element={<Dashboard />} /> */}
             <Route path="/templates" element={<ParentComponent />} />
             <Route path="/templates/:templateId" element={<UserTemplate1 />} />
+            <Route path="/templates/edit/:templateId" element={<EditMenuForm/>} />
 
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />

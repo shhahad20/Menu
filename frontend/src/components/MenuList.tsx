@@ -1,6 +1,6 @@
 // MenuList.tsx
 import React from "react";
-import EditMenuItemForm from "./EditMenuItemForm";
+import EditMenuItemForm from "./dashboard/EditMenuForm";
 import { MenuItem } from "../redux/menu/menuSlice";
 // import "../styles/menus-style/menuList.scss";
 

@@ -118,10 +118,10 @@ export const copyMenuTemplate = createAsyncThunk(
 // Update a menu template (e.g., section or item)
 export const updateMenuTemplate = createAsyncThunk(
   "menu/updateMenuTemplate",
-  async (template: MenuTemplate) => {
+  async ({ id, data }: { id: string; data: object }) => {
     const response = await axios.put(
-      `${API_URL}/menus/${template.id}`,
-      template
+      `${API_URL}/menus/${id}`,
+      data
     );
     return response.data.payload; // Adjusted for your API response
   }
@@ -188,20 +188,9 @@ const menuSlice = createSlice({
           state.loading = false;
         }
       )
-      .addCase(
-        updateMenuTemplate.fulfilled,
-        (state, action: PayloadAction<MenuTemplate>) => {
-          const index = state.templates.findIndex(
-            (template) => template.id === action.payload.id
-          );
-          if (index !== -1) {
-            state.templates[index] = action.payload;
-          }
-          if (state.currentTemplate?.id === action.payload.id) {
-            state.currentTemplate = action.payload;
-          }
-        }
-      );
+      .addCase(updateMenuTemplate.fulfilled, (state, action) => {
+        state.currentTemplate = action.payload;
+      })
   },
 });
 export const { clearCurrentTemplate } = menuSlice.actions;

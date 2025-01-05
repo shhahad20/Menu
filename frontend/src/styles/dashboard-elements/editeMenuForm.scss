@@ -1,0 +1,97 @@
+.edit-menu-form-section {
+  border: 1px dashed red;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(2 , minmax(400px, 1fr));
+  justify-items: center;
+  height: 100ch;
+  #edit-menu-form-conatiner{
+    border: 1px dashed blue;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    form{
+        border: 1px dashed green;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        input{
+          border: 1px solid gray;
+          background-color: #fcfcfc;
+          border-radius: 4px;
+          padding: 1px 3px;
+          width: 400px;
+        }
+    }
+
+  }
+.lists-conatiner{
+  background-color: beige;
+
+  .items-lists {
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: #fcfcfc;
+    max-height: 300px; 
+    overflow-y: auto;
+    padding: 1rem;
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #eaeaea;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #848484;
+      border-radius: 3px;
+    }
+    @supports not selector(::-webkit-scrollbar) {
+      .items-lists {
+        scrollbar-color: #848484 #eaeaea;
+      }
+    }
+    .item-section-container {
+      display: flex;
+      flex-direction: column;
+      .item-container {
+        border: 1px solid #eaeaea;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 2px;
+        .it-title {
+          font-size: 15px;
+          width: 250px;
+        }
+        .it-description {
+          font-size: 12px;
+          width: 250px;
+        }
+        .it-price {
+          font-size: 15px;
+          width: 100px;
+          font-weight: 500;
+        }
+        .sec-header {
+          font-size: 12px;
+          width: 250px;
+        }
+        .buttons-container {
+          display: flex;
+          justify-content: space-between;
+          width: 70px;
+          background-color: aqua;
+        }
+      }
+    }
+  }
+}
+}

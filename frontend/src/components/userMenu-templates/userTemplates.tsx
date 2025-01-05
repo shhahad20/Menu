@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import UserTemplate1 from "./userTemplateOne";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import {
@@ -39,7 +38,6 @@ const ParentComponent = () => {
       })
     );
   }, [dispatch, page, searchTerm, sortOption, sortOrder, limit]);
-console.log(templates)
 
 useEffect(() => {
     if (templates) {
@@ -50,7 +48,7 @@ useEffect(() => {
       setFilteredTemplates(filtered);
     }
   }, [templates]);
-  console.log("filtered Templates: ", filteredTemplates)
+
   const handleButtonClick = (templateId: string) => {
     setSelectedTemplate(templateId);  // Set the templateId when the button is clicked
   };
@@ -68,6 +66,7 @@ useEffect(() => {
                 Show Template {template.id}
               </button>
             </Link>
+            <Link to={`/templates/edit/${template.id}`}><button>Edit </button></Link>
           </div>
         ))
       ) : (

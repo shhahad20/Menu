@@ -65,9 +65,6 @@ export const fetchItems = createAsyncThunk('items/fetchItems', async ({
 });
 
 export const createItem = createAsyncThunk('items/createItem', async (item: FormData, { rejectWithValue }) => {
-  // const response = await axios.post(`${API_URL}/menu/menu-items`, item);
-  // console.log(response)
-  // return response.data;
     try {
       const response = await axios.post(`${API_URL}/menu/menu-items`, item)
       console.log('Hi slice :' + response)
@@ -79,11 +76,11 @@ export const createItem = createAsyncThunk('items/createItem', async (item: Form
     }
 });
 
-export const editItem = createAsyncThunk('items/editItem', async (item: Item) => {
-  const response = await axios.put(`${API_URL}/menu/menu-items/${item.item_id}`, item);
+export const updateItem = createAsyncThunk('items/editItem', async (item: FormData) => {
+  const response = await axios.put(`${API_URL}/menu/menu-items`, item);
   return response.data;
 });
-export const removeItem = createAsyncThunk('items/removeItem', async (id: number) => {
+export const removeItem = createAsyncThunk('items/removeItem', async (id: string) => {
   await axios.delete(`${API_URL}/menu/menu-items/${id}`);
   return id;
 });

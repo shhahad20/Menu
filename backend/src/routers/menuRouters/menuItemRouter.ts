@@ -9,8 +9,7 @@ const router = express.Router();
 router.get('/',isLoggedIn, menuItemController.getMenuItems);
 router.get('/:id', isLoggedIn, menuItemController.getMenuItem);
 router.post('/',isLoggedIn,uploadMiddleware , menuItemController.createMenuItem);
-router.put('/:id',isLoggedIn,uploadMiddleware, menuItemController.updateMeuItem);
-
+router.put('/',isLoggedIn,uploadMiddleware, menuItemController.updateMeuItem);
 router.delete('/:id',isLoggedIn, menuItemController.deleteMenuItem);
 
 export default router;
