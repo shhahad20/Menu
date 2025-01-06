@@ -11,12 +11,13 @@ export interface Item {
   template_sections:{
     header: string;
     section_id: string;
+    section_order:string;
     template_id: string;
     templates:{
       id: string;
       user_id: number;
     }
-  }
+  } 
 }
  
 export interface Section {

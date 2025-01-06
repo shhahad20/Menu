@@ -13,7 +13,8 @@ export interface TemplateItem {
 export interface TemplateSection {
   header: string;
   section_id: string;
-  section_order: number;
+  section_order: string;
+  template_id:string;
   template_items: TemplateItem[];
 }
 

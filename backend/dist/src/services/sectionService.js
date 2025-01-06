@@ -13,11 +13,11 @@ export const getAllMenuSections = async (userId, tableName, searchField, pageNo 
           id,
           user_id
           )
-      `, { count: 'exact' })
-            .eq('templates.user_id', userId)
-            .not('templates', 'is', null)
+      `, { count: "exact" })
+            .eq("templates.user_id", userId)
+            .not("templates", "is", null)
             .range(offset, offset + limit - 1)
-            .order(sortField, { ascending: sortOrder === 'asc' });
+            .order(sortField, { ascending: sortOrder === "asc" });
         if (searchQuery) {
             query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
         }
@@ -43,38 +43,38 @@ export const getAllMenuSections = async (userId, tableName, searchField, pageNo 
         throw new Error(`Failed to fetch data: ${error}`);
     }
 };
-export const getMenuSectionById = async (id, userId, sectionId) => {
+export const getMenuSectionById = async (userId, id) => {
     try {
-        if (!id || !userId || !sectionId) {
-            throw new Error("Invalid input: id, userId, and sectionId must all be provided.");
+        if (!userId || !id) {
+            throw new Error("Invalid input: userId, and sectionId must all be provided.");
         }
         const { data, error } = await supabase
             .from("template_sections")
             .select(`
           section_id,
           header,
+          section_order,
           template_id,
           templates(
           id,
           user_id
           )
     `)
-            .eq("section_id", sectionId) // Match the menu ID
-            .eq('templates.user_id', userId);
+            .eq("section_id", id) // Match the section ID
+            // .eq("template_id", id) // Match the template ID
+            .eq("templates.user_id", userId) // Match the user_id in the templates table
+            .single();
         if (error) {
             console.error("Error fetching menu section:", error);
             throw new Error(error.message);
         }
-        if (!data || data.length === 0) {
+        if (!data) {
             throw new Error("Menu or section not found");
         }
         // Find the specific item in the nested sections
         // const section = data[0].template_sections
         //   ?.flatMap((section: any) => section.template_items)
         //   ?.find((templateItem: any) => templateItem.item_id === id);
-        if (!data) {
-            throw new Error("Item not found in the menu");
-        }
         return data;
     }
     catch (error) {
@@ -88,9 +88,8 @@ export const createMenuSection = async (menuSectionData) => {
             .from("template_sections")
             .insert([
             {
-                template_id: menuSectionData.templateId,
+                template_id: menuSectionData.template_id,
                 header: menuSectionData.header,
-                section_order: menuSectionData.section_order,
             },
         ])
             .select("*");
@@ -105,9 +104,9 @@ export const createMenuSection = async (menuSectionData) => {
         throw new Error(`Failed to create menu section: ${error}`);
     }
 };
-export const updateMenuSections = async (userId, section_id, header, section_order) => {
-    console.log({ userId, section_id, header, section_order });
-    if (!userId || !section_id || !header || section_order === undefined) {
+export const updateMenuSections = async (userId, section_id, header) => {
+    console.log({ userId, section_id, header });
+    if (!userId || !section_id || !header) {
         throw new Error("Missing required parameters");
     }
     // await getMenuSectionById(section_id, userId, template_Id);
@@ -124,7 +123,6 @@ export const updateMenuSections = async (userId, section_id, header, section_ord
         .update([
         {
             header: header,
-            section_order: section_order,
         },
     ])
         .eq("section_id", section_id)

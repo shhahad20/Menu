@@ -27,8 +27,8 @@ export const getMenuSection = async (req, res, next) => {
     try {
         const userId = req.user?.id;
         const id = req.params.id;
-        const { sectionId } = req.body;
-        const menuSection = await getMenuSectionById(id, userId, sectionId);
+        // const { sectionId } = req.body;
+        const menuSection = await getMenuSectionById(userId, id);
         if (menuSection) {
             res.status(200).json(menuSection);
         }
@@ -43,7 +43,7 @@ export const getMenuSection = async (req, res, next) => {
 export const createSection = async (req, res, next) => {
     try {
         const userId = req.user?.id;
-        const { templateId, header, section_order } = req.body;
+        const { template_id, header } = req.body;
         // Check if a file is uploaded
         // if (!req.file) {
         //   return res.status(400).json({ error: "Image file is required" });
@@ -53,10 +53,10 @@ export const createSection = async (req, res, next) => {
         // if (!imageUrl) {
         //   return res.status(500).json({ error: "Failed to upload image" });
         // }
+        console.log("Template ID:", req.body.template_id);
         const newMenuItem = await createMenuSection({
-            templateId,
+            template_id,
             header,
-            section_order,
             user_id: userId,
         });
         res.status(201).json(newMenuItem);
@@ -69,7 +69,7 @@ export const createSection = async (req, res, next) => {
 export const updateMeunSection = async (req, res, next) => {
     try {
         const userId = req.user?.id;
-        const { header, section_order, section_id } = req.body;
+        const { header, section_id } = req.body;
         // Fetch the existing menu item to get the current image URL
         // const existingMenuItem = await menuItemService.getMenuItemById(
         //   item_id,
@@ -94,7 +94,7 @@ export const updateMeunSection = async (req, res, next) => {
         //       .json({ error: "Failed to upload the new image" });
         //   }
         // }
-        await updateMenuSections(userId, section_id, header, section_order);
+        await updateMenuSections(userId, section_id, header);
         res.status(200).json({ message: `You updated section with id: ${section_id}` });
     }
     catch (error) {

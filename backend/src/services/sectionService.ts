@@ -7,16 +7,17 @@ export const getAllMenuSections = async (
   searchField: string,
   pageNo: number = 1,
   limit: number = 5,
-  sortField: string, 
-  sortOrder: string ,
-  searchQuery?: string,
+  sortField: string,
+  sortOrder: string,
+  searchQuery?: string
 ) => {
   try {
     const offset = (pageNo - 1) * limit;
- 
+
     let query = supabase
       .from(tableName)
-      .select(`
+      .select(
+        `
           section_id,
           header,
           template_id,
@@ -24,11 +25,13 @@ export const getAllMenuSections = async (
           id,
           user_id
           )
-      `, { count: 'exact' })
-      .eq('templates.user_id', userId) 
-      .not('templates','is', null)
+      `,
+        { count: "exact" }
+      )
+      .eq("templates.user_id", userId)
+      .not("templates", "is", null)
       .range(offset, offset + limit - 1)
-      .order(sortField, { ascending: sortOrder === 'asc' });
+      .order(sortField, { ascending: sortOrder === "asc" });
 
     if (searchQuery) {
       query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
@@ -58,17 +61,15 @@ export const getAllMenuSections = async (
     throw new Error(`Failed to fetch data: ${error}`);
   }
 };
- 
+
 export const getMenuSectionById = async (
-  id: string,
   userId: string | undefined,
-  sectionId: string
+  id: string
 ) => {
   try {
-
-    if (!id || !userId || !sectionId) {
+    if ( !userId || !id) {
       throw new Error(
-        "Invalid input: id, userId, and sectionId must all be provided."
+        "Invalid input: userId, and sectionId must all be provided."
       );
     }
     const { data, error } = await supabase
@@ -77,6 +78,7 @@ export const getMenuSectionById = async (
         `
           section_id,
           header,
+          section_order,
           template_id,
           templates(
           id,
@@ -84,15 +86,17 @@ export const getMenuSectionById = async (
           )
     `
       )
-      .eq("section_id", sectionId) // Match the menu ID
-      .eq('templates.user_id', userId);
+      .eq("section_id", id) // Match the section ID
+      // .eq("template_id", id) // Match the template ID
+      .eq("templates.user_id", userId) // Match the user_id in the templates table
+      .single();
 
     if (error) {
       console.error("Error fetching menu section:", error);
       throw new Error(error.message);
     }
 
-    if (!data || data.length === 0) {
+    if (!data) {
       throw new Error("Menu or section not found");
     }
 
@@ -100,10 +104,6 @@ export const getMenuSectionById = async (
     // const section = data[0].template_sections
     //   ?.flatMap((section: any) => section.template_items)
     //   ?.find((templateItem: any) => templateItem.item_id === id);
-
-    if (!data) {
-      throw new Error("Item not found in the menu");
-    }
 
     return data;
   } catch (error) {
@@ -113,19 +113,17 @@ export const getMenuSectionById = async (
 };
 
 export const createMenuSection = async (menuSectionData: {
-  templateId: string;
+  template_id: string;
   header: string;
   user_id: string | undefined;
-  section_order:number;
 }) => {
   try {
     const { data, error } = await supabase
       .from("template_sections")
       .insert([
         {
-          template_id: menuSectionData.templateId,
+          template_id: menuSectionData.template_id,
           header: menuSectionData.header,
-          section_order: menuSectionData.section_order,
         },
       ])
       .select("*");
@@ -141,17 +139,15 @@ export const createMenuSection = async (menuSectionData: {
   }
 };
 
-
 export const updateMenuSections = async (
   userId: string | undefined,
   section_id: string,
   header: string,
-  section_order: number,
   // image_url: string | File | null;
 ) => {
-  console.log({ userId, section_id, header, section_order });
+  console.log({ userId, section_id, header });
 
-  if (!userId || !section_id || !header || section_order === undefined) {
+  if (!userId || !section_id || !header) {
     throw new Error("Missing required parameters");
   }
 
@@ -167,21 +163,20 @@ export const updateMenuSections = async (
   }
 
   const { data: updatedSection, error: updateError } = await supabase
-  .from("template_sections")
-  .update([
-    {
-      header: header,
-      section_order: section_order,
-    },
-  ])
-  .eq("section_id", section_id)
-  .select("*");
+    .from("template_sections")
+    .update([
+      {
+        header: header,
+      },
+    ])
+    .eq("section_id", section_id)
+    .select("*");
 
-if (updateError) {
-  throw updateError;
-}
+  if (updateError) {
+    throw updateError;
+  }
 
-return updatedSection;
+  return updatedSection;
 };
 
 export const deleteMenuSections = async (section_id: string) => {
