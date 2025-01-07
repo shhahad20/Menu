@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: repeat(2 , minmax(400px, 1fr));
   justify-items: center;
-  height: 100ch;
+  height: 100vh;
   #edit-menu-form-conatiner{
     border: 1px dashed blue;
     width: 100%;
@@ -29,7 +29,6 @@
 
   }
 .lists-conatiner{
-  background-color: beige;
 
   .items-lists {
     border: 1px solid gray;

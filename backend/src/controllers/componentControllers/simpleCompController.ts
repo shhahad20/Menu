@@ -1,0 +1,194 @@
+import { NextFunction, Request, Response } from "express";
+import ApiError from "../../errors/ApiError.js";
+import { supabase } from "../../config/supabaseClient.js";
+import {
+  deleteImageFromSupabase,
+  uploadImageToSupabase,
+} from "../../helper/supabaseUploadFile.js";
+import {
+  createData,
+  deleteData,
+  getAll,
+  getSingleData,
+  updateData,
+} from "../../services/generalServices.js";
+
+export const getCompData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(ApiError.unauthorized("User not authenticated"));
+    }
+    const result = await getAll(userId, "simple_components");
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      return next(
+        ApiError.notFound(
+          "Data not found, or you do not have permission to access this page."
+        )
+      );
+    }
+  } catch (error) {
+    return next(ApiError.internal("Failed to fetch menu Data"));
+  }
+};
+
+export const getCompById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    const id = req.params.id;
+    if (!userId) {
+      return next(ApiError.unauthorized("User not authenticated"));
+    }
+    const data = await getSingleData(id, "simple_components", userId);
+    if (data) {
+      res.status(200).json(data);
+    } else {
+      return next(ApiError.notFound("Data not found"));
+    }
+  } catch (error) {
+    return next(ApiError.internal("Failed to fetch data" + error));
+  }
+};
+
+export const createComp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user_id = req.user?.id;
+    const {
+      template_id,
+      header,
+      image_url,
+      logo,
+      slogan,
+      navbar,
+      contact_info,
+    } = req.body;
+    // Check if a file is uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: "Header image file is required" });
+    }
+
+    // Upload the image to Supabase
+    const header_img = await uploadImageToSupabase(req.file, user_id);
+    if (!header_img) {
+      return res.status(500).json({ error: "Failed to upload image" });
+    }
+
+    const newData = await createData("simple_components", {
+      template_id,
+      header,
+      header_img,
+      logo,
+      slogan,
+      navbar,
+      contact_info,
+      user_id,
+    });
+    res.status(201).json(newData);
+  } catch (error) {
+    console.log(error);
+    return next(ApiError.internal("Failed to create data"));
+  }
+};
+
+export const updateComp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    const id = req.params.id;
+    const {
+      template_id,
+      header,
+      image_url,
+      logo,
+      slogan,
+      navbar,
+      contact_info,
+    } = req.body;
+
+    if (req.file) {
+      const foundedData = await getSingleData(id, "simple_components", userId);
+
+      if (Array.isArray(foundedData) && foundedData.length > 0) {
+        const { header_img } = foundedData[0]; // Access the first element of the array
+        if (header_img) {
+          const isDeleted = await deleteImageFromSupabase(header_img);
+          if (!isDeleted) {
+            console.error("Failed to delete image from Supabase storage.");
+          }
+        }
+      } else {
+        return res.status(404).json({ error: "Data not found in database." });
+      }
+    }
+    const header_img =req.file ? await uploadImageToSupabase(req.file, userId): null;
+    if (!header_img) {
+      return res.status(500).json({ error: "Failed to upload image" });
+    }
+    await updateData(
+      "simple_components",
+      id,
+      {userId,
+      template_id,
+      header,
+      header_img,
+      logo,
+      slogan,
+      navbar,
+      contact_info,}
+    );
+
+    res.status(200).json({ message: `You updated data with id: ${id}` });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteCompData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    const id = req.params.id;
+
+    const foundedData = await getSingleData(id, "simple_components", userId);
+
+    if (Array.isArray(foundedData) && foundedData.length > 0) {
+      const { header_img } = foundedData[0]; // Access the first element of the array
+      if (header_img) {
+        const isDeleted = await deleteImageFromSupabase(header_img);
+        if (!isDeleted) {
+          console.error("Failed to delete image from Supabase storage.");
+        }
+      }
+    } else {
+      return res.status(404).json({ error: "Data not found in database." });
+    }
+
+    await deleteData(id, userId, "simple_components");
+
+    res
+      .status(204)
+      .json({ message: `You deleted component data with id: ${id}` });
+  } catch (error) {
+    return next(ApiError.internal("Failed to delete data"));
+  }
+};

@@ -228,8 +228,6 @@ const EditMenuForm = () => {
   };
   return (
     <>
-      <DashboardHeader />
-
       <div className="edit-menu-form-section">
         <div id="edit-menu-form-conatiner">
           <form onSubmit={handleCreateOrUpdateItem}>
@@ -404,8 +402,6 @@ const EditMenuForm = () => {
           </ul>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };

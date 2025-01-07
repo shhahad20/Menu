@@ -17,7 +17,7 @@ import sectionRouter from '../src/routers/menuRouters/sectionRouter.js'
 import menuItemRouter from '../src/routers/menuRouters/menuItemRouter.js'
 import schemaRouter from '../src/routers/userRouters/schemaRouter.js'
 import designRequestRoutes from "../src/routers/designRequestRoutes.js";
-
+import componentRouter from "../src/routers/componentRouter.js";
 
 import apiErrorHandler from '../src/middleware/errorHandler.js'
  
@@ -43,6 +43,7 @@ app.use('/users', userRouter)
 app.use('/auth', authenticationRouter)
 app.use('/pricing', pricingRouter)
 app.use('/menus', menuRouter)
+app.use('/templates', componentRouter)
 app.use('/menu/menu-sections', sectionRouter)
 app.use('/menu/menu-items', menuItemRouter)
 app.use('/FAQs', FAQsRouter)

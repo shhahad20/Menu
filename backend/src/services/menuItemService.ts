@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { supabase } from "../config/supabaseClient.js";
 import ApiError from "../errors/ApiError.js";
-import { header } from "express-validator";
 
 export const getAllMenuItems = async (
   userId: string | undefined,
