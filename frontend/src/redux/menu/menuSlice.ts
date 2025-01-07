@@ -27,7 +27,17 @@ export interface MenuTemplate {
   original_id: string;
   template_sections: TemplateSection[];
 }
-
+export interface ComponentData {
+  id: string;
+  template_id: string;
+  header: string;
+  header_img : string | File | undefined ;
+  logo: string | File | undefined ;
+  slogan: string;
+  navbar:string;
+  contact_info:[];
+  user_id: number;
+}
 interface MenuState {
   templates: MenuTemplate[]; // List of templates
   currentTemplate: MenuTemplate | null; // Currently selected template
@@ -36,6 +46,7 @@ interface MenuState {
   totalPages: number;
   currentPage: number;
   userTemplates: MenuTemplate[];
+  components: ComponentData[];
 }
 
 const initialState: MenuState = {
@@ -46,6 +57,7 @@ const initialState: MenuState = {
   error: null,
   totalPages: 1,
   currentPage: 1,
+  components:[],
 };
 
 // Fetch data from backend using Axios
@@ -56,6 +68,14 @@ export const fetchAllMenuTemplates = createAsyncThunk(
     return response.data.payload;
   }
 );
+export const fetchCompData = createAsyncThunk(
+  "templates/fetchCompData",
+  async (id:string) => {
+    const response = await axios.get(`${API_URL}/templates/${id}`);
+    console.log(response.data)
+    return response.data;
+  }
+); 
 export const fetchMenuTemplateById = createAsyncThunk(
   "menu/fetchMenuDataById",
   async (menuId: string) => {
@@ -192,6 +212,13 @@ const menuSlice = createSlice({
       .addCase(updateMenuTemplate.fulfilled, (state, action) => {
         state.currentTemplate = action.payload;
       })
+      .addCase(
+        fetchCompData.fulfilled,
+        (state, action: PayloadAction<ComponentData[]>) => {
+          state.loading = false;
+          state.components = action.payload;
+        }
+      )
   },
 });
 export const { clearCurrentTemplate } = menuSlice.actions;

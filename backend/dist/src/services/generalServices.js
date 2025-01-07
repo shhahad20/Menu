@@ -39,8 +39,7 @@ export const getSingleData = async (id, tableName, userId) => {
         const { data, error } = await supabase
             .from(tableName)
             .select("*")
-            .eq("id", id)
-            .eq("user_id", userId);
+            .eq("id", id);
         if (error) {
             console.error("Error fetching data:", error);
             throw new Error(error.message);
