@@ -41,8 +41,8 @@ createRoot(document.getElementById("root")!).render(
             {/* <Route path="/dashboard/*" element={<MainDashboard />} /> */}
             {/* <Route path="/dashboard/menus" element={<Dashboard />} /> */}
             <Route path="/templates" element={<ParentComponent />} />
-            <Route path="/templates/:templateId" element={<UserTemplate1 />} />
-            <Route path="/templates/edit/:templateId" element={<EditMenuForm/>} />
+            <Route path="/templates/:componentId" element={<UserTemplate1 />} />
+            <Route path="/templates/edit/:componentId" element={<EditMenuForm/>} />
 
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faqs" element={<FAQs />} />

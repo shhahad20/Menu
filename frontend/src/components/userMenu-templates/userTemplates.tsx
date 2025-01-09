@@ -61,12 +61,12 @@ useEffect(() => {
       {filteredTemplates.length > 0 ? (
         filteredTemplates.map((template) => (
           <div key={template.id}>
-            <Link to={`/templates/${template.id}`} target="_blank">
+            <Link to={`/templates/${template.component_id}`} target="_blank">
               <button>
-                Show Template {template.id}
+                Show Template {template.component_id}
               </button>
             </Link>
-            <Link to={`/templates/edit/${template.id}`}><button>Edit </button></Link>
+            <Link to={`/templates/edit/${template.component_id}`}><button>Edit </button></Link>
           </div>
         ))
       ) : (

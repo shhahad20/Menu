@@ -39,18 +39,19 @@ export const getSingleData = async (id, tableName, userId) => {
         const { data, error } = await supabase
             .from(tableName)
             .select("*")
-            .eq("id", id);
+            .eq("id", id)
+            .eq("user_id", userId); // Ensure you're checking the user ID if needed
         if (error) {
             console.error("Error fetching data:", error);
             throw new Error(error.message);
         }
         if (!data || data.length === 0) {
-            throw new Error("Data not found");
+            return null; // Instead of throwing an error, return null if data is not found
         }
         return data;
     }
     catch (error) {
-        console.error("Error in getSingleData:", error, " or you don't have premission");
+        console.error("Error in getSingleData:", error, " or you don't have permission");
         throw new Error(`Failed to fetch the data: ${error}`);
     }
 };
@@ -104,6 +105,7 @@ export const updateData = async (tableName, id, newData) => {
             navbar: newData.navbar,
             contact_info: newData.contact_info,
             user_id: newData.userId,
+            updated_at: new Date(),
         },
     ])
         .eq("id", id)

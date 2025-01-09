@@ -25,6 +25,7 @@ export interface MenuTemplate {
   updated_at: string;
   user_id: number;
   original_id: string;
+  component_id: string;
   template_sections: TemplateSection[];
 }
 export interface ComponentData {
@@ -76,6 +77,19 @@ export const fetchCompData = createAsyncThunk(
     return response.data;
   }
 ); 
+export const updateCompData = createAsyncThunk(
+  "templates/fetchCompData",
+  async (id:string) => {
+   try {
+    const response = await axios.put(`${API_URL}/templates/${id}`);
+    console.log(response.data)
+    return response.data;
+   } catch (error) {
+    return error;
+   }
+  }
+);
+ 
 export const fetchMenuTemplateById = createAsyncThunk(
   "menu/fetchMenuDataById",
   async (menuId: string) => {

@@ -1,6 +1,7 @@
 import ApiError from "../errors/ApiError.js";
 import { supabase } from "../config/supabaseClient.js";
 import * as menuService from "../services/menuService.js";
+import { copyComponent } from "./componentControllers/simpleCompController.js";
 export const getAllMenuTemplates = async (req, res, next) => {
     try {
         const userId = "1";
@@ -34,6 +35,8 @@ export const getMenuById = async (req, res, next) => {
         created_at,
         updated_at,
         user_id,
+        original_id,
+        component_id,
         template_sections (
           section_id,
           header,
@@ -263,6 +266,7 @@ export const copyMenuTemplate = async (req, res, next) => {
                 created_at: new Date(),
                 updated_at: new Date(),
                 original_id: templateId,
+                component_id: null,
             },
         ])
             .select()
@@ -313,9 +317,21 @@ export const copyMenuTemplate = async (req, res, next) => {
                 }
             }
         }
+        const newComponentId = await copyComponent(templateId, newTemplateId, userId);
+        // Update the templates table with the new component_id
+        const { error: updateError } = await supabase
+            .from("templates")
+            .update({ component_id: newComponentId })
+            .eq("id", newTemplateId);
+        if (updateError) {
+            return next(ApiError.internal(`Error updating template with new component_id: ${updateError.message}`));
+        }
         res.status(201).json({
             message: "Template copied successfully.",
-            payload: newTemplate,
+            payload: {
+                ...newTemplate,
+                component_id: newComponentId, // Include the new component_id in the response
+            },
         });
     }
     catch (error) {

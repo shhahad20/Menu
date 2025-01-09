@@ -43,36 +43,41 @@ export const getAll = async (
 };
 
 export const getSingleData = async (
-    id: string,
-    tableName: string,
-    userId: string | undefined,
-  ) => {
-    try {
-      if (!id || !userId) {
-        throw new Error(
-          "Invalid input: id, and userId must all be provided."
-        );
-      }
-      const { data, error } = await supabase
-        .from(tableName)
-        .select("*")
-        .eq("id", id);
-          
-      if (error) {
-        console.error("Error fetching data:", error);
-        throw new Error(error.message);
-      }
-  
-      if (!data || data.length === 0) {
-        throw new Error("Data not found");
-      }
-  
-      return data;
-    } catch (error) {
-      console.error("Error in getSingleData:", error, " or you don't have premission");
-      throw new Error(`Failed to fetch the data: ${error}`);
+  id: string,
+  tableName: string,
+  userId: string | undefined
+) => {
+  try {
+    if (!id || !userId) {
+      throw new Error("Invalid input: id, and userId must all be provided.");
     }
-  };
+
+    const { data, error } = await supabase
+      .from(tableName)
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", userId); // Ensure you're checking the user ID if needed
+
+    if (error) {
+      console.error("Error fetching data:", error);
+      throw new Error(error.message);
+    }
+
+    if (!data || data.length === 0) {
+      return null; // Instead of throwing an error, return null if data is not found
+    }
+
+    return data;
+  } catch (error) {
+    console.error(
+      "Error in getSingleData:",
+      error,
+      " or you don't have permission"
+    );
+    throw new Error(`Failed to fetch the data: ${error}`);
+  }
+};
+
 
 export const createData = async (
   tableName: string,
@@ -85,7 +90,7 @@ export const createData = async (
     navbar: [];
     contact_info: [];
     user_id: string | undefined;
-  },
+  }
 ) => {
   try {
     const { data, error } = await supabase
@@ -115,19 +120,23 @@ export const createData = async (
   }
 };
 
-export const deleteData = async (id: string, user_id:string | undefined, tableName: string) => {
-    const { error } = await supabase
-      .from(tableName)
-      .delete()
-      .eq("user_id", user_id)
-      .eq("id", id);
-  
-    if (error) throw error;
-  };
+export const deleteData = async (
+  id: string,
+  user_id: string | undefined,
+  tableName: string
+) => {
+  const { error } = await supabase
+    .from(tableName)
+    .delete()
+    .eq("user_id", user_id)
+    .eq("id", id);
 
-  export const updateData = async (
-    tableName: string,
-    id: string,
+  if (error) throw error;
+};
+
+export const updateData = async (
+  tableName: string,
+  id: string,
   newData: {
     template_id: string;
     header: string;
@@ -137,28 +146,29 @@ export const deleteData = async (id: string, user_id:string | undefined, tableNa
     navbar: [];
     contact_info: [];
     userId: string | undefined;
-  },
-  ) => {
-  
-    const { data: updatedData, error: updateError } = await supabase
-      .from(tableName)
-      .update([
-        {
-            template_id: newData.template_id, // Make the coulmns name centerlized
-            header: newData.header,
-            header_img: newData.header_img,
-            logo: newData.logo,
-            slogan: newData.slogan,
-            navbar: newData.navbar,
-            contact_info: newData.contact_info,
-            user_id: newData.userId,
-        },
-      ])
-      .eq("id", id)
-      .eq("user_id", newData.userId)
-      .select("*");
-  
-    if (updateError) throw updateError;
-  
-    return updatedData;
-  };
+  }
+) => {
+  const { data: updatedData, error: updateError } = await supabase
+    .from(tableName)
+    .update([
+      {
+        template_id: newData.template_id, // Make the coulmns name centerlized
+        header: newData.header,
+        header_img: newData.header_img,
+        logo: newData.logo,
+        slogan: newData.slogan,
+        navbar: newData.navbar,
+        contact_info: newData.contact_info,
+        user_id: newData.userId,
+        updated_at: new Date(),
+      },
+    ])
+    .eq("id", id)
+    .eq("user_id", newData.userId)
+    .select("*");
+
+  if (updateError) throw updateError;
+
+  return updatedData;
+};
+
