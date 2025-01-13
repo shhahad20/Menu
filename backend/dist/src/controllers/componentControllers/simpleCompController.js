@@ -92,9 +92,9 @@ export const updateComp = async (req, res, next) => {
         const header_img = req.file
             ? await uploadImageToSupabase(req.file, userId)
             : null;
-        if (!header_img) {
-            return res.status(500).json({ error: "Failed to upload image" });
-        }
+        // if (!header_img) {
+        //   return res.status(500).json({ error: "Failed to upload image" });
+        // }
         await updateData("simple_components", id, {
             userId,
             template_id,

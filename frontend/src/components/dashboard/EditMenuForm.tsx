@@ -1,6 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchCompData, fetchMenuTemplateById } from "../../redux/menu/menuSlice";
+import {
+  fetchCompData,
+  fetchMenuTemplateById,
+  updateMenuComp,
+} from "../../redux/menu/menuSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -15,12 +19,13 @@ import {
 const EditMenuForm = () => {
   const { componentId } = useParams<{ componentId: string }>();
   const dispatch: AppDispatch = useDispatch();
-  const {currentTemplate, components} = useSelector(
+  const { currentTemplate, components } = useSelector(
     (state: RootState) => state.menu
   );
   const [selectedSection, setSection] = useState("");
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null); // To track editing state
+  const [isLoading, setIsLoading] = useState(false);
 
   const [viewMode, setViewMode] = useState<"items" | "sections">("items");
 
@@ -28,15 +33,24 @@ const EditMenuForm = () => {
     setViewMode(mode);
   };
 
-  const [compData, setcompData] = useState({
+  const [compData, setCompData] = useState<{
+    id: string | undefined;
+    template_id: string;
+    header: string;
+    header_img: string | File;
+    logo: string | File;
+    slogan: string;
+    navbar: string;
+    contact_info: [];
+  }>({
     id: componentId,
     template_id: "",
     header: "",
-    header_img : "" ,
-    logo: ""  ,
+    header_img: "", // Default to an empty string
+    logo: "", // Default to an empty string
     slogan: "",
-    navbar:"",
-    contact_info:[],
+    navbar: "",
+    contact_info: [],
   });
 
   const [formData, setFormData] = useState({
@@ -69,7 +83,22 @@ const EditMenuForm = () => {
     header: "",
     section_order: "0",
   });
+  useEffect(() => {
+    const currentComponent = components.find((comp) => comp.id === componentId);
 
+    if (currentComponent) {
+      setCompData({
+        id: currentComponent.id,
+        template_id: currentComponent.template_id || "",
+        header: currentComponent.header || "",
+        header_img: currentComponent.header_img || "",
+        logo: currentComponent.logo || "",
+        slogan: currentComponent.slogan || "",
+        navbar: currentComponent.navbar || "",
+        contact_info: currentComponent.contact_info || [],
+      });
+    }
+  }, [componentId, components]);
   useEffect(() => {
     if (componentId) {
       dispatch(fetchCompData(componentId));
@@ -82,15 +111,14 @@ const EditMenuForm = () => {
       if (templateId) {
         dispatch(fetchMenuTemplateById(templateId));
       }
-      const sections = currentTemplate?.template_sections || [] ;
-    setFormData((prev) => ({
-      ...prev,
-      template_sections: sections,
-    }));
+      const sections = currentTemplate?.template_sections || [];
+      setFormData((prev) => ({
+        ...prev,
+        template_sections: sections,
+      }));
     }
   }, [dispatch, components]);
 
-  
   const handleItemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewItem((prev) => ({ ...prev, [name]: value }));
@@ -98,6 +126,13 @@ const EditMenuForm = () => {
   const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewSection((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleCompChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    setCompData((prev) => ({
+      ...prev,
+      [name]: files && files[0] ? files[0] : value,
+    }));
   };
   const handleOptions = (event: ChangeEvent<HTMLSelectElement>) => {
     const sectionValue = event.target.value;
@@ -146,7 +181,6 @@ const EditMenuForm = () => {
   };
   const handleCreateOrUpdateItem = async (event: FormEvent) => {
     event.preventDefault();
-
     const itemFormData = new FormData();
     itemFormData.append("title", newItem.title);
     itemFormData.append("description", newItem.description);
@@ -155,61 +189,63 @@ const EditMenuForm = () => {
 
     try {
       if (editingItemId) {
-        // Update existing item
         itemFormData.append("item_id", editingItemId);
-        await dispatch(updateItem(itemFormData));
+        await dispatch(updateItem(itemFormData)).unwrap();
         alert("Item updated successfully!");
       } else {
-        // Create a new item
-        await dispatch(createItem(itemFormData));
+        await dispatch(createItem(itemFormData)).unwrap();
         alert("Item created successfully!");
       }
-      setEditingItemId(null); // Reset editing state
-      // setNewItem({
-      //   templateId: templateId,
-      //   section_id: "",
-      //   title: "",
-      //   price: "",
-      //   description: "",
-      // }); // Reset form
+      setEditingItemId(null);
+      // Reset form state
+      setNewItem({
+        item_id: editingItemId || "",
+        template_id: components[0].template_id,
+        section_id: selectedSection,
+        title: "",
+        price: "",
+        description: "",
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Error updating/creating item:", error);
+      alert("Failed to update/create item.");
     }
   };
 
   const handleCreateOrUpdateSection = async (event: FormEvent) => {
     event.preventDefault();
-  
-    // const sectionFormData = new FormData();
-
+    setIsLoading(true);
     try {
+      // Dispatch your actions here
       if (editingSectionId) {
-        // Update existing section
-        // sectionFormData.append("template_id", newSection.template_id);
-        // sectionFormData.append("header", newSection.header);
-        // sectionFormData.append("section_id", editingSectionId);
-        console.log("section order "+ newSection.section_order)
-        await dispatch(updateSection({section_id:newSection.section_id, header:newSection.header}));
-        alert("Section updated successfully!");
+        await dispatch(updateSection(newSection)).unwrap();
       } else {
-        // Create new section
-        await dispatch(createSection({template_id:newSection.template_id,header:newSection.header}));
-        alert("Section created successfully!");
+        await dispatch(createSection(newSection)).unwrap();
       }
-      // Reset form state after submission
-      // setNewSection({
-      //   section_id: "",
-      //   template_id: templateId || "",
-      //   header: "",
-      //   section_order: "0",
-      // });
+      alert("Section successfully updated/created!");
     } catch (error) {
-      console.error("Failed to create or update section:", error);
-      alert("An error occurred while creating/updating the section");
+      console.error("Error:", error);
+      alert("Failed to create/update section.");
+    } finally {
+      setIsLoading(false);
     }
   };
-  
-
+  const handleCreateOrUpdateMenu = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      // Dispatch your actions here
+      if (componentId) {
+        await dispatch(updateMenuComp({id: componentId,data:compData}));
+        await dispatch(fetchCompData(componentId))
+      } else {
+        alert("Incorrect component id!")
+      }
+      alert("Successfully updated the menu");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to update menu.");
+    }
+  };
   const handleDeleteItem = (itemId: string) => {
     // Optimistically update the local state
     const updatedSections = formData.template_sections.map((section) => ({
@@ -242,13 +278,70 @@ const EditMenuForm = () => {
         // Optionally, you could revert the optimistic update here
       });
   };
-  console.log('Dispatching fetchCompData with componentId:', componentId);
-  console.log('Current template:', currentTemplate);
-  console.log('Components:', components);
+
   return (
     <>
       <div className="edit-menu-form-section">
         <div id="edit-menu-form-conatiner">
+          <form onSubmit={handleCreateOrUpdateMenu}>
+            <div className="">
+              <h1>Menu</h1>
+              <div>
+                <label htmlFor="menu_name" className="">
+                  Header
+                </label>
+                <input
+                  type="text"
+                  id="menu_name"
+                  name="header"
+                  value={compData.header}
+                  onChange={handleCompChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="menu_name" className="">
+                  Slogan
+                </label>
+                <input
+                  type="text"
+                  id="menu_name"
+                  name="slogan"
+                  value={compData.slogan}
+                  onChange={handleCompChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="menu_name" className="">
+                  Header Image
+                </label>
+                <input
+                  type="file"
+                  id="menu_name"
+                  name="header_img"
+                  onChange={handleCompChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="menu_name" className="">
+                  Navbar Elements
+                </label>
+                <input
+                  type="text"
+                  id="menu_name"
+                  name="navbar"
+                  value={compData.navbar}
+                  onChange={handleCompChange}
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Submit
+            </button>
+          </form>
+
           <form onSubmit={handleCreateOrUpdateItem}>
             <div className="">
               <h1>Items</h1>
@@ -293,7 +386,7 @@ const EditMenuForm = () => {
 
               <div>
                 <label htmlFor="menu_name" className="">
-                  Category
+                  Sections
                 </label>
                 <select name="categories" onChange={handleOptions}>
                   {formData.template_sections.map((section) => (
@@ -331,8 +424,9 @@ const EditMenuForm = () => {
             <button
               type="submit"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              disabled={isLoading}
             >
-              Submit
+                {isLoading ? "Saving..." : "Save Section"}
             </button>
           </form>
         </div>

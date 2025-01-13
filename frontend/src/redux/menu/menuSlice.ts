@@ -32,8 +32,8 @@ export interface ComponentData {
   id: string;
   template_id: string;
   header: string;
-  header_img : string | File | undefined ;
-  logo: string | File | undefined ;
+  header_img : string | File ;
+  logo: string | File;
   slogan: string;
   navbar:string;
   contact_info:[];
@@ -162,6 +162,17 @@ export const updateMenuTemplate = createAsyncThunk(
   }
 );
 
+export const updateMenuComp = createAsyncThunk(
+  "menu/updateMenuTemplate",
+  async ({ id, data }: { id: string; data: object }) => {
+    const response = await axios.put(
+      `${API_URL}/templates/${id}`,
+      data
+    );
+    console.log(response.data)
+    return response.data.payload; // Adjusted for your API response
+  }
+);
 const menuSlice = createSlice({
   name: "menu",
   initialState,
@@ -223,9 +234,9 @@ const menuSlice = createSlice({
           state.loading = false;
         }
       )
-      .addCase(updateMenuTemplate.fulfilled, (state, action) => {
-        state.currentTemplate = action.payload;
-      })
+      // .addCase(updateMenuTemplate.fulfilled, (state, action) => {
+      //   state.currentTemplate = action.payload;
+      // })
       .addCase(
         fetchCompData.fulfilled,
         (state, action: PayloadAction<ComponentData[]>) => {
@@ -233,6 +244,13 @@ const menuSlice = createSlice({
           state.components = action.payload;
         }
       )
+      // .addCase(
+      //   updateMenuComp.fulfilled,
+      //   (state, action: PayloadAction<ComponentData[]>) => {
+      //     state.loading = false;
+      //     state.components = action.payload;
+      //   }
+      // )
   },
 });
 export const { clearCurrentTemplate } = menuSlice.actions;
