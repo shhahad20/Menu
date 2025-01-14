@@ -28,6 +28,24 @@ const EditMenuForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [viewMode, setViewMode] = useState<"items" | "sections">("items");
+  const [tags, setTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && inputValue.trim() !== "") {
+      e.preventDefault();
+      setTags([...tags, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  const handleRemoveTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
 
   const handleViewChange = (mode: "items" | "sections") => {
     setViewMode(mode);
@@ -235,10 +253,10 @@ const EditMenuForm = () => {
     try {
       // Dispatch your actions here
       if (componentId) {
-        await dispatch(updateMenuComp({id: componentId,data:compData}));
-        await dispatch(fetchCompData(componentId))
+        await dispatch(updateMenuComp({ id: componentId, data: compData }));
+        await dispatch(fetchCompData(componentId));
       } else {
-        alert("Incorrect component id!")
+        alert("Incorrect component id!");
       }
       alert("Successfully updated the menu");
     } catch (error) {
@@ -279,18 +297,26 @@ const EditMenuForm = () => {
       });
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+    }
+  };
+
   return (
     <>
       <div className="edit-menu-form-section">
         <div id="edit-menu-form-conatiner">
           <form onSubmit={handleCreateOrUpdateMenu}>
-            <div className="">
-              <h1>Menu</h1>
-              <div>
+            <div className="form-s-container">
+              <h1 className="forms-header">Menu</h1>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Header
                 </label>
                 <input
+                  className=""
                   type="text"
                   id="menu_name"
                   name="header"
@@ -298,7 +324,7 @@ const EditMenuForm = () => {
                   onChange={handleCompChange}
                 />
               </div>
-              <div>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Slogan
                 </label>
@@ -310,20 +336,37 @@ const EditMenuForm = () => {
                   onChange={handleCompChange}
                 />
               </div>
-              <div>
-                <label htmlFor="menu_name" className="">
-                  Header Image
+              <div className="tag-input-container">
+                <label htmlFor="tags-input" className="tag-label">
+                  Navbar
                 </label>
-                <input
-                  type="file"
-                  id="menu_name"
-                  name="header_img"
-                  onChange={handleCompChange}
-                />
+                <div className="tag-wrapper">
+                  {tags.map((tag, index) => (
+                    <div key={index} className="tag">
+                      {tag}
+                      <button
+                        type="button"
+                        className="remove-tag-button"
+                        onClick={() => handleRemoveTag(index)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    type="text"
+                    id="tags-input"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type and press Enter"
+                    className="tag-input"
+                  />
+                </div>
               </div>
-              <div>
+              {/* <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
-                  Navbar Elements
+                  Navbar
                 </label>
                 <input
                   type="text"
@@ -332,20 +375,53 @@ const EditMenuForm = () => {
                   value={compData.navbar}
                   onChange={handleCompChange}
                 />
+              </div> */}
+              {/* <div className="input-label-container">
+                <label htmlFor="menu_name" className="">
+                  Image
+                </label>
+                <input
+                  type="file"
+                  id="menu_name"
+                  name="header_img"
+                  onChange={handleCompChange}
+                />
+              </div> */}
+              <div className="file-upload-wrapper">
+                <label htmlFor="">Header Image</label>
+                <label className="file-upload-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="upload-icon"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                    />
+                  </svg>
+                  Upload a file
+                  <input
+                    type="file"
+                    className="hidden-file-input"
+                    onChange={handleFileChange}
+                  />
+                </label>
               </div>
             </div>
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
+            <button type="submit" className="sub-button">
               Submit
             </button>
           </form>
 
           <form onSubmit={handleCreateOrUpdateItem}>
-            <div className="">
-              <h1>Items</h1>
-              <div>
+            <div className="form-s-container">
+              <h1 className="forms-header">Items</h1>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Title
                 </label>
@@ -358,7 +434,7 @@ const EditMenuForm = () => {
                 />
               </div>
 
-              <div>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Description
                 </label>
@@ -371,7 +447,7 @@ const EditMenuForm = () => {
                 />
               </div>
 
-              <div>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Price
                 </label>
@@ -384,31 +460,33 @@ const EditMenuForm = () => {
                 />
               </div>
 
-              <div>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Sections
                 </label>
                 <select name="categories" onChange={handleOptions}>
-                  {formData.template_sections.map((section) => (
-                    <option key={section.section_id} value={section.section_id}>
-                      {section.header}
-                    </option>
-                  ))}
+                  {formData.template_sections
+                    .filter((section) => section.section_id && section.header)
+                    .map((section) => (
+                      <option
+                        key={section.section_id}
+                        value={section.section_id}
+                      >
+                        {section.header}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
+            <button type="submit" className="sub-button">
               Submit
             </button>
           </form>
 
           <form onSubmit={handleCreateOrUpdateSection}>
-            <div className="">
-              <h1>Section</h1>
-              <div>
+            <div className="form-s-container">
+              <h1 className="forms-header">Section</h1>
+              <div className="input-label-container">
                 <label htmlFor="menu_name" className="">
                   Header
                 </label>
@@ -421,12 +499,8 @@ const EditMenuForm = () => {
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              disabled={isLoading}
-            >
-                {isLoading ? "Saving..." : "Save Section"}
+            <button type="submit" className="sub-button" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Submit"}
             </button>
           </form>
         </div>
