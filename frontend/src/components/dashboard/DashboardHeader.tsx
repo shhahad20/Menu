@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../../styles/dashboard-elements/dashboardHeader.scss";
 
 const DashboardHeader = () => {
-
+ 
 
   return (
     <div className="d-header">
@@ -41,7 +41,6 @@ const DashboardHeader = () => {
           </ul>
         </div>
       </div>
-      {/* <div className="d-bottom"></div> */}
     </div>
   );
 };

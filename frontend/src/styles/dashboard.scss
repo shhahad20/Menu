@@ -1,43 +1,56 @@
 .dashboard {
   display: grid;
-  grid-template-columns: 1fr 8fr;
-  grid-template-rows: 80px 1fr 256px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   grid-template-areas:
-    'header header'
-    'sidebar main'
-    'footer footer';
+    "header header"
+    "dashboard-navbar dashboard-navbar"
+    "main main"
+    "footer footer";
   height: 100vh;
 
   .dashboard-header {
     grid-area: header;
-    border-bottom: 1px solid #333;
-  } 
-
-  .sidebar {
-    grid-area: sidebar;
-    overflow-y: auto;
+    // border-bottom: 1px solid #333;
+  }
+  .dashboard-navbar {
+    grid-area: dashboard-navbar;
+    overflow: auto;
+    white-space: nowrap;
+    // border: 1px solid red;
+    height: 50px;
+    scrollbar-width: none; // Hide scrollbar in Firefox
+    -ms-overflow-style: none; // Hide scrollbar in IE/Edge
 
     &::-webkit-scrollbar {
-      width: 3px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #333;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #a1a1a1;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: #c4d977;
-    }
-
-    // Hide sidebar on small screens
-    @media (max-width: 768px) {
-      display: none;
+      display: none; // Hide scrollbar in Chrome/Safari
     }
   }
+  // .sidebar {
+  //   grid-area: sidebar;
+  //   overflow-y: auto;
+
+  //   &::-webkit-scrollbar {
+  //     width: 3px;
+  //   }
+
+  //   &::-webkit-scrollbar-track {
+  //     background: #333;
+  //   }
+
+  //   &::-webkit-scrollbar-thumb {
+  //     background-color: #a1a1a1;
+  //   }
+
+  //   &::-webkit-scrollbar-thumb:hover {
+  //     background-color: #c4d977;
+  //   }
+
+  //   // Hide sidebar on small screens
+  //   @media (max-width: 768px) {
+  //     display: none;
+  //   }
+  // }
 
   .dashboard-main {
     grid-area: main;
@@ -52,9 +65,10 @@
   @media (max-width: 1024px) {
     grid-template-columns: 1fr; // Switch to a single column layout
     grid-template-areas:
-      'header'
-      'main'
-      'footer';
+      "header"
+      "dashboard-navbar"
+      "main"
+      "footer";
 
     .sidebar {
       display: none; // Hide sidebar on small screens

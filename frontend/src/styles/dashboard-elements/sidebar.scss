@@ -1,85 +1,158 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
-
-.sidebar-container {
-  display: flex;
-  justify-content: space-between;
-  height: 100vh;
-  background-color: #0a0a0a;
-}
-
-.right-panel {
-  width: 100%;
-//   overflow-y: auto;
+ 
+// .sidebar-container {
+//   display: flex;
+//   justify-content: space-between;
 //   height: 100vh;
-  border-right: 1px solid #333;
-  box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
-}
-.tools-list {
-  margin-top: 10px;
-  // font-family: "Rubik", sans-serif;
-  font-optical-sizing: auto;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
+//   background-color: #0a0a0a;
+// }
 
-li,
-.tool-link {
+// .right-panel {
+//   width: 100%;
+// //   overflow-y: auto;
+// //   height: 100vh;
+//   border-right: 1px solid #333;
+//   box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
+// }
+// .tools-list {
+//   margin-top: 10px;
+//   // font-family: "Rubik", sans-serif;
+//   font-optical-sizing: auto;
+// }
+// ul {
+//   list-style-type: none;
+//   padding: 0;
+//   margin: 0;
+// }
+
+// li,
+// .tool-link {
+//   display: flex;
+//   align-items: center;
+//   padding: 10px 10px;
+//   cursor: pointer;
+//   // justify-content: flex-end;
+//   // &:hover {
+//   //   background-color: #041E21;
+//   // }
+// }
+
+// .tool-link.selected {
+//   .tool-name {
+//     color: #c4d977;
+//   }
+//   .tool-icon {
+//     filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%)
+//       hue-rotate(11deg) brightness(101%) contrast(101%);
+//   }
+// }
+
+// .tool-header {
+//   text-align: left;
+//   padding: 0 30px;
+//   color: #555;
+//   font-weight: 600;
+// }
+// .tool-item {
+//   display: flex;
+//   align-items: center;
+//   padding: 10px 15px;
+//   cursor: pointer;
+
+//   .tool-link {
+//     padding: 10px 20px;
+//     transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
+//     &:hover {
+//       background-color: #1a1a1a;
+//       border-radius: 4px;
+//       opacity: 1;
+//     }
+//   }
+// }
+// .tool-icon {
+//   width: 16px;
+//   height: 16px;
+//   font-size: 24px;
+//   margin-right: 10px;
+// }
+
+// .tool-name {
+//   font-size: 16px;
+//   text-align: left;
+//   // color: #a1a1a1;
+//   color: #ededed;
+//   font-weight: 500;
+// }
+// General styles
+
+// Navbar container
+.dash-navbar{
   display: flex;
   align-items: center;
-  padding: 10px 10px;
-  cursor: pointer;
-  // justify-content: flex-end;
-  // &:hover {
-  //   background-color: #041E21;
-  // }
-}
+  justify-content: center;
+  padding: 10px 20px 0 20px;
+  background-color: #111;
+  border-bottom: 1px solid #2c2c2c;
 
-.tool-link.selected {
-  .tool-name {
-    color: #c4d977;
+  .navbar-links {
+    display: flex;
+    gap: 20px;
+    // overflow-x: auto; // Enable horizontal scrolling for the navbar links
+    // white-space: nowrap; // Prevent links from wrapping
+    // scrollbar-width: none; // Hide scrollbar in Firefox
+    // -ms-overflow-style: none; // Hide scrollbar in IE/Edge
+
+    // &::-webkit-scrollbar {
+    //   display: none; // Hide scrollbar in Chrome/Safari
+    // }
+
+    // &::-webkit-scrollbar-thumb {
+    //   background-color: rgba(255, 255, 255, 0.4); // Scrollbar color
+    //   border-radius: 10px; // Rounded scrollbar
+    // }
+
+    a {
+      text-decoration: none;
+      color: #ececec;
+      font-size: 0.875rem;
+      padding: 5px 10px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 3px;
+        background-color: #c4d977;
+        border-radius: 5px;
+        transition: all 0.3s;
+      }
+
+      &.active::after {
+        width: 70%;
+      }
+    }
+    // position: sticky;
+    // top: 0;
+    // z-index: 10;
   }
-  .tool-icon {
-    filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%)
-      hue-rotate(11deg) brightness(101%) contrast(101%);
-  }
 }
 
-.tool-header {
-  text-align: left;
-  padding: 0 30px;
-  color: #555;
-  font-weight: 600;
-}
-.tool-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  cursor: pointer;
-
-  .tool-link {
-    padding: 10px 20px;
-    transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
-    &:hover {
-      background-color: #1a1a1a;
-      border-radius: 4px;
-      opacity: 1;
+// Responsive design
+@media (max-width: 768px) {
+  .dash-navbar{
+    .navbar-links {
+      // border: 1px solid red;
+      // overflow-x: auto; // Allow only horizontal scrolling in the navbar
+      // white-space: nowrap; // Prevent links from wrapping onto multiple lines
     }
   }
 }
-.tool-icon {
-  width: 16px;
-  height: 16px;
-  font-size: 24px;
-  margin-right: 10px;
-}
 
-.tool-name {
-  font-size: 16px;
-  text-align: left;
-  // color: #a1a1a1;
-  color: #ededed;
-  font-weight: 500;
-}
+
+

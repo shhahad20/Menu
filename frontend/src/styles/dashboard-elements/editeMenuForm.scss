@@ -4,6 +4,8 @@
   display: grid;
   grid-template-columns: repeat(2 , minmax(400px, 1fr));
   justify-items: center;
+  align-items: center;
+  gap: 10rem;
   background-color: white;
   height: 100vh;
   #edit-menu-form-conatiner{
