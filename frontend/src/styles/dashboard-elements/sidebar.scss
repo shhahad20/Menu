@@ -90,27 +90,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px 0 20px;
   background-color: #111;
-  border-bottom: 1px solid #2c2c2c;
+  width: 100%;
+  overflow-x: auto; 
+  white-space: nowrap; 
 
+  &::-webkit-scrollbar {
+    display: none; 
+  }
+}
   .navbar-links {
     display: flex;
     gap: 20px;
-    // overflow-x: auto; // Enable horizontal scrolling for the navbar links
-    // white-space: nowrap; // Prevent links from wrapping
-    // scrollbar-width: none; // Hide scrollbar in Firefox
-    // -ms-overflow-style: none; // Hide scrollbar in IE/Edge
-
-    // &::-webkit-scrollbar {
-    //   display: none; // Hide scrollbar in Chrome/Safari
-    // }
-
-    // &::-webkit-scrollbar-thumb {
-    //   background-color: rgba(255, 255, 255, 0.4); // Scrollbar color
-    //   border-radius: 10px; // Rounded scrollbar
-    // }
-
     a {
       text-decoration: none;
       color: #ececec;
@@ -141,16 +132,13 @@
     // top: 0;
     // z-index: 10;
   }
-}
+
 
 // Responsive design
 @media (max-width: 768px) {
-  .dash-navbar{
-    .navbar-links {
-      // border: 1px solid red;
-      // overflow-x: auto; // Allow only horizontal scrolling in the navbar
-      // white-space: nowrap; // Prevent links from wrapping onto multiple lines
-    }
+  .dash-navbar {
+    justify-content: flex-start;
+    padding: 0 10px; 
   }
 }
 

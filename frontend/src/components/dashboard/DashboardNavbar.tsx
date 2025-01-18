@@ -1,29 +1,41 @@
 // import { Link } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/dashboard-elements/sidebar.scss";
+import { Link } from "react-router-dom";
 
 const DashboardNavbar = () => {
-    const [activeLink, setActiveLink] = useState('Home'); // Default active link
+    const [activeLink, setActiveLink] = useState('Home');
 
     const handleLinkClick = (link: string) => {
-      setActiveLink(link); // Update the active link
+      setActiveLink(link); 
     };
+    const links = [
+      { name: "Home", path: "" },
+      { name: "Menus", path: "menus" },
+      { name: "Products", path: "items" },
+      { name: "Orders", path: "orders" },
+      { name: "Reports", path: "reports" },
+      { name: "Marketing", path: "marketing" },
+      { name: "Reviews", path: "reviews-suggestions" },
+      { name: "Settings", path: "settings" },
+      { name: "Support", path: "support" },
+    ];
 
+
+ 
   return (
     <div className="dash-navbar">
       <div className="navbar-links">
-      {['Home', 'Menus', 'Products', 'Orders', 'Reports', 'Marketing', 'Reviews', 'Settings', 'Support'].map(
-          (link) => (
-            <a
-              key={link}
-              href="#"
-              className={activeLink === link ? 'active' : ''}
-              onClick={() => handleLinkClick(link)} // Set active on click
-            >
-              {link}
-            </a>
-          )
-        )}
+        {links.map((link) => (
+          <Link
+            key={link.name}
+            to={`/dashboard/${link.path}`} // Use `to` for navigation
+            className={activeLink === link.name ? "active" : ""}
+            onClick={() => handleLinkClick(link.name)} // Set active on click
+          >
+            {link.name}
+          </Link>
+        ))}
       </div>
     </div>
   );

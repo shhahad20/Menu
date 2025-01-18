@@ -16,7 +16,7 @@ const Dashboard = () => {
         </div>
       {/* <div className="sidebar"><Sidebar /></div> */}
       <div className="dashboard-main">
-        {/* <MainDashboard/> */}
+        <MainDashboard/>
         </div>
       <div className="dashboard-footer"><Footer/></div>
     </div>

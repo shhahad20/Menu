@@ -1,0 +1,302 @@
+.menus-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  color: #fff;
+
+  .menus-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    // gap: 1.5rem;
+    gap: 16px;
+    width: 100%;
+    max-width: 1030px;
+    margin-top: 2rem;
+    // border: 1px dashed red;
+
+  }
+  .menus-wrapper.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  .menu-card{
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    justify-content: space-between;
+
+  
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0;
+      gap: 1rem;
+      width: 33.33%;
+      h3 {
+        font-size: 16px;
+        font-weight: 500;
+        color: #fff;
+        margin: 0;
+      }
+  
+      p {
+        font-size: 12px;
+        color: #b3b3b3;
+        margin: 0;
+      }
+    }
+  
+    .menu-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border-top: none;
+      padding-bottom: 10px;
+      width: 33.33%;
+      span {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: #d9d9d9;
+  
+        img {
+          margin-right: 5px;
+        }
+      }
+    }
+    .view-menu-content {
+        background: transparent;
+        border: 1.5px solid #333;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        padding: 0.5rem ;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 33.33%;
+        &:hover {
+          background: #111;
+          color: #fff;
+        }
+      }
+    // .card-top-icons {
+    //   display: flex;
+    //   gap: 1rem;
+  
+    //   button {
+    //     background: transparent;
+    //     border: none;
+    //     cursor: pointer;
+  
+    //     img {
+    //       width: 20px;
+    //       height: 20px;
+    //       filter: brightness(0) invert(1); /* Ensures white icons */
+    //     }
+    //   }
+    // }
+}
+  }
+  
+  
+  .menu-card {
+    border: 1.5px solid #333;
+    background: #181818;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    // width: 270px;
+    // height: 177px;
+    .menu-header {
+      display: flex;
+    //   flex-direction: column;
+    justify-content: space-between;
+        margin-bottom: 2rem;
+      h3 {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      p {
+        font-size: 14px;
+        color: #B3B3B3;
+      }
+      .card-top-icons{
+        .edit-card-btn{
+            padding-right: 3px;
+        }
+      }
+    }
+
+    .menu-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0 0 0;
+    border-top: 1.5px solid #333;
+      .status-icon {
+        display: flex;
+        align-items: center;
+        // font-size: 0.875rem;
+        font-weight: 500;
+        font-size: 15px;
+        .active-menu-img{
+            margin-right: 5px;
+        }
+        &.active {
+          color: #D9D9D9;
+        }
+      }
+
+      .menu-stats {
+        display: flex;
+        gap: 1rem;
+        padding-right: 10px;
+        span {
+          display: flex;
+          font-size: 15px;
+        font-weight: 500;
+          .reviews-menu-img, .menu-report-img{
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    .view-menu-content {
+      background: transparent;
+      border: 1.5px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      padding: 0.5rem 1rem ;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background: #111;
+        color: #fff;
+      }
+    }
+  }
+}
+@media (max-width: 1024px) { // Medium screens (e.g., tablets)
+    .menus-list{
+        padding: 1rem 3rem;
+        .menus-wrapper {
+            margin-top: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .menus-wrapper.list-view{
+            .menu-card {
+                padding: 0.5rem;
+                .menu-header{
+                    gap: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 50%;
+                    .card-header-p{
+                        width: 80%;
+                    }
+                    .card-top-icons{
+                        width: 20%;
+                    }
+                }
+                .menu-status{
+                    width: 25%;
+                }
+                .view-menu-content {
+                  width: 25%; 
+                  text-align: center;
+                }
+              }
+        }
+    }
+
+  }
+
+  @media (max-width: 768px) { // Small screens (e.g., mobile phones)
+    .menus-list{
+        .menus-wrapper {
+            margin-top: 0;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .menus-wrapper.list-view{
+            .menu-card {
+                .menu-header h3 {
+                  font-size: 14px; /* Smaller font size for smaller screens */
+                }
+          
+                .menu-header p {
+                  font-size: 11px;
+                }
+          
+                .menu-status span {
+                  font-size: 13px;
+                }
+          
+                .view-menu-content {
+                  font-size: 13px;
+                  padding: 0.4rem;
+                }
+              }
+        }
+    }
+  }
+  @media (max-width: 560px) { // Small screens (e.g., mobile phones)
+    .menus-list{
+        padding: 1rem;
+        .menus-wrapper {
+            margin-top: 0;
+            grid-template-columns: 1fr;
+
+        }
+        .menu-card {
+            .menu-header {
+                h3 {
+                  font-size: 16px;
+                }
+              }  
+        }
+        .menus-wrapper.list-view{            
+            .menu-card {
+                padding: 0.5rem;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                .menu-header{
+                    gap: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 50%;
+                    .card-header-p{
+                        width: 70%;
+                    }
+                    .card-top-icons{
+                        width: 30%;
+                    }
+                    h3{
+                        font-size: 13px;
+                    }
+                }
+                .menu-status{
+                    width: 35%;
+                }
+                .view-menu-content {
+                  width: 15%; 
+                  text-align: center;
+                  font-size: 12px;
+                  padding: 5px;
+                }
+              }
+             
+        }
+    }
+  }
