@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  color: #fff;
-
+  // color: #fff;
+  // height: 100vh;
   .menus-wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -20,19 +20,20 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    
   .menu-card{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 1rem;
-    justify-content: space-between;
-
-  
+    justify-content: space-between; 
+    gap: 0;
     .menu-header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 0;
       gap: 1rem;
-      width: 33.33%;
+      width: 100%;
+      // width: 33.33%;
       h3 {
         font-size: 16px;
         font-weight: 500;
@@ -45,8 +46,18 @@
         color: #b3b3b3;
         margin: 0;
       }
+      .card-top-icons{
+        display: flex;
+        justify-content: center;
+        
+      }
     }
-  
+  .menu-card-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border: none;
     .menu-status {
       display: flex;
       align-items: center;
@@ -54,7 +65,8 @@
       gap: 1rem;
       border-top: none;
       padding-bottom: 10px;
-      width: 33.33%;
+      margin: 0;
+      // width: 33.33%;
       span {
         display: flex;
         align-items: center;
@@ -76,38 +88,23 @@
         padding: 0.5rem ;
         cursor: pointer;
         transition: all 0.3s;
-        width: 33.33%;
+        // width: 33.33%;
         &:hover {
           background: #111;
           color: #fff;
         }
       }
-    // .card-top-icons {
-    //   display: flex;
-    //   gap: 1rem;
-  
-    //   button {
-    //     background: transparent;
-    //     border: none;
-    //     cursor: pointer;
-  
-    //     img {
-    //       width: 20px;
-    //       height: 20px;
-    //       filter: brightness(0) invert(1); /* Ensures white icons */
-    //     }
-    //   }
-    // }
+} 
 }
   }
   
   
   .menu-card {
-    border: 1.5px solid #333;
-    background: #181818;
+    // border: 1.5px solid #333;
+    // background: #181818;
     border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -134,13 +131,18 @@
         }
       }
     }
-
+    .menu-card-bottom{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     .menu-status {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
       padding: 10px 0 0 0;
-    border-top: 1.5px solid #333;
       .status-icon {
         display: flex;
         align-items: center;
@@ -161,6 +163,8 @@
         padding-right: 10px;
         span {
           display: flex;
+          justify-content: space-between;
+          gap: 5px;
           font-size: 15px;
         font-weight: 500;
           .reviews-menu-img, .menu-report-img{
@@ -176,7 +180,7 @@
       border-radius: 8px;
       color: #fff;
       font-size: 1rem;
-      padding: 0.5rem 1rem ;
+      padding: 0.5rem 2rem ;
       cursor: pointer;
       transition: all 0.3s;
 
@@ -185,6 +189,7 @@
         color: #fff;
       }
     }
+  }
   }
 }
 @media (max-width: 1024px) { // Medium screens (e.g., tablets)
@@ -201,19 +206,19 @@
                     gap: 0;
                     display: flex;
                     justify-content: space-between;
-                    width: 50%;
+                    // width: 50%;
                     .card-header-p{
-                        width: 80%;
+                        // width: 80%;
                     }
                     .card-top-icons{
-                        width: 20%;
+                        // width: 20%;
                     }
                 }
                 .menu-status{
-                    width: 25%;
+                    // width: 25%;
                 }
                 .view-menu-content {
-                  width: 25%; 
+                  // width: 25%; 
                   text-align: center;
                 }
               }
@@ -237,15 +242,20 @@
                 .menu-header p {
                   font-size: 11px;
                 }
-          
+                .menu-card-bottom{
                 .menu-status span {
                   font-size: 13px;
                 }
           
                 .view-menu-content {
+                  border: none;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
                   font-size: 13px;
                   padding: 0.4rem;
                 }
+              }
               }
         }
     }
@@ -275,26 +285,29 @@
                     gap: 0;
                     display: flex;
                     justify-content: space-between;
-                    width: 50%;
+                    // width: 50%;
                     .card-header-p{
-                        width: 70%;
+                        // width: 70%;
                     }
                     .card-top-icons{
-                        width: 30%;
+                        // width: 30%;
                     }
                     h3{
                         font-size: 13px;
                     }
                 }
+                .menu-card-bottom{
                 .menu-status{
-                    width: 35%;
+                    // width: 35%;
                 }
                 .view-menu-content {
-                  width: 15%; 
+                  border: none;
+                  // width: 15%; 
                   text-align: center;
                   font-size: 12px;
                   padding: 5px;
                 }
+              }
               }
              
         }
