@@ -1,176 +1,206 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
-.dashboard-container {
+.dashboard {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  -ms-grid-rows: auto auto 1fr auto;
+      grid-template-rows: auto auto 1fr auto;
+      grid-template-areas: "header header" "dashboard-navbar dashboard-navbar" "main main" "footer footer";
+  height: 100vh;
+}
+
+.dashboard .dashboard-header {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: header;
+}
+
+.dashboard .dashboard-navbar {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: dashboard-navbar;
+  overflow-x: auto;
+  /* Allow horizontal scrolling */
+  white-space: nowrap;
+  /* Prevent wrapping */
+  border-bottom: 1px solid #2c2c2c;
+  height: 32px;
+  scrollbar-width: none;
+  /* Hide scrollbar in Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar in IE/Edge */
+  width: 100%;
+  overflow-y: hidden;
+}
+
+.dashboard .dashboard-navbar::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar in Chrome/Safari */
+}
+
+.dashboard .dashboard-main {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: main;
+  height: 100vh;
+}
+
+.dashboard .dashboard-footer {
+  -ms-grid-row: 4;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-area: footer;
+}
+
+.dashboard .searchbar-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 100vh;
-  /* Adjust height as needed */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+  margin: 1rem 0 0 0;
 }
 
-.left-panel {
+.dashboard .searchbar-container .d-search-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  width: 520px;
+  height: 30px;
+}
+
+.dashboard .searchbar-container .d-search-bar .search-input {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  /* Takes up remaining space */
-  overflow-y: auto;
-  height: 100vh;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
 }
 
-.right-panel {
-  width: 270px;
-  /* Fixed width for the editing tools */
-  overflow-y: auto;
-  height: 100vh;
-  border-left: 1px solid #333;
-  -webkit-box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
-          box-shadow: 0 0 10px rgba(41, 41, 41, 0.1);
+.dashboard .searchbar-container .d-search-bar .search-input::-webkit-input-placeholder {
+  color: #757575;
+  opacity: 1;
 }
 
-.right-panel::-webkit-scrollbar {
-  width: 5px;
-  /* Width of the scrollbar */
+.dashboard .searchbar-container .d-search-bar .search-input:-ms-input-placeholder {
+  color: #757575;
+  opacity: 1;
 }
 
-.right-panel::-webkit-scrollbar-track {
-  background: #333;
-  /* Background of the scrollbar track */
+.dashboard .searchbar-container .d-search-bar .search-input::-ms-input-placeholder {
+  color: #757575;
+  opacity: 1;
 }
 
-.right-panel::-webkit-scrollbar-thumb {
-  background-color: #C4D977;
-  /* Color of the scrollbar handle */
+.dashboard .searchbar-container .d-search-bar .search-input::placeholder {
+  color: #757575;
+  opacity: 1;
 }
 
-.right-panel::-webkit-scrollbar-thumb:hover {
-  background-color: #C4D977;
-  /* Handle color on hover */
-}
-
-h1, h2 {
-  margin: 0 0 20px;
-}
-
-.top-section {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: right;
-      -ms-flex-pack: right;
-          justify-content: right;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 0 20px;
-}
-
-.logo {
-  text-align: right;
-  font-family: "SUSE", sans-serif;
-  font-weight: 600;
-  font-style: normal;
-  font-size: 25px;
-  padding: 20px;
-}
-
-.user-info {
+.dashboard .searchbar-container .views-icons-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  direction: rtl;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 8px;
 }
 
-.user-image {
-  width: 60px;
-  height: 60px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  border: 1.8px solid #C4D977;
-  border-radius: 20%;
-  /* Makes the image circular */
-  margin-left: 20px;
-}
-
-.subscription {
-  color: #C4D977;
-  font-weight: 500;
-  font-size: 15px;
-}
-
-.user-name {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.tools-list {
-  margin-top: 20px;
-  font-family: "Rubik", sans-serif;
-  font-optical-sizing: auto;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-li, .tool-link {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 10px 10px;
+.dashboard .searchbar-container .views-icons-container .grid-icon,
+.dashboard .searchbar-container .views-icons-container .list-icon {
+  background: none;
+  border: none;
+  padding: 6px;
   cursor: pointer;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  border-radius: 4px;
+  -webkit-transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.tool-link.selected .tool-name {
-  color: #C4D977;
+.dashboard .searchbar-container .views-icons-container .active {
+  background-color: #333;
+  border-radius: 4px;
 }
 
-.tool-link.selected .tool-icon {
-  -webkit-filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
-          filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
+@media (max-width: 1024px) {
+  .dashboard {
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+        grid-template-areas: "header" "dashboard-navbar" "main" "footer";
+  }
+  .dashboard .searchbar-container .d-search-bar {
+    width: 70%;
+  }
+  .dashboard .dashboard-main {
+    padding: 1rem;
+  }
 }
 
-.tool-header {
-  text-align: right;
-  padding: 0 30px;
-  color: #555;
-  font-weight: 600;
+@media (max-width: 768px) {
+  .dashboard .dashboard-header {
+    padding: 1rem;
+  }
+  .dashboard .searchbar-container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 0.5rem;
+  }
+  .dashboard .searchbar-container .d-search-bar {
+    width: 90%;
+  }
+  .dashboard .searchbar-container .views-icons-container {
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    width: 90%;
+  }
+  .dashboard .dashboard-footer {
+    padding: 1rem;
+  }
+  .dashboard .dashboard-main {
+    padding: 1rem;
+  }
 }
 
-.tool-item.selected .tool-name {
-  color: #C4D977;
-}
-
-.tool-item.selected .tool-icon {
-  -webkit-filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
-          filter: brightness(0) saturate(100%) invert(82%) sepia(55%) saturate(396%) hue-rotate(11deg) brightness(101%) contrast(101%);
-}
-
-.tool-icon {
-  width: 16px;
-  height: 16px;
-  font-size: 24px;
-  margin-right: 10px;
-  margin-left: 5px;
-}
-
-.tool-name {
-  margin-right: 10px;
-  font-size: 16px;
-  text-align: right;
-  color: #CCF2C2;
+@media (max-width: 480px) {
+  .dashboard .searchbar-container .d-search-bar {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  .dashboard .searchbar-container .search-input {
+    font-size: 0.875rem;
+  }
+  .dashboard .searchbar-container .views-icons-container {
+    width: 100%;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+  }
 }
 /*# sourceMappingURL=dashboard.css.map */

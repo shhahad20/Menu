@@ -192,10 +192,12 @@ export const updateMenu = async (
 ) => {
   try {
     const { id } = req.params; // Template ID
-    const { name, sections } = req.body; // Template name and sections
+    // const { name, sections } = req.body; // Template name and sections
+        const { name } = req.body; 
+
     const userId = req.user?.id; // User ID from authentication
 
-    if (!id || !name || !sections) {
+    if (!id || !name) {
       return next(ApiError.badRequest("Missing required fields!"));
     }
 
@@ -211,80 +213,80 @@ export const updateMenu = async (
     }
 
     // Iterate over sections to update or add new ones
-    for (const section of sections) {
-      const { section_id, header, items } = section;
+    // for (const section of sections) {
+    //   const { section_id, header, items } = section;
 
-      if (section_id) {
-        // Update existing section
-        const { error: sectionError } = await supabase
-          .from("template_sections")
-          .update({ header })
-          .eq("section_id", section_id)
-          .eq("template_id", id);
+    //   if (section_id) {
+    //     // Update existing section
+    //     const { error: sectionError } = await supabase
+    //       .from("template_sections")
+    //       .update({ header })
+    //       .eq("section_id", section_id)
+    //       .eq("template_id", id);
 
-        if (sectionError) {
-          return next(
-            ApiError.internal(
-              `Error updating section '${header}': ${sectionError.message}`
-            )
-          );
-        }
-      } else {
-        // Add new section
-        const { data: newSection, error: newSectionError } = await supabase
-          .from("template_sections")
-          .insert([{ header, template_id: id }])
-          .select()
-          .single();
+    //     if (sectionError) {
+    //       return next(
+    //         ApiError.internal(
+    //           `Error updating section '${header}': ${sectionError.message}`
+    //         )
+    //       );
+    //     }
+    //   } else {
+    //     // Add new section
+    //     const { data: newSection, error: newSectionError } = await supabase
+    //       .from("template_sections")
+    //       .insert([{ header, template_id: id }])
+    //       .select()
+    //       .single();
 
-        if (newSectionError) {
-          return next(
-            ApiError.internal(
-              `Error adding new section '${header}': ${newSectionError.message}`
-            )
-          );
-        }
+    //     if (newSectionError) {
+    //       return next(
+    //         ApiError.internal(
+    //           `Error adding new section '${header}': ${newSectionError.message}`
+    //         )
+    //       );
+    //     }
 
-        section.section_id = newSection.section_id; // Assign new section ID for items
-      }
+    //     section.section_id = newSection.section_id; // Assign new section ID for items
+    //   }
 
       // Update or add items within the section
-      for (const item of items || []) {
-        const { item_id, title, price, description } = item;
+      // for (const item of items || []) {
+      //   const { item_id, title, price, description } = item;
 
-        if (item_id) {
-          // Update existing item
-          const { error: itemError } = await supabase
-            .from("template_items")
-            .update({ title, price, description })
-            .eq("item_id", item_id)
-            .eq("section_id", section.section_id);
+      //   if (item_id) {
+      //     // Update existing item
+      //     const { error: itemError } = await supabase
+      //       .from("template_items")
+      //       .update({ title, price, description })
+      //       .eq("item_id", item_id)
+      //       .eq("section_id", section.section_id);
 
-          if (itemError) {
-            return next(
-              ApiError.internal(
-                `Error updating item '${title}' in section '${header}': ${itemError.message}`
-              )
-            );
-          }
-        } else {
-          // Add new item
-          const { error: newItemError } = await supabase
-            .from("template_items")
-            .insert([
-              { title, price, description, section_id: section.section_id },
-            ]);
+      //     if (itemError) {
+      //       return next(
+      //         ApiError.internal(
+      //           `Error updating item '${title}' in section '${header}': ${itemError.message}`
+      //         )
+      //       );
+      //     }
+      //   } else {
+      //     // Add new item
+      //     const { error: newItemError } = await supabase
+      //       .from("template_items")
+      //       .insert([
+      //         { title, price, description, section_id: section.section_id },
+      //       ]);
 
-          if (newItemError) {
-            return next(
-              ApiError.internal(
-                `Error adding item '${title}' to section '${header}': ${newItemError.message}`
-              )
-            );
-          }
-        }
-      }
-    }
+      //     if (newItemError) {
+      //       return next(
+      //         ApiError.internal(
+      //           `Error adding item '${title}' to section '${header}': ${newItemError.message}`
+      //         )
+      //       );
+      //     }
+      //   }
+      // }
+    // }
 
     res.status(200).json({
       message: "Menu template updated successfully.",
@@ -311,11 +313,11 @@ export const deleteMenu = async (
     const { error, count } = await supabase
       .from("templates")
       .delete()
-      .eq("template_id", id)
+      .eq("id", id)
       .eq("user_id", userId);
 
     if (error) {
-      return next(ApiError.internal("Error deleting menu template"));
+      return next(ApiError.internal("Error deleting menu template " + error.message));
     }
 
     if (count === 0) {

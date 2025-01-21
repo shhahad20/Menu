@@ -48,6 +48,7 @@ interface MenuState {
   currentPage: number;
   userTemplates: MenuTemplate[];
   components: ComponentData[];
+  component: ComponentData | null;
 }
 
 const initialState: MenuState = {
@@ -59,6 +60,7 @@ const initialState: MenuState = {
   totalPages: 1,
   currentPage: 1,
   components:[],
+  component:null,
 };
 
 // Fetch data from backend using Axios
@@ -73,7 +75,7 @@ export const fetchCompData = createAsyncThunk(
   "templates/fetchCompData",
   async (id:string) => {
     const response = await axios.get(`${API_URL}/templates/${id}`);
-    console.log(response.data)
+    // console.log(response.data)
     return response.data;
   }
 ); 
@@ -153,11 +155,12 @@ export const copyMenuTemplate = createAsyncThunk(
 // Update a menu template (e.g., section or item)
 export const updateMenuTemplate = createAsyncThunk(
   "menu/updateMenuTemplate",
-  async ({ id, data }: { id: string; data: object }) => {
+  async ({ id, name }: { id: string; name: string }) => {
     const response = await axios.put(
       `${API_URL}/menus/${id}`,
-      data
+      {name}
     );
+    console.log(response.data.payload)
     return response.data.payload; // Adjusted for your API response
   }
 );
@@ -173,6 +176,16 @@ export const updateMenuComp = createAsyncThunk(
     return response.data.payload; // Adjusted for your API response
   }
 );
+export const deleteMenu = createAsyncThunk(
+  "menu/deleteMenu",
+  async (id:string) => {
+     await axios.delete(
+      `${API_URL}/menus/${id}`
+    );
+    return id;
+  }
+);
+
 const menuSlice = createSlice({
   name: "menu",
   initialState,
@@ -199,10 +212,7 @@ const menuSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch menu templates";
       })
-      .addCase(fetchMenuTemplateById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+
       .addCase(fetchMenuTemplatesForUser.pending, (state) => {
         state.loading = true;
       })
@@ -214,6 +224,10 @@ const menuSlice = createSlice({
       })
       .addCase(fetchMenuTemplatesForUser.rejected, (state) => {
         state.loading = false;
+      })
+      .addCase(fetchMenuTemplateById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
       .addCase(
         fetchMenuTemplateById.fulfilled,
@@ -237,13 +251,22 @@ const menuSlice = createSlice({
       // .addCase(updateMenuTemplate.fulfilled, (state, action) => {
       //   state.currentTemplate = action.payload;
       // })
+      .addCase(fetchCompData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(
         fetchCompData.fulfilled,
-        (state, action: PayloadAction<ComponentData[]>) => {
+        (state, action: PayloadAction<ComponentData>) => {
           state.loading = false;
-          state.components = action.payload;
+          state.component = action.payload;
         }
       )
+      builder.addCase(deleteMenu.fulfilled, (state, action) => {
+        state.templates = state.templates.filter(
+          (template: MenuTemplate) => template.id !== action.payload
+        );
+      });
       // .addCase(
       //   updateMenuComp.fulfilled,
       //   (state, action: PayloadAction<ComponentData[]>) => {

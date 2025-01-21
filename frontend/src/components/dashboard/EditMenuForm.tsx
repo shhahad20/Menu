@@ -553,7 +553,7 @@ const EditMenuForm = () => {
                           <button
                             onClick={() => handleDeleteItem(item.item_id)}
                           >
-                            🗑
+                            🗑 
                           </button>
                         </div>
                       </div>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/dashboard-elements/menuList.scss";
-import { fetchMenuTemplatesForUser } from "../../redux/menu/menuSlice";
+import { deleteMenu, fetchMenuTemplatesForUser } from "../../redux/menu/menuSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
 import Pagination from "../ui/Pagination";
 import { useTheme } from "../../context/ThemeContext";
+import { Link } from "react-router-dom";
 
 const MenusList: React.FC = () => {
   const { templates, totalPages, currentPage } = useSelector(
@@ -38,10 +39,10 @@ const MenusList: React.FC = () => {
   }, [dispatch, page, searchTerm, sortOption, sortOrder, limit]);
 
   const handleSearch = (value: string) => {
-    setSearchTerm(value); // Update search term state
+    setSearchTerm(value); 
   };
   const handleViewChange = (view: string) => {
-    setViewOption(view); // Update viewOption state
+    setViewOption(view); 
   };
 
   useEffect(() => {
@@ -49,10 +50,19 @@ const MenusList: React.FC = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   const handlePageChange = (page: number) => {
-    console.log("Page changed to:", page);
     setPage(page);
   };
+  const handleDeleteMenu = async (id: string) => {
+    try {
+      await dispatch(deleteMenu(id)).unwrap();
+    } catch (error) {
+      console.error("Failed to delete menu:", error);
+    }
+  };
+  
+
   console.log("View option is: " + viewOption);
   return (
     <>
@@ -89,6 +99,7 @@ const MenusList: React.FC = () => {
                     </p>
                   </div>
                   <div className="card-top-icons">
+                    <Link to={`${template.id}`} target="_blank">
                     <button className="edit-card-btn">
                       <svg
                         width="20"
@@ -106,7 +117,8 @@ const MenusList: React.FC = () => {
                         />
                       </svg>
                     </button>
-                    <button className="delete-card-btn">
+                    </Link>
+                    <button className="delete-card-btn" onClick={() =>handleDeleteMenu(template.id)}>
                       <svg
                         width="22"
                         height="22"
@@ -173,6 +185,7 @@ const MenusList: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <Link to={`/templates/${template.component_id}`} target="_blank">
                 <button className="view-menu-content">
                   {isMobile && viewOption === "list" ? (
                     <svg
@@ -193,6 +206,7 @@ const MenusList: React.FC = () => {
                     "View menu content"
                   )}
                 </button>
+                </Link>
               </div>
               </div>
             ))}

@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 html[data-theme="light"] {
   background-color: #ffffff;
   color: #1d2126;
-  font-family: "Poppins", sans-serif;
+  font-family: "Rubik", sans-serif;
 }
 
 html[data-theme="light"] #hero-section #hero_heading_section .hero-description {
@@ -23,7 +24,7 @@ html[data-theme="light"] .feature-container {
 
 html[data-theme="light"] .feature-section .feature-item {
   border: 1px solid #555;
-  background-color: #F9F4ED;
+  background-color: #f9f4ed;
 }
 
 html[data-theme="light"] .feature-section .feature-item h3 {
@@ -60,10 +61,105 @@ html[data-theme="light"] #menus-section .template-item {
   background-color: white;
 }
 
+html[data-theme="light"] .dashboard-navbar {
+  border-bottom: 1.5px solid #f5f5f5;
+}
+
+html[data-theme="light"] .searchbar-container .d-search-bar {
+  background-color: #f5f5f5;
+}
+
+html[data-theme="light"] .searchbar-container .d-search-bar .search-input {
+  color: #333;
+}
+
+html[data-theme="light"] .searchbar-container .views-icons-container .active {
+  background-color: #ececec;
+}
+
+html[data-theme="light"] .menus-list {
+  color: #333;
+}
+
+html[data-theme="light"] .menus-list .menu-card {
+  background: #fefefe;
+  border: 1.5px solid #d9d9d9;
+}
+
+html[data-theme="light"] .menus-list .menu-card .menu-status {
+  border-top: 1.5px solid #d9d9d9;
+  color: #757575;
+}
+
+html[data-theme="light"] .menus-list .menu-card .menu-status .status-icon.active {
+  color: #757575;
+}
+
+html[data-theme="light"] .menus-list .menu-card .view-menu-content {
+  border: 1.5px solid #d9d9d9;
+  color: #333;
+}
+
+html[data-theme="light"] .menus-list .menu-card .view-menu-content:hover {
+  border: 1.5px solid #333;
+  background: #333;
+  color: #fff;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-header h3 {
+  color: #333;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .menu-status {
+  color: #757575;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .menu-status .status-icon.active {
+  color: #757575;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .menu-status span {
+  color: #757575;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .view-menu-content {
+  border: 1.5px solid #d9d9d9;
+  color: #333;
+}
+
+html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .view-menu-content:hover {
+  border: 1.5px solid #333;
+  background: #333;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  html[data-theme="light"] .menus-list .menus-wrapper.list-view .menu-card .menu-card-bottom .view-menu-content {
+    border: none;
+  }
+}
+
+html[data-theme="light"] .pagination .pagination-button {
+  color: #333;
+}
+
+html[data-theme="light"] .pagination .pagination-button:disabled {
+  color: #757575;
+}
+
+html[data-theme="light"] .pagination .pagination-number {
+  color: #333;
+}
+
+html[data-theme="light"] .pagination .pagination-number.active {
+  background: #333;
+  color: #fff;
+}
+
 html[data-theme="dark"] {
-  background-color: #121212;
+  background-color: #111;
   color: #fffbf6;
-  font-family: "Poppins", sans-serif;
+  font-family: "Rubik", sans-serif;
 }
 
 html[data-theme="dark"] #hero-section #hero_heading_section .hero-description {
@@ -71,8 +167,8 @@ html[data-theme="dark"] #hero-section #hero_heading_section .hero-description {
   text-align: center;
   font-weight: 500;
   padding: 0 15px;
-  background: -webkit-gradient(linear, left bottom, left top, from(#CCF2C2), to(#C4D977));
-  background: linear-gradient(0deg, #CCF2C2, #C4D977);
+  background: -webkit-gradient(linear, left bottom, left top, from(#ccf2c2), to(#c4d977));
+  background: linear-gradient(0deg, #ccf2c2, #c4d977);
   background-clip: text;
   color: transparent;
   display: block;
@@ -81,7 +177,7 @@ html[data-theme="dark"] #hero-section #hero_heading_section .hero-description {
 }
 
 html[data-theme="dark"] .whowe-section {
-  background-color: #0D0D0D;
+  background-color: #0d0d0d;
 }
 
 html[data-theme="dark"] #navbar .slide-item {
@@ -94,7 +190,65 @@ html[data-theme="dark"] #mobile_menu {
 }
 
 html[data-theme="dark"] #footer-section {
-  background-color: #0D0D0D;
+  background-color: #0d0d0d;
+}
+
+html[data-theme="dark"] .d-search-bar {
+  background-color: #2c2c2c;
+}
+
+html[data-theme="dark"] .d-search-bar .search-input {
+  color: #ececec;
+}
+
+html[data-theme="dark"] .menus-list {
+  color: #fff;
+}
+
+html[data-theme="dark"] .menus-list .menu-card {
+  background: #181818;
+  border: 1.5px solid #333;
+}
+
+html[data-theme="dark"] .menus-list .menu-card .menu-card-bottom {
+  border-top: 1.5px solid #333;
+}
+
+html[data-theme="dark"] .menus-list .menu-card .menu-card-bottom .menu-status .status-icon .active-menu-img {
+  margin-right: 5px;
+}
+
+html[data-theme="dark"] .menus-list .menu-card .menu-card-bottom .menu-status .status-icon.active {
+  color: #d9d9d9;
+}
+
+html[data-theme="dark"] .menus-list .menu-card .menu-card-bottom .menu-status .menu-stats {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  padding-right: 10px;
+}
+
+html[data-theme="dark"] .menus-list .menu-card .menu-card-bottom .menu-status .menu-stats span {
+  color: #d9d9d9;
+}
+
+html[data-theme="dark"] .pagination .pagination-button {
+  color: #D9D9D9;
+}
+
+html[data-theme="dark"] .pagination .pagination-button:disabled {
+  color: #757575;
+}
+
+html[data-theme="dark"] .pagination .pagination-number {
+  color: #D9D9D9;
+}
+
+html[data-theme="dark"] .pagination .pagination-number.active {
+  background: #333;
+  color: #fff;
 }
 
 html[data-theme="dark"] button {

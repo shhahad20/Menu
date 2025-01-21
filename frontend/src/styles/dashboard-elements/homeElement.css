@@ -1,0 +1,216 @@
+.d-home {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+  background-color: #0a0a0a;
+}
+
+.d-home .d-home-container {
+  margin-top: 2rem;
+  width: 100%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 40px 1fr 30px;
+      grid-template-rows: 40px 1fr 30px;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  gap: 20px;
+  justify-items: center;
+}
+
+.d-home .d-home-container .d-home-topbar {
+  padding: 0 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  /* Spacing for large screens */
+  gap: 20px;
+}
+
+.d-home .d-home-container .d-home-topbar .search-bar {
+  padding: 8px;
+  font-size: 14px;
+  width: 905px;
+  /* Set a large width for big screens */
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .d-home .d-home-container .d-home-topbar .search-bar {
+    width: 100%;
+    /* Make it full width on smaller screens */
+  }
+}
+
+.d-home .d-home-container .d-home-topbar .sort-dropdown,
+.d-home .d-home-container .d-home-topbar .sort-order-dropdown,
+.d-home .d-home-container .d-home-topbar .limit-dropdown {
+  padding: 8px;
+  font-size: 14px;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 5px;
+  width: 150px;
+}
+
+@media (max-width: 768px) {
+  .d-home .d-home-container .d-home-topbar .sort-dropdown,
+  .d-home .d-home-container .d-home-topbar .sort-order-dropdown,
+  .d-home .d-home-container .d-home-topbar .limit-dropdown {
+    width: 100%;
+    /* Allow dropdowns to fill available space on smaller screens */
+  }
+}
+
+.d-home .d-home-container .d-home-topbar .view-options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
+.d-home .d-home-container .d-home-topbar .view-options .view-btn {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.d-home .d-home-container .d-home-topbar .view-options .view-btn.active {
+  background-color: #333;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .d-home .d-home-container .d-home-topbar .view-options {
+    width: 100%;
+    /* Make the view options span full width on smaller screens */
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    /* Allow the buttons to wrap if necessary */
+  }
+}
+
+.d-home .d-home-container .menus-list {
+  width: 100%;
+  padding: 0 210px;
+  height: 80vh;
+}
+
+.d-home .d-home-container .menus-list.list .menus-wrapper {
+  display: block;
+}
+
+.d-home .d-home-container .menus-list.list .menus-wrapper .menu-items {
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.d-home .d-home-container .menus-list.grid .menus-wrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(200px, 1fr))[3];
+      grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 20px;
+  border: 1px dashed green;
+}
+
+@media (max-width: 1024px) {
+  .d-home .d-home-container .menus-list.grid .menus-wrapper {
+    -ms-grid-columns: (minmax(200px, 1fr))[2];
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+    /* 2 columns for mid-sized screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .d-home .d-home-container .menus-list.grid .menus-wrapper {
+    -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    /* Single column for small screens */
+  }
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items {
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 15px;
+  color: #fff;
+  height: 140px;
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items:hover {
+  border: 1px solid #555;
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items .child-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items .child-item .sections-list .section-item {
+  margin-bottom: 10px;
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items .child-item .sections-list .section-item h4 {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+.d-home .d-home-container .menus-list.grid .menu-items .child-item .sections-list .section-item .items-list .item {
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+.d-home .d-home-container .pagination-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.d-home .d-home-container .pagination-controls button {
+  padding: 0 5px;
+  background-color: #121212;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.d-home .d-home-container .pagination-controls button:disabled {
+  background-color: #121212;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.d-home .d-home-container .pagination-controls span {
+  font-size: 16px;
+  color: #fff;
+}
+/*# sourceMappingURL=homeElement.css.map */

@@ -1,0 +1,292 @@
+.editing-container {
+  border: 1px dashed blue;
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.editing-container .divider {
+  width: 500px;
+  border-bottom: 1px solid #333;
+  margin: 2rem 0;
+}
+
+.editing-container .top-edit-page-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.editing-container .top-edit-page-header h1 {
+  font-size: 22px;
+}
+
+.editing-container .component-form .image-warpper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.editing-container .component-form .image-warpper .image-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  /* Custom button styling */
+  /* Upload icon styling */
+  /* Hover and focus effects for the button */
+  /* Hidden file input styling */
+}
+
+.editing-container .component-form .image-warpper .image-container .image-holder {
+  width: 321px;
+  height: 232px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.editing-container .component-form .image-warpper .image-container .image-holder img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.editing-container .component-form .image-warpper .image-container .file-upload-wrapper {
+  display: inline-block;
+  position: relative;
+  padding: 6px;
+}
+
+.editing-container .component-form .image-warpper .image-container .file-upload-button {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 5px 10px;
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #D9D9D9;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
+  text-align: center;
+  gap: 8px;
+  height: 37px;
+  width: 162px;
+}
+
+.editing-container .component-form .image-warpper .image-container .upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.editing-container .component-form .image-warpper .image-container .file-upload-button:hover {
+  background-color: #181818;
+  border-color: #bbb;
+}
+
+.editing-container .component-form .image-warpper .image-container .file-upload-button:focus {
+  outline: 2px solid #007bff;
+}
+
+.editing-container .component-form .image-warpper .image-container .hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.editing-container .component-form .image-rules {
+  color: #757575;
+  font-size: 12px;
+  width: 321px;
+}
+
+.editing-container .component-form .tag-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid #333;
+  background-color: #181818;
+  height: 35px;
+  width: 100%;
+  border-radius: 4px;
+  padding: 0 10px;
+}
+
+.editing-container .component-form .tag {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 2px 8px;
+  border: 1px solid #333;
+  background-color: #181818;
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.editing-container .component-form .remove-tag-button {
+  background: none;
+  border: none;
+  color: #757575;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.editing-container .component-form .remove-tag-button:hover {
+  color: #f00;
+}
+
+.editing-container .component-form .tag-input {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  outline: none;
+}
+
+.editing-container .component-form .tag-input::-webkit-input-placeholder {
+  color: #555;
+}
+
+.editing-container .component-form .tag-input:-ms-input-placeholder {
+  color: #555;
+}
+
+.editing-container .component-form .tag-input::-ms-input-placeholder {
+  color: #555;
+}
+
+.editing-container .component-form .tag-input::placeholder {
+  color: #555;
+}
+
+.editing-container .edit-menu-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+.editing-container .edit-menu-container .input-label-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  gap: 15px;
+}
+
+.editing-container .edit-menu-container .input-label-container .label {
+  color: #D9D9D9;
+  font-size: 16px;
+}
+
+.editing-container .edit-menu-container .input-label-container .editing-input {
+  border: 1px solid #333;
+  background-color: #181818;
+  height: 35px;
+  width: 100%;
+  border-radius: 4px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.editing-container .edit-menu-container .input-label-container .editing-input::-webkit-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.editing-container .edit-menu-container .input-label-container .editing-input:-ms-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.editing-container .edit-menu-container .input-label-container .editing-input::-ms-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.editing-container .edit-menu-container .input-label-container .editing-input::placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.editing-container .edit-menu-container .input-label-container .submit-btn {
+  border: 1px solid #333;
+  background-color: #181818;
+  width: 120px;
+  height: 31px;
+  border-radius: 4px;
+  font-size: 14px;
+  -webkit-transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.editing-container .edit-menu-container .input-label-container .submit-btn:hover {
+  background-color: #111;
+  color: #fff;
+}
+
+.editing-container .edit-menu-container .error-area {
+  color: #f00;
+  font-size: 14px;
+  font-weight: 500;
+}
+/*# sourceMappingURL=editingPage.css.map */

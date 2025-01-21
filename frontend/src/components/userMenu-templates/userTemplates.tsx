@@ -7,7 +7,7 @@ import {
 } from "../../redux/menu/menuSlice";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+ 
 const ParentComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { templates, loading, currentPage, totalPages } = useSelector(

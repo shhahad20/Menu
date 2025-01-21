@@ -7,12 +7,10 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   padding: 2rem 21rem;
-  font-family: "Rubik", sans-serif;
   font-optical-sizing: auto;
+  background-color: #0a0a0a;
+  height: 100vh;
 }
 
 .create-menu-section .top-container {

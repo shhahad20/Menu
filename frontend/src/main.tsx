@@ -21,6 +21,7 @@ import RequestDesign from "./pages/RequestDesign.tsx";
 import ParentComponent from "./components/userMenu-templates/userTemplates.tsx";
 import UserTemplate1 from "./components/userMenu-templates/userTemplateOne.tsx";
 import EditMenuForm from "./components/dashboard/EditMenuForm.tsx";
+import EditingPage from "./components/dashboard/EditingPage.tsx";
 
 // import Logout from './pages/Logout.tsx';
 
@@ -38,6 +39,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="menus/template2" element={<Template2 />} />
 
             <Route path="/dashboard/*" element={<Dashboard />} />
+            {/* <Route path="/dashboard/menus/edit/:componentId" element={<EditingPage />} /> */}
             {/* <Route path="/dashboard/*" element={<MainDashboard />} /> */}
             {/* <Route path="/dashboard/menus" element={<Dashboard />} /> */}
             <Route path="/templates" element={<ParentComponent />} />

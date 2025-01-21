@@ -64,10 +64,10 @@ export const getSingleData = async (
     }
 
     if (!data || data.length === 0) {
-      return null; // Instead of throwing an error, return null if data is not found
+      return new Error(`Component with ID: ${id} not found.`);
     }
 
-    return data;
+    return data[0];
   } catch (error) {
     console.error(
       "Error in getSingleData:",

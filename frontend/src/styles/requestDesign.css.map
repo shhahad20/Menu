@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,eAAe,CAAA;EACX,MAAM,EAAE,gBAAgB;EACxB,MAAM,EAAE,KAAK;CAEhB",
+    "sources": [
+        "requestDesign.scss"
+    ],
+    "names": [],
+    "file": "requestDesign.css"
+}
