@@ -11,6 +11,7 @@ import {
 } from "../../redux/menu/menuSlice";
 import "../../styles/dashboard-elements/editingPage.scss";
 import { useTheme } from "../../context/ThemeContext";
+import { createSection } from "../../redux/menu/sectionSlice";
 const EditingPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch: AppDispatch = useDispatch();
@@ -43,7 +44,12 @@ const EditingPage = () => {
     navbar: "",
     contact_info: "",
   });
-
+  const [newSection, setNewSection] = useState({
+    section_id: currentTemplate?.template_sections || "",
+    template_id: id,
+    header: "",
+    section_order: "0",
+  });
   const [imagePreview, setImagePreview] = useState<string>(
     typeof component?.header_img === "string" ? component.header_img : ""
   );
@@ -133,7 +139,32 @@ const EditingPage = () => {
       [name]: files && files[0] ? files[0] : value,
     }));
   };
-
+  const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewSection((prev) => ({ ...prev, [name]: value }));
+  };
+    const handleCreateOrUpdateSection = async (event: FormEvent) => {
+      // event.preventDefault();
+      try {
+        if (id) {
+          await dispatch(createSection({ template_id: id, header: newSection.header }));
+          alert("Section successfully updated/created!");
+          
+          // Reset newSection state
+          setNewSection({
+            section_id: currentTemplate?.template_sections || "",
+            template_id: id,
+            header: "",
+            section_order: "0",
+          });
+        } else {
+          alert("Incorrect id!");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to create/update section.");
+      }
+    };
   const handleMenuName = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -172,17 +203,6 @@ const EditingPage = () => {
         formData.append(key, value);
       }
     }
-
-    // formData.append("template_id", componentData.template_id || "");
-    // formData.append("header", filteredData.header || "");
-    // formData.append("logo", filteredData.logo || "");
-    // formData.append("slogan", filteredData.slogan || "");
-    // formData.append("navbar", filteredData.navbar || "");
-    // formData.append("contact_info", filteredData.contact_info || "");
-    // if (filteredData.header_img) {
-    //   formData.append("image_url", filteredData.header_img);
-    // }
-
     try {
       if (currentTemplate?.component_id) {
         await dispatch(
@@ -200,46 +220,6 @@ const EditingPage = () => {
       alert("Failed to update menu.");
     }
   };
-
-  // const handleMenuChanges = async (event: FormEvent) => {
-  //   event.preventDefault();
-  // console.log(componentData.header_img)
-  //   // Filter out empty fields from componentData
-  //   const filteredData = Object.fromEntries(
-  //     Object.entries(componentData).filter(([key, value]) => {
-  //       // Keep only fields that are not empty
-  //       if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
-  //       return value !== "" && value !== undefined; // Exclude empty strings or undefined
-  //     })
-  //   );
-  //   console.log(filteredData.header_img)
-  //   // Include the updated navbar only if it's not empty
-  //   const updatedNavbar = tags.join(",");
-  //   if (updatedNavbar.trim() !== "") {
-  //     filteredData.navbar = updatedNavbar;
-  //   }
-
-  //   try {
-  //     if (currentTemplate?.component_id) {
-  //       console.log(filteredData)
-  //       await dispatch(
-  //         updateMenuComp({
-  //           id: currentTemplate.component_id,
-  //           data: filteredData,
-  //         })
-  //       );
-  //       alert("Successfully updated the menu");
-  //     } else {
-  //       alert("Incorrect id!");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("Failed to update menu.");
-  //   }
-  // };
-
-  // console.log(componentData.navbar)
-  // console.log(tags.join(","))
 
   return (
     <div className="editing-container">
@@ -283,7 +263,6 @@ const EditingPage = () => {
         </div>
       </form>
       <div className="divider"></div>
-
       <form action="" onSubmit={handleMenuChanges} className="component-form">
         <div className="edit-menu-container">
           <div className="input-label-container">
@@ -407,6 +386,45 @@ const EditingPage = () => {
       </form>
 
       <div className="divider"></div>
+      <div className="top-edit-page-header">
+        <h1>Add New Section</h1>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 15 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 20h9"></path>
+          <path
+            d="M7.5 6.875V10M7.5 13.125C4.3934 13.125 1.875 10.6066 1.875 7.5C1.875 4.3934 4.3934 1.875 7.5 1.875C10.6066 1.875 13.125 4.3934 13.125 7.5C13.125 10.6066 10.6066 13.125 7.5 13.125ZM7.53113 5V5.0625L7.46887 5.06262V5H7.53113Z"
+            stroke={theme === "dark" ? "#D9D9D9" : "#757575"}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <form action="" onSubmit={handleCreateOrUpdateSection} className="template-form">
+        <div className="edit-menu-container">
+          <div className="input-label-container">
+            <label htmlFor="menu_name" className="label template-name">
+              Section Name
+            </label>
+            <input
+              className="editing-input"
+              type="text"
+              id="menu_name"
+              name="header"
+              placeholder="Max 250 characters"
+              onChange={handleSectionChange}
+            />
+            <button type="submit" className="submit-btn">
+              Add Section
+            </button>
+          </div>
+          <div className="error-area">*error</div>
+        </div>
+      </form>
     </div>
   );
 };
