@@ -168,12 +168,18 @@ export const updateMenuTemplate = createAsyncThunk(
 export const updateMenuComp = createAsyncThunk(
   "menu/updateMenuTemplate",
   async ({ id, data }: { id: string; data: object }) => {
-    const response = await axios.put(
-      `${API_URL}/templates/${id}`,
-      data
-    );
-    console.log(response.data)
-    return response.data.payload; // Adjusted for your API response
+    try {
+      const response = await axios.put(
+        `${API_URL}/templates/${id}`,
+        data
+      );
+      console.log(response.data)
+      return response.data.payload;
+    } catch (error) {
+      console.error("Error updating component:", error);
+      throw error;
+    }
+ // Adjusted for your API response
   }
 );
 export const deleteMenu = createAsyncThunk(

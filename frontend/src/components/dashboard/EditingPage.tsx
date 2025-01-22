@@ -32,7 +32,7 @@ const EditingPage = () => {
     logo: string | File;
     slogan: string;
     navbar: string;
-    contact_info: [];
+    contact_info: string;
   }>({
     id: currentTemplate?.component_id,
     template_id: currentTemplate?.id,
@@ -41,53 +41,37 @@ const EditingPage = () => {
     logo: "",
     slogan: "",
     navbar: "",
-    contact_info: [],
+    contact_info: "",
   });
 
+  const [imagePreview, setImagePreview] = useState<string>(
+    typeof component?.header_img === "string" ? component.header_img : ""
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Track loading state
+  const [error, setError] = useState<boolean>(false); // Track error state
 
-    const [imagePreview, setImagePreview] = useState<string>(
-      typeof component?.header_img === "string" ? component.header_img : ""
-    );
-    const [isLoading, setIsLoading] = useState<boolean>(true); // Track loading state
-    const [error, setError] = useState<boolean>(false); // Track error state
-  
-    useEffect(() => {
-      // Reset states when component or imagePreview changes
-      if (component?.header_img) {
-        setImagePreview(component.header_img as string);
-        setIsLoading(true);
-        setError(false);
-      }
-    }, [component]);
-  
-    const handleImageLoad = () => {
-      setIsLoading(false); // Image successfully loaded
-    };
-  
-    const handleImageError = () => {
-      setIsLoading(false); // Stop loading
-      setError(true); // Mark as an error
-    };
+  useEffect(() => {
+    // Reset states when component or imagePreview changes
+    if (component?.header_img) {
+      setImagePreview(component.header_img as string);
+      setIsLoading(true);
+      setError(false);
+    }
+  }, [component]);
+
+  const handleImageLoad = () => {
+    setIsLoading(false); // Image successfully loaded
+  };
+
+  const handleImageError = () => {
+    setIsLoading(false); // Stop loading
+    setError(true); // Mark as an error
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
-        alert("Only images with type jpeg, png, or jpg are allowed.");
-        return;
-      }
-
-      // File size validation (example: max 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        alert("File size must not exceed 2MB.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      console.log("Selected file:", file);
 
       setComponentData((prev) => ({
         ...prev,
@@ -138,12 +122,6 @@ const EditingPage = () => {
     }
   }, [currentTemplate]);
 
-//   const selectedComponent = component || null;
-  console.log(imagePreview);
-
-
-  //   console.log(com_id);
-
   const handleTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setTemplateName(value);
@@ -170,26 +148,98 @@ const EditingPage = () => {
       alert("Failed to update menu.");
     }
   };
-
   const handleMenuChanges = async (event: FormEvent) => {
     event.preventDefault();
+
+    const formData = new FormData();
+    const filteredData = Object.fromEntries(
+      Object.entries(componentData).filter(([key, value]) => {
+        // Keep only fields that are not empty
+        if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
+        return value !== "" && value !== undefined; // Exclude empty strings or undefined
+      })
+    );
+    const updatedNavbar = tags.join(",");
+    if (updatedNavbar.trim() !== "") {
+      filteredData.navbar = updatedNavbar;
+    }
+    for (const [key, value] of Object.entries(filteredData)) {
+      if (key === "header_img" && value instanceof File) {
+        // If it's a file, append it as a file field
+        formData.append("image_url", value);
+      } else {
+        // For other fields, append as a regular text field
+        formData.append(key, value);
+      }
+    }
+
+    // formData.append("template_id", componentData.template_id || "");
+    // formData.append("header", filteredData.header || "");
+    // formData.append("logo", filteredData.logo || "");
+    // formData.append("slogan", filteredData.slogan || "");
+    // formData.append("navbar", filteredData.navbar || "");
+    // formData.append("contact_info", filteredData.contact_info || "");
+    // if (filteredData.header_img) {
+    //   formData.append("image_url", filteredData.header_img);
+    // }
+
     try {
       if (currentTemplate?.component_id) {
         await dispatch(
           updateMenuComp({
             id: currentTemplate.component_id,
-            data: componentData,
+            data: formData,
           })
         );
+        alert("Successfully updated the menu");
       } else {
         alert("Incorrect id!");
       }
-      alert("Successfully updated the menu");
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to update menu.");
     }
   };
+
+  // const handleMenuChanges = async (event: FormEvent) => {
+  //   event.preventDefault();
+  // console.log(componentData.header_img)
+  //   // Filter out empty fields from componentData
+  //   const filteredData = Object.fromEntries(
+  //     Object.entries(componentData).filter(([key, value]) => {
+  //       // Keep only fields that are not empty
+  //       if (Array.isArray(value)) return value.length > 0; // Keep non-empty arrays
+  //       return value !== "" && value !== undefined; // Exclude empty strings or undefined
+  //     })
+  //   );
+  //   console.log(filteredData.header_img)
+  //   // Include the updated navbar only if it's not empty
+  //   const updatedNavbar = tags.join(",");
+  //   if (updatedNavbar.trim() !== "") {
+  //     filteredData.navbar = updatedNavbar;
+  //   }
+
+  //   try {
+  //     if (currentTemplate?.component_id) {
+  //       console.log(filteredData)
+  //       await dispatch(
+  //         updateMenuComp({
+  //           id: currentTemplate.component_id,
+  //           data: filteredData,
+  //         })
+  //       );
+  //       alert("Successfully updated the menu");
+  //     } else {
+  //       alert("Incorrect id!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("Failed to update menu.");
+  //   }
+  // };
+
+  // console.log(componentData.navbar)
+  // console.log(tags.join(","))
 
   return (
     <div className="editing-container">
@@ -243,19 +293,18 @@ const EditingPage = () => {
             <div className="image-warpper">
               <div className="image-container">
                 <div className="image-holder">
-                {isLoading && <p>Loading...</p>}
-                {!isLoading && error && <p>Failed to load image</p>}
-                {imagePreview && !error ? (
-        <img
-          src={imagePreview}
-          alt="Header Preview"
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          
-        />
-      ) : (
-        !isLoading && !imagePreview && <p>No image available</p> 
-      )}
+                  {isLoading && <p>Loading...</p>}
+                  {!isLoading && error && <p>Failed to load image</p>}
+                  {imagePreview && !error ? (
+                    <img
+                      src={imagePreview}
+                      alt="Header Preview"
+                      onLoad={handleImageLoad}
+                      onError={handleImageError}
+                    />
+                  ) : (
+                    !isLoading && !imagePreview && <p>No image available</p>
+                  )}
                 </div>
                 <div className="file-upload-wrapper">
                   <label className="file-upload-button">
@@ -336,6 +385,7 @@ const EditingPage = () => {
                   type="text"
                   id="tags-input"
                   value={inputValue}
+                  name="navbar"
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
                   placeholder={

@@ -73,28 +73,41 @@ export const updateComp = async (req, res, next) => {
     try {
         const userId = req.user?.id;
         const id = req.params.id;
-        const { template_id, header, image_url, logo, slogan, navbar, contact_info, } = req.body;
+        const { template_id, header, image_url, logo, slogan, navbar, contact_info } = req.body;
         if (req.file) {
-            const foundedData = await getSingleData(id, "simple_components", userId);
-            if (Array.isArray(foundedData) && foundedData.length > 0) {
-                const { header_img } = foundedData[0]; // Access the first element of the array
-                if (header_img) {
-                    const isDeleted = await deleteImageFromSupabase(header_img);
-                    if (!isDeleted) {
-                        console.error("Failed to delete image from Supabase storage.");
-                    }
+            console.log("File received:", req.file);
+        }
+        else {
+            console.log("No file received");
+        }
+        const foundedData = await getSingleData(id, "simple_components", userId);
+        if (!foundedData || foundedData.length === 0) {
+            return res.status(404).json({ error: "Data not found in database." });
+        }
+        // Extract the existing header image
+        const existingHeaderImg = foundedData.header_img;
+        console.log("Existing Header Image:", existingHeaderImg);
+        let header_img = existingHeaderImg;
+        if (req.file) {
+            console.log("File received, uploading new image.");
+            // Delete the previous image if it exists
+            if (existingHeaderImg) {
+                const isDeleted = await deleteImageFromSupabase(existingHeaderImg);
+                if (!isDeleted) {
+                    console.error("Failed to delete image from Supabase storage.");
                 }
             }
-            else {
-                return res.status(404).json({ error: "Data not found in database." });
-            }
+            // Upload the new image
+            header_img = await uploadImageToSupabase(req.file, userId);
         }
-        const header_img = req.file
-            ? await uploadImageToSupabase(req.file, userId)
-            : null;
-        // if (!header_img) {
-        //   return res.status(500).json({ error: "Failed to upload image" });
-        // }
+        else {
+            console.log("No new file uploaded; retaining existing header_img.");
+        }
+        // If no header_img exists (either was null or empty before), set it explicitly to null
+        if (!header_img || header_img === "") {
+            header_img = null;
+        }
+        // Update data in the database
         await updateData("simple_components", id, {
             userId,
             template_id,
