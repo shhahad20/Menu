@@ -12,6 +12,7 @@ const SectionsAccordion : React.FC<SectionsAccordionProps> = ({ templateId }) =>
   const dispatch: AppDispatch = useDispatch();
   const { sections } = useSelector((state: RootState) => state.sections);
 
+
   useEffect(() => {
     if(templateId){
         dispatch(fetchSectionsForTemplate(templateId));

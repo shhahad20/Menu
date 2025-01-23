@@ -8,17 +8,18 @@ export const getAllMenuItems = async (
   searchField: string,
   pageNo: number = 1,
   limit: number = 5,
-  sortField: string, 
-  sortOrder: string ,
-  searchQuery?: string,
+  sortField: string,
+  sortOrder: string,
+  searchQuery?: string
 ) => {
   try {
     const offset = (pageNo - 1) * limit;
- 
+
     // Step 1: Query template_items and join template_sections and templates with user_id filter
     let query = supabase
       .from(tableName)
-      .select(`
+      .select(
+        `
         item_id,
         title,
         description,
@@ -33,12 +34,14 @@ export const getAllMenuItems = async (
             user_id
           )
         )
-      `, { count: 'exact' })
-      .eq('template_sections.templates.user_id', userId) // Filter based on user_id of templates table
-      .not('template_sections','is', null)
-      .not('template_sections.templates','is', null)
+      `,
+        { count: "exact" }
+      )
+      .eq("template_sections.templates.user_id", userId) // Filter based on user_id of templates table
+      .not("template_sections", "is", null)
+      .not("template_sections.templates", "is", null)
       .range(offset, offset + limit - 1)
-      .order(sortField, { ascending: sortOrder === 'asc' });
+      .order(sortField, { ascending: sortOrder === "asc" });
 
     if (searchQuery) {
       query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
@@ -68,7 +71,6 @@ export const getAllMenuItems = async (
     throw new Error(`Failed to fetch data: ${error}`);
   }
 };
-
 
 export const getMenuItemById = async (
   id: string,
@@ -127,14 +129,53 @@ export const getMenuItemById = async (
     throw new Error(`Failed to fetch the item: ${error}`);
   }
 };
+export const getSectionItemsById = async (
+  id: string,
+  userId: string | undefined,
+  sectionId: string
+) => {
+  try {
+    console.log("Inputs:", { id, userId, sectionId });
+    if (!id || !userId || !sectionId) {
+      throw new Error(
+        "Invalid input: id, userId, and sectionId must all be provided."
+      );
+    }
+    const { data, error } = await supabase
+      .from("template_items")
+      .select(
+        `
+      item_id,
+      title,
+      price,
+      description,
+      section_id
+    `
+      )
+      .eq("section_id", sectionId);
 
+    if (error) {
+      console.error("Error fetching section items:", error);
+      throw new Error(error.message);
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error("Menu or sections not found");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error in getMenuItemById:", error);
+    throw new Error(`Failed to fetch the item: ${error}`);
+  }
+};
 export const createMenuItem = async (menuItemData: {
   templateId: string;
   section_id: string;
   title: string;
   price: number;
   description: string;
-  // image_url: string | File | null; 
+  // image_url: string | File | null;
   user_id: string | undefined;
 }) => {
   try {

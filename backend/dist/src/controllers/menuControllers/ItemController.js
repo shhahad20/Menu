@@ -40,6 +40,23 @@ export const getMenuItem = async (req, res, next) => {
         return next(ApiError.internal("Failed to fetch menu item" + error));
     }
 };
+export const getSectionItems = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        const { id, sectionId } = req.params;
+        // const { sectionId } = req.body;
+        const sectionItems = await menuItemService.getSectionItemsById(id, userId, sectionId);
+        if (sectionItems) {
+            res.status(200).json(sectionItems);
+        }
+        else {
+            return next(ApiError.notFound("Item not found"));
+        }
+    }
+    catch (error) {
+        return next(ApiError.internal("Failed to fetch menu item" + error));
+    }
+};
 export const createMenuItem = async (req, res, next) => {
     try {
         const userId = req.user?.id;

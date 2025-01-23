@@ -5,6 +5,7 @@ import { isLoggedIn } from '../../middleware/authentication.js';
 const router = express.Router();
 router.get('/', isLoggedIn, menuItemController.getMenuItems);
 router.get('/:id', isLoggedIn, menuItemController.getMenuItem);
+router.get('/all/:id/:sectionId', isLoggedIn, menuItemController.getSectionItems);
 router.post('/', isLoggedIn, uploadMiddleware, menuItemController.createMenuItem);
 router.put('/', isLoggedIn, uploadMiddleware, menuItemController.updateMeuItem);
 router.delete('/:id', isLoggedIn, menuItemController.deleteMenuItem);

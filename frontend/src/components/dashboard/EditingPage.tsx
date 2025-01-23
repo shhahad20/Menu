@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   fetchCompData,
   fetchMenuTemplateById,
@@ -14,10 +14,9 @@ import { useTheme } from "../../context/ThemeContext";
 import {
   createSection,
   fetchSectionsForTemplate,
-  removeSection,
-  Section,
 } from "../../redux/menu/sectionSlice";
 import SectionsAccordion from "../ui/SectionAccordion";
+import { createItem } from "../../redux/menu/itemSlice";
 const EditingPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch: AppDispatch = useDispatch();
@@ -26,6 +25,7 @@ const EditingPage = () => {
   const { currentTemplate, component } = useSelector(
     (state: RootState) => state.menu
   );
+
   const [isAccordionOpen, setIsAccordionOpen] = useState(false); // Track container state
   const [activeEditId, setActiveEditId] = useState<string | null>(null);
   const [updatedSectionName, setUpdatedSectionName] = useState("");
@@ -63,6 +63,13 @@ const EditingPage = () => {
   const [imagePreview, setImagePreview] = useState<string>(
     typeof component?.header_img === "string" ? component.header_img : ""
   );
+  const [newItem, setNewItem] = useState({
+    section_id: "",
+    title: "",
+    description: "",
+    price: "",
+  });
+  const [selectedSection, setSelectedSection] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true); // Track loading state
   const [error, setError] = useState<boolean>(false); // Track error state
 
@@ -238,21 +245,48 @@ const EditingPage = () => {
       alert("Failed to update menu.");
     }
   };
+  const handleItemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewItem((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleOptions = (event: ChangeEvent<HTMLSelectElement>) => {
+    const sectionValue = event.target.value; // Fetch the selected value
+    if (sectionValue === "") {
+      alert("Please select a valid section."); // Display an error message
+      return;
+    }
+    setSelectedSection(sectionValue);
 
-  // const handleEditClick = (section: Section) => {
-  //   setActiveEditId(section.section_id);
-  //   setUpdatedSectionName(section.header); // Pre-fill with current name
-  // };
-  // const toggleAccordionContainer = () => {
-  //   setIsAccordionOpen((prevState) => !prevState); // Toggle open/close state
-  // };
-  // const handleSaveClick = (sectionId: string) => {
-  //   // handleUpdate(sectionId, updatedSectionName);
-  //   setActiveEditId(null); // Close the input field after saving
-  // };
-  // const handleDeleteSection = (sectionId: string) => {
-  //   dispatch(removeSection(sectionId));
-  // };
+    setNewItem((prevProduct) => ({
+      ...prevProduct,
+      section_id: sectionValue,
+    }));
+  };
+  const handleCreateItem = async (event: FormEvent) => {
+    event.preventDefault();
+    console.log(newItem);
+    try {
+      if (currentTemplate?.component_id) {
+        await dispatch(createItem(newItem));
+        setNewItem({
+          section_id: "",
+          title: "",
+          description: "",
+          price: "",
+        });
+        alert("Successfully create an item.");
+
+      } else {
+        alert("Incorrect id!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to create item.");
+    }
+  };
   return (
     <div className="editing-container">
       <div className="top-edit-page-header">
@@ -496,6 +530,145 @@ const EditingPage = () => {
         </div>
       </form>
       <SectionsAccordion templateId={id} />
+
+      <div className="divider"></div>
+      <div className="top-edit-page-header">
+        <h1>Add New Item</h1>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 15 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 20h9"></path>
+          <path
+            d="M7.5 6.875V10M7.5 13.125C4.3934 13.125 1.875 10.6066 1.875 7.5C1.875 4.3934 4.3934 1.875 7.5 1.875C10.6066 1.875 13.125 4.3934 13.125 7.5C13.125 10.6066 10.6066 13.125 7.5 13.125ZM7.53113 5V5.0625L7.46887 5.06262V5H7.53113Z"
+            stroke={theme === "dark" ? "#D9D9D9" : "#757575"}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+
+      <form action="" onSubmit={handleCreateItem} className="component-form">
+        <div className="edit-menu-container">
+          <div className="input-label-container">
+            <label htmlFor="menu_name" className="label component-image">
+              Item Image
+            </label>
+            <div className="image-warpper">
+              <div className="image-container">
+                <div className="image-holder">No image available</div>
+                <div className="file-upload-wrapper">
+                  <label className="file-upload-button">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="upload-icon"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                      />
+                    </svg>
+                    Upload a file
+                    <input
+                      type="file"
+                      className="hidden-file-input"
+                      // onChange={handleFileChange}
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="image-rules">
+              <p>
+                Only images with type (jpeg, png, jpg) are allowed. The size of
+                the image should be xxx x xxx
+              </p>
+            </div>
+            <div className="input-label-container">
+              <label htmlFor="menu_name" className="label">
+                Title
+              </label>
+              <input
+                className="editing-input"
+                type="text"
+                id="menu_name"
+                name="title"
+                value={newItem.title}
+                placeholder="Max 250 characters"
+                onChange={handleItemChange}
+                required
+              />
+            </div>
+            <div className="input-label-container">
+              <label htmlFor="menu_name" className="label">
+                Description
+              </label>
+              <input
+                className="editing-input"
+                type="text"
+                id="menu_name"
+                name="description"
+                value={newItem.description}
+
+                placeholder="Max 250 characters"
+                onChange={handleItemChange}
+                required
+              />
+            </div>
+            <div className="input-label-container">
+              <label htmlFor="tags-input" className="label tag-label ">
+                Price
+              </label>
+              <input
+                className="editing-input"
+                type="number"
+                id="menu_name"
+                name="price"
+                value={newItem.price}
+
+                placeholder="ex: 12.99"
+                onChange={handleItemChange}
+                required
+              />
+            </div>
+            <div className="input-label-container">
+              <label htmlFor="menu_name" className="">
+                Sections
+              </label>
+              <select
+                name="item-section"
+                className="section-select"
+                onChange={handleOptions}
+                value={selectedSection || ""}
+                required
+              >
+                <option value="" disabled>
+                  Select a section
+                </option>
+                {sections
+                  .filter((section) => section.section_id && section.header)
+                  .map((section) => (
+                    <option key={section.section_id} value={section.section_id}>
+                      {section.header}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <button type="submit" className="submit-btn">
+              Add Item
+            </button>
+          </div>
+          <div className="error-area">*error</div>
+        </div>
+      </form>
     </div>
   );
 };

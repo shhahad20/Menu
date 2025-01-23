@@ -1,10 +1,7 @@
 import { useState } from "react";
-// import { fetchSectionsForTemplate, removeSection, Section } from "../../redux/menu/sectionSlice";
-// import { AppDispatch, RootState } from "../../redux/store";
-// import { useDispatch } from "react-redux";
-// import { useSelector } from "react-redux";
-import "../../styles/ui/accordion.scss";
 import { useTheme } from "../../context/ThemeContext";
+
+import "../../styles/ui/accordion.scss";
 interface AccordionProps<T> {
   title: string; // Title of the accordion
   data: T[]; // Generic data array

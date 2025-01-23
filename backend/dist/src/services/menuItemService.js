@@ -21,12 +21,12 @@ export const getAllMenuItems = async (userId, tableName, searchField, pageNo = 1
             user_id
           )
         )
-      `, { count: 'exact' })
-            .eq('template_sections.templates.user_id', userId) // Filter based on user_id of templates table
-            .not('template_sections', 'is', null)
-            .not('template_sections.templates', 'is', null)
+      `, { count: "exact" })
+            .eq("template_sections.templates.user_id", userId) // Filter based on user_id of templates table
+            .not("template_sections", "is", null)
+            .not("template_sections.templates", "is", null)
             .range(offset, offset + limit - 1)
-            .order(sortField, { ascending: sortOrder === 'asc' });
+            .order(sortField, { ascending: sortOrder === "asc" });
         if (searchQuery) {
             query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search
         }
@@ -91,6 +91,36 @@ export const getMenuItemById = async (id, userId, menuId) => {
             throw new Error("Item not found in the menu");
         }
         return item;
+    }
+    catch (error) {
+        console.error("Error in getMenuItemById:", error);
+        throw new Error(`Failed to fetch the item: ${error}`);
+    }
+};
+export const getSectionItemsById = async (id, userId, sectionId) => {
+    try {
+        console.log("Inputs:", { id, userId, sectionId });
+        if (!id || !userId || !sectionId) {
+            throw new Error("Invalid input: id, userId, and sectionId must all be provided.");
+        }
+        const { data, error } = await supabase
+            .from("template_items")
+            .select(`
+      item_id,
+      title,
+      price,
+      description,
+      section_id
+    `)
+            .eq("section_id", sectionId);
+        if (error) {
+            console.error("Error fetching section items:", error);
+            throw new Error(error.message);
+        }
+        if (!data || data.length === 0) {
+            throw new Error("Menu or sections not found");
+        }
+        return data;
     }
     catch (error) {
         console.error("Error in getMenuItemById:", error);
