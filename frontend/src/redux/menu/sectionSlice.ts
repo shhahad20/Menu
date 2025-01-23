@@ -164,7 +164,7 @@ const sectionSlice = createSlice({
         state.error = action.error.message || "Failed to create section.";
       })
       builder.addCase(updateSection.fulfilled, (state, action) => {
-        const updatedSection = action.payload; // The updated section object
+        const updatedSection = action.payload[0]; // The updated section object
         const index = state.sections.findIndex(
           (section) => section.section_id === updatedSection.section_id
         );

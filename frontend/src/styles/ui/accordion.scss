@@ -17,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #181818;
-  padding: 10px;
+  padding: 5px 10px;
   cursor: pointer;
   // border-bottom: 1px solid #333;
 }
@@ -103,6 +103,16 @@
 .edit-buttons {
   margin-top: 10px;
 
+}
+.toggle-btn {
+  // background-color: red; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  padding: 0; 
+  margin: 0; 
+  border: none;
+  cursor: pointer; 
 }
 
 .save-btn, .cancel-btn {
