@@ -112,6 +112,47 @@ export const getMenuSectionById = async (
   }
 };
 
+export const getMenuSectionsById = async (
+  userId: string | undefined,
+  id: string
+) => {
+  try {
+    if ( !userId || !id) {
+      throw new Error(
+        "Invalid input: userId, and sectionId must all be provided."
+      );
+    }
+    const { data, error } = await supabase
+      .from("template_sections")
+      .select(
+        `
+          section_id,
+          header,
+          section_order,
+          template_id,
+          templates(
+          id,
+          user_id
+          )
+    `
+      )
+      .eq("template_id", id) 
+      .eq("templates.user_id", userId);
+
+    if (error) {
+      console.error("Error fetching menu section:", error);
+      throw new Error(error.message);
+    }
+
+    if (!data) {
+      throw new Error("Menu or section not found");
+    }
+    return data;
+  } catch (error) {
+    console.error("Error in getMenuSectionsById: ", error);
+    throw new Error(`Failed to fetch the sections: ${error}`);
+  }
+};
 export const createMenuSection = async (menuSectionData: {
   template_id: string;
   header: string;

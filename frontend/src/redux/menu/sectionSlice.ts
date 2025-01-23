@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { API_URL } from "../../api/api";
 import axios from "axios";
 
@@ -48,7 +48,19 @@ export const fetchSections = createAsyncThunk(
     }
   }
 );
-
+export const fetchSectionsForTemplate = createAsyncThunk(
+  "sections/fetch-all-sections",
+  async (
+    template_id: string
+  ) => {
+    try {
+      const response = await axios.get(`${API_URL}/menu/menu-sections/all/${template_id}`);
+      return response.data;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+);
 export const fetchSectionById = createAsyncThunk(
   "sections/fetch-sections",
   async (section_id: string) => {
@@ -86,14 +98,24 @@ export const updateSection = createAsyncThunk(
   }
 );
 
+// export const removeSection = createAsyncThunk(
+//   "sections/removeSection",
+//   async (id: string) => {
+//     await axios.delete(`${API_URL}/menu/menu-sections/${id}`);
+//     return id;
+//   }
+// );
 export const removeSection = createAsyncThunk(
   "sections/removeSection",
-  async (id: string) => {
-    await axios.delete(`${API_URL}/menu/menu-sections/${id}`);
-    return id;
+  async (id: string, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_URL}/menu/menu-sections/${id}`);
+      return id; 
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );
-
 const sectionSlice = createSlice({
   name: "sections",
   initialState: {
@@ -111,6 +133,21 @@ const sectionSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    .addCase(fetchSectionsForTemplate.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(
+      fetchSectionsForTemplate.fulfilled,
+      (state, action: PayloadAction<Section[]>) => {
+        state.loading = false;
+        state.sections = action.payload;
+      }
+    )
+    .addCase(fetchSectionsForTemplate.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "Failed to fetch sections.";
+    })
       .addCase(fetchSections.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -126,17 +163,19 @@ const sectionSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to create section.";
       })
-      .addCase(updateSection.fulfilled, (state, action) => {
+      builder.addCase(updateSection.fulfilled, (state, action) => {
+        const updatedSection = action.payload; // The updated section object
         const index = state.sections.findIndex(
-          (s) => s.section_id === action.payload.section_id
+          (section) => section.section_id === updatedSection.section_id
         );
         if (index !== -1) {
-          state.sections[index] = action.payload;
+          state.sections[index] = updatedSection; // Replace the old section with the updated one
         }
-      })
-      .addCase(removeSection.fulfilled, (state, action) => {
+      });
+      
+      builder.addCase(removeSection.fulfilled, (state, action) => {
         state.sections = state.sections.filter(
-          (s) => s.section_id !== action.payload
+          (section) => section.section_id !== action.payload
         );
       });
   },

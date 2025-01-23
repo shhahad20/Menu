@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import ApiError from "../../errors/ApiError.js";
 import { supabase } from "../../config/supabaseClient.js"; 
-import {createMenuSection, deleteMenuSections, getAllMenuSections, getMenuSectionById, updateMenuSections} from "../../services/sectionService.js";
+import {createMenuSection, deleteMenuSections, getAllMenuSections, getMenuSectionById, getMenuSectionsById, updateMenuSections} from "../../services/sectionService.js";
 
 
 export const getMenuSections = async (
@@ -58,6 +58,27 @@ export const getMenuSection = async (
     return next(ApiError.internal("Failed to fetch menu section " + error));
   }
 };
+
+export const getMenuSectionsOfTemplate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    const id = req.params.id;
+    // const { sectionId } = req.body;
+
+    const menuSection = await getMenuSectionsById( userId, id);
+    if (menuSection) {
+      res.status(200).json(menuSection);
+    } else {
+      return next(ApiError.notFound("Section not found"));
+    }
+  } catch (error) {
+    return next(ApiError.internal("Failed to fetch menu section " + error));
+  }
+};
 export const createSection = async (
   req: Request,
   res: Response,
@@ -98,35 +119,9 @@ export const updateMeunSection = async (
   try {
     const userId = req.user?.id;
     const { header, section_id } = req.body;
+    const updatedSection = await updateMenuSections(userId,section_id, header);
 
-    // Fetch the existing menu item to get the current image URL
-    // const existingMenuItem = await menuItemService.getMenuItemById(
-    //   item_id,
-    //   userId
-    // );
-    // if (!existingMenuItem) {
-    //   return res.status(404).json({ error: "Menu item not found" });
-    // }
-    // let imageUrl = existingMenuItem.image_url;
-    // If a new file is uploaded, delete the old image and upload the new one
-    // if (req.file) {
-    //   // Delete the previous image
-    //   const deleted = await deleteImageFromSupabase(imageUrl);
-    //   if (!deleted) {
-    //     console.warn(`Failed to delete old image: ${imageUrl}`);
-    //   }
-
-    //   // Upload the new image
-    //   imageUrl = await uploadImageToSupabase(req.file, userId);
-    //   if (!imageUrl) {
-    //     return res
-    //       .status(500)
-    //       .json({ error: "Failed to upload the new image" });
-    //   }
-    // }
-    await updateMenuSections(userId,section_id, header);
-
-    res.status(200).json({ message: `You updated section with id: ${section_id}` });
+    res.status(200).json(updatedSection);
   } catch (error) {
     next(error);
   }

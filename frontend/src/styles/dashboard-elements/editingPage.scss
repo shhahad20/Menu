@@ -201,11 +201,14 @@
     color: #555;
   }
 }
-
+// .section-option{
+//   display: flex;
+//   justify-content: space-between;
+// }
 .edit-menu-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    // border: 1px dashed red;
+    border: 1px dashed green;
     align-items: center;
     gap: 10px;
     .input-label-container{
@@ -253,4 +256,7 @@
         font-weight: 500;
     }
   }
+
+
+  
 }

@@ -1,0 +1,174 @@
+.accordion-wrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  border: 1px dashed green;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+.accordion {
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.accordion-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #181818;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.accordion-table {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.accordion-table-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 2rem;
+  font-weight: 500;
+  border-bottom: 1px solid #333;
+}
+
+.accordion-table-header > div {
+  padding: 10px;
+  text-align: center;
+}
+
+.accordion-table-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 2rem;
+  border-bottom: 1px solid #333;
+}
+
+.accordion-table-row > div {
+  padding: 10px;
+  text-align: center;
+}
+
+.actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.edit-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 15px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.edit-section {
+  margin-top: 20px;
+}
+
+.edit-section h3 {
+  color: #d9d9d9;
+  font-size: 16px;
+}
+
+.update-input {
+  border: 1px solid #333;
+  background-color: #181818;
+  height: 35px;
+  width: 100%;
+  border-radius: 4px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.update-input::-webkit-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.update-input:-ms-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.update-input::-ms-input-placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.update-input::placeholder {
+  color: #555;
+  font-size: 14px;
+}
+
+.edit-buttons {
+  margin-top: 10px;
+}
+
+.save-btn, .cancel-btn {
+  border: 1px solid #333;
+  background-color: #181818;
+  cursor: pointer;
+  width: 120px;
+  height: 31px;
+  border-radius: 4px;
+  font-size: 14px;
+  -webkit-transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.save-btn:hover, .cancel-btn:hover {
+  background-color: #111;
+  color: #fff;
+}
+
+.cancel-btn {
+  margin-left: 15px;
+}
+/*# sourceMappingURL=accordion.css.map */

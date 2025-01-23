@@ -11,7 +11,13 @@ import {
 } from "../../redux/menu/menuSlice";
 import "../../styles/dashboard-elements/editingPage.scss";
 import { useTheme } from "../../context/ThemeContext";
-import { createSection } from "../../redux/menu/sectionSlice";
+import {
+  createSection,
+  fetchSectionsForTemplate,
+  removeSection,
+  Section,
+} from "../../redux/menu/sectionSlice";
+import SectionsAccordion from "../ui/SectionAccordion";
 const EditingPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch: AppDispatch = useDispatch();
@@ -20,7 +26,10 @@ const EditingPage = () => {
   const { currentTemplate, component } = useSelector(
     (state: RootState) => state.menu
   );
-
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false); // Track container state
+  const [activeEditId, setActiveEditId] = useState<string | null>(null);
+  const [updatedSectionName, setUpdatedSectionName] = useState("");
+  const { sections } = useSelector((state: RootState) => state.sections);
   const [templateName, setTemplateName] = useState(currentTemplate?.name || "");
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -44,6 +53,7 @@ const EditingPage = () => {
     navbar: "",
     contact_info: "",
   });
+  // const [sections, setSections] = useState<Section[]>([]);
   const [newSection, setNewSection] = useState({
     section_id: currentTemplate?.template_sections || "",
     template_id: id,
@@ -109,6 +119,7 @@ const EditingPage = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchMenuTemplateById(id));
+      dispatch(fetchSectionsForTemplate(id));
     }
   }, [dispatch, id]);
 
@@ -127,6 +138,11 @@ const EditingPage = () => {
       setTemplateName(currentTemplate.name);
     }
   }, [currentTemplate]);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(fetchSectionsForTemplate(id))
+  //   }
+  // }, [dispatch,id]);
 
   const handleTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -143,28 +159,30 @@ const EditingPage = () => {
     const { name, value } = e.target;
     setNewSection((prev) => ({ ...prev, [name]: value }));
   };
-    const handleCreateOrUpdateSection = async (event: FormEvent) => {
-      // event.preventDefault();
-      try {
-        if (id) {
-          await dispatch(createSection({ template_id: id, header: newSection.header }));
-          alert("Section successfully updated/created!");
-          
-          // Reset newSection state
-          setNewSection({
-            section_id: currentTemplate?.template_sections || "",
-            template_id: id,
-            header: "",
-            section_order: "0",
-          });
-        } else {
-          alert("Incorrect id!");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Failed to create/update section.");
+  const handleCreateOrUpdateSection = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      if (id) {
+        await dispatch(
+          createSection({ template_id: id, header: newSection.header })
+        );
+        // alert("Section successfully updated/created!");
+
+        // Reset newSection state
+        setNewSection({
+          section_id: currentTemplate?.template_sections || "",
+          template_id: id,
+          header: "",
+          section_order: "0",
+        });
+      } else {
+        alert("Incorrect id!");
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to create/update section.");
+    }
+  };
   const handleMenuName = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -221,6 +239,20 @@ const EditingPage = () => {
     }
   };
 
+  // const handleEditClick = (section: Section) => {
+  //   setActiveEditId(section.section_id);
+  //   setUpdatedSectionName(section.header); // Pre-fill with current name
+  // };
+  // const toggleAccordionContainer = () => {
+  //   setIsAccordionOpen((prevState) => !prevState); // Toggle open/close state
+  // };
+  // const handleSaveClick = (sectionId: string) => {
+  //   // handleUpdate(sectionId, updatedSectionName);
+  //   setActiveEditId(null); // Close the input field after saving
+  // };
+  // const handleDeleteSection = (sectionId: string) => {
+  //   dispatch(removeSection(sectionId));
+  // };
   return (
     <div className="editing-container">
       <div className="top-edit-page-header">
@@ -404,7 +436,11 @@ const EditingPage = () => {
           />
         </svg>
       </div>
-      <form action="" onSubmit={handleCreateOrUpdateSection} className="template-form">
+      <form
+        action=""
+        onSubmit={handleCreateOrUpdateSection}
+        className="template-form"
+      >
         <div className="edit-menu-container">
           <div className="input-label-container">
             <label htmlFor="menu_name" className="label template-name">
@@ -421,10 +457,45 @@ const EditingPage = () => {
             <button type="submit" className="submit-btn">
               Add Section
             </button>
+            {/* <div className="input-label-container">
+              <label htmlFor="menu_name" className="">
+                Sections
+              </label>
+              <select name="template-sections" className="editing-input">
+                {sections
+                  .filter((section) => section.section_id && section.header)
+                  .map((section) => (
+                    <option
+                      key={section.section_id}
+                      value={section.section_id}
+                      className="section-option"
+                    >
+                      {section.header}
+                    </option>
+                  ))}
+              </select>
+            </div> */}
+            {/* <div className="input-label-container">
+              <label htmlFor="menu_name" className="label">
+                Update Section Name
+              </label>
+              <input
+                className="editing-input"
+                type="text"
+                id="menu_name"
+                name="header"
+                placeholder="Max 250 characters"
+                onChange={handleCompChange}
+              />
+              <button type="submit" className="submit-btn">
+                Update Section
+              </button>
+            </div> */}
           </div>
           <div className="error-area">*error</div>
         </div>
       </form>
+      <SectionsAccordion templateId={id} />
     </div>
   );
 };
