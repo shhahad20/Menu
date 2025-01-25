@@ -226,7 +226,8 @@ export const updateMenuItem = async (
   item_id: string,
   title: string,
   price: number,
-  description: string
+  description: string,
+  section_id: string,
   // image_url: string | File | null;
 ) => {
   const { data, error } = await supabase
@@ -246,12 +247,13 @@ export const updateMenuItem = async (
         title: title,
         price: price,
         description: description,
+        section_id: section_id,
       },
     ])
     .eq("item_id", item_id)
     .select("*");
 
-  if (error) throw error;
+  if (updateError) throw updateError;
 
   return updatedItem;
 };

@@ -133,7 +133,7 @@ export const updateMeuItem = async (
 ) => {
   try {
     const userId = req.user?.id;
-    const { item_id, title, price, description } = req.body;
+    const { item_id, title, price, description, section_id } = req.body;
 
     // Fetch the existing menu item to get the current image URL
     // const existingMenuItem = await menuItemService.getMenuItemById(
@@ -165,7 +165,8 @@ export const updateMeuItem = async (
       item_id,
       title,
       price,
-      description
+      description,
+      section_id
     );
 
     res.status(200).json({ message: `You updated item with id: ${item_id}` });

@@ -88,7 +88,7 @@ export const createMenuItem = async (req, res, next) => {
 export const updateMeuItem = async (req, res, next) => {
     try {
         const userId = req.user?.id;
-        const { item_id, title, price, description } = req.body;
+        const { item_id, title, price, description, section_id } = req.body;
         // Fetch the existing menu item to get the current image URL
         // const existingMenuItem = await menuItemService.getMenuItemById(
         //   item_id,
@@ -113,7 +113,7 @@ export const updateMeuItem = async (req, res, next) => {
         //       .json({ error: "Failed to upload the new image" });
         //   }
         // }
-        await menuItemService.updateMenuItem(userId, item_id, title, price, description);
+        await menuItemService.updateMenuItem(userId, item_id, title, price, description, section_id);
         res.status(200).json({ message: `You updated item with id: ${item_id}` });
     }
     catch (error) {

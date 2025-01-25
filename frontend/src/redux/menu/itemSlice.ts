@@ -6,7 +6,7 @@ export interface Item {
   item_id: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   template_sections: {
     header: string;
     section_id: string;
@@ -49,15 +49,15 @@ export interface ItemsState {
   currentPage: number;
   totalItems: number;
 }
-const initialState:ItemsState= {
+const initialState: ItemsState = {
   items: [],
-  item:null,
+  item: null,
   loading: false,
   error: null,
   totalPages: 1,
   currentPage: 1,
   totalItems: 0,
-}
+};
 
 // Fetch items from backend
 export const fetchItems = createAsyncThunk(
@@ -99,7 +99,7 @@ export const fetchSectionItems = createAsyncThunk(
   }) => {
     try {
       const response = await axios.get(
-        `${API_URL}/menu/menu-items/all/${template_id}/${section_id}` 
+        `${API_URL}/menu/menu-items/all/${template_id}/${section_id}`
       );
       return response.data;
     } catch (error) {
@@ -132,7 +132,7 @@ export const fetchItemById = createAsyncThunk(
   }) => {
     try {
       const response = await axios.get(
-        `${API_URL}/menu/menu-items/${item_id}/${template_id}` 
+        `${API_URL}/menu/menu-items/${item_id}/${template_id}`
       );
       return response.data;
     } catch (error) {
@@ -143,8 +143,13 @@ export const fetchItemById = createAsyncThunk(
 export const updateItem = createAsyncThunk(
   "items/editItem",
   async (item: object) => {
-    const response = await axios.put(`${API_URL}/menu/menu-items`, item);
-    return response.data;
+    try {
+      const response = await axios.put(`${API_URL}/menu/menu-items`, item);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 export const removeItem = createAsyncThunk(
@@ -181,10 +186,7 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchItemById.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload)
-
         state.item = action.payload;
-        console.log(state.item)
       })
       .addCase(createItem.fulfilled, (state, action) => {
         console.log(action.payload);
@@ -196,7 +198,7 @@ const itemsSlice = createSlice({
         // state.totalItems = action.payload.totalItems;
         // state.currentPage = action.payload.currentPage;
         // state.totalPages = action.payload.totalPages;
-      })
+      });
     // .addCase(editItem.fulfilled, (state, action) => {
     //   const index = state.items.findIndex(item => item.itemId === action.payload.id);
     //   if (index !== -1) state.items[index] = action.payload;
@@ -204,12 +206,12 @@ const itemsSlice = createSlice({
     // .addCase(removeItem.fulfilled, (state, action) => {
     //   state.items = state.items.filter(item => item.itemId !== action.payload);
     // });
-          builder.addCase(removeItem.fulfilled, (state, action) => {
-            state.items = state.items.filter(
-              (item) => item.item_id !== action.payload
-            );
-          });
-  }, 
+    builder.addCase(removeItem.fulfilled, (state, action) => {
+      state.items = state.items.filter(
+        (item) => item.item_id !== action.payload
+      );
+    });
+  },
 });
 
 // export const { addItem, updateItem } = itemsSlice.actions;

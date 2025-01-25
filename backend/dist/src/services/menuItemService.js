@@ -166,9 +166,7 @@ export const createMenuItem = async (menuItemData) => {
         throw new Error(`Failed to create menu item: ${error}`);
     }
 };
-export const updateMenuItem = async (userId, item_id, title, price, description
-// image_url: string | File | null;
-) => {
+export const updateMenuItem = async (userId, item_id, title, price, description, section_id) => {
     const { data, error } = await supabase
         .from("template_items")
         .select("*")
@@ -184,12 +182,13 @@ export const updateMenuItem = async (userId, item_id, title, price, description
             title: title,
             price: price,
             description: description,
+            section_id: section_id,
         },
     ])
         .eq("item_id", item_id)
         .select("*");
-    if (error)
-        throw error;
+    if (updateError)
+        throw updateError;
     return updatedItem;
 };
 export const deleteMenuItem = async (item_id) => {
