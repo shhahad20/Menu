@@ -1,9 +1,7 @@
 .editing-container {
-  border: 1px dashed blue;
   max-width: 1000px;
   margin: auto;
-  padding: 2rem;
-
+  padding: 2rem 6rem;
   .divider{
     width: 500px;
     // height: 1px;
@@ -208,7 +206,6 @@
 .edit-menu-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border: 1px dashed green;
     align-items: center;
     gap: 10px;
     .input-label-container{

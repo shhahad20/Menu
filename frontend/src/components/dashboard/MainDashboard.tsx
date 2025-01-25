@@ -4,8 +4,8 @@ import MenusList from "./MenusList";
 import HomeDashboard from "./HomeElement";
 import Products from "./Products";
 import RequestDesign from "../../pages/RequestDesign";
-import SearchBar from "./SearchBar";
 import EditingPage from "./EditingPage";
+import EditProduct from "./EditProduct";
 
 const MainDashboard = () => {
   // const handleSearch = (value: string) => {
@@ -18,6 +18,7 @@ const MainDashboard = () => {
 
       <Routes>
         <Route path="/items" element={<Products />} />
+        <Route path="items/:id" element={<EditProduct />}/>
         <Route path="/menus" element={<MenusList />} />
         <Route path="menus/:id" element={<EditingPage />}/>
 

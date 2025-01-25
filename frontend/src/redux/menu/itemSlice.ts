@@ -77,7 +77,7 @@ export const fetchSectionItems = createAsyncThunk(
   }) => {
     try {
       const response = await axios.get(
-        `${API_URL}/menu/menu-sections/all/${template_id}/${section_id}` 
+        `${API_URL}/menu/menu-items/all/${template_id}/${section_id}` 
       );
       return response.data;
     } catch (error) {
@@ -102,7 +102,7 @@ export const createItem = createAsyncThunk(
 
 export const updateItem = createAsyncThunk(
   "items/editItem",
-  async (item: FormData) => {
+  async (item: object) => {
     const response = await axios.put(`${API_URL}/menu/menu-items`, item);
     return response.data;
   }
@@ -149,7 +149,14 @@ const itemsSlice = createSlice({
       .addCase(createItem.fulfilled, (state, action) => {
         console.log(action.payload);
         state.items.push(action.payload);
-      });
+      })
+      .addCase(fetchSectionItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+        // state.totalItems = action.payload.totalItems;
+        // state.currentPage = action.payload.currentPage;
+        // state.totalPages = action.payload.totalPages;
+      })
     // .addCase(editItem.fulfilled, (state, action) => {
     //   const index = state.items.findIndex(item => item.itemId === action.payload.id);
     //   if (index !== -1) state.items[index] = action.payload;
@@ -157,7 +164,12 @@ const itemsSlice = createSlice({
     // .addCase(removeItem.fulfilled, (state, action) => {
     //   state.items = state.items.filter(item => item.itemId !== action.payload);
     // });
-  },
+          builder.addCase(removeItem.fulfilled, (state, action) => {
+            state.items = state.items.filter(
+              (item) => item.item_id !== action.payload
+            );
+          });
+  }, 
 });
 
 // export const { addItem, updateItem } = itemsSlice.actions;

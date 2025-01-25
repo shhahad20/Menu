@@ -13,7 +13,7 @@ const MenusList: React.FC = () => {
   const { templates, totalPages, currentPage } = useSelector(
     (state: RootState) => state.menu
   );
-
+ 
   const dispatch = useDispatch<AppDispatch>();
   const [sortOrder, setsortOrder] = useState<"asc" | "desc">("asc");
   const [limit, setLimit] = useState(6);

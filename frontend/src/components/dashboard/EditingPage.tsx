@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -17,6 +17,8 @@ import {
 } from "../../redux/menu/sectionSlice";
 import SectionsAccordion from "../ui/SectionAccordion";
 import { createItem } from "../../redux/menu/itemSlice";
+import ItemsAccordion from "../ui/ItemsAccordion";
+import { API_URL } from "../../api/api";
 const EditingPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch: AppDispatch = useDispatch();
@@ -25,11 +27,11 @@ const EditingPage = () => {
   const { currentTemplate, component } = useSelector(
     (state: RootState) => state.menu
   );
-
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false); // Track container state
-  const [activeEditId, setActiveEditId] = useState<string | null>(null);
-  const [updatedSectionName, setUpdatedSectionName] = useState("");
-  const { sections } = useSelector((state: RootState) => state.sections);
+  const navigate = useNavigate();
+  // const [isAccordionOpen, setIsAccordionOpen] = useState(false); // Track container state
+  // const [activeEditId, setActiveEditId] = useState<string | null>(null);
+  // const [updatedSectionName, setUpdatedSectionName] = useState("");
+  // const { sections } = useSelector((state: RootState) => state.sections);
   const [templateName, setTemplateName] = useState(currentTemplate?.name || "");
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -54,24 +56,24 @@ const EditingPage = () => {
     contact_info: "",
   });
   // const [sections, setSections] = useState<Section[]>([]);
-  const [newSection, setNewSection] = useState({
-    section_id: currentTemplate?.template_sections || "",
-    template_id: id,
-    header: "",
-    section_order: "0",
-  });
+  // const [newSection, setNewSection] = useState({
+  //   section_id: currentTemplate?.template_sections || "",
+  //   template_id: id,
+  //   header: "",
+  //   section_order: "0",
+  // });
   const [imagePreview, setImagePreview] = useState<string>(
     typeof component?.header_img === "string" ? component.header_img : ""
   );
-  const [newItem, setNewItem] = useState({
-    section_id: "",
-    title: "",
-    description: "",
-    price: "",
-  });
-  const [selectedSection, setSelectedSection] = useState("");
+  // const [newItem, setNewItem] = useState({
+  //   section_id: "",
+  //   title: "",
+  //   description: "",
+  //   price: "",
+  // });
   const [isLoading, setIsLoading] = useState<boolean>(true); // Track loading state
   const [error, setError] = useState<boolean>(false); // Track error state
+  // const [selectedSection, setSelectedSection] = useState("");
 
   useEffect(() => {
     // Reset states when component or imagePreview changes
@@ -145,11 +147,6 @@ const EditingPage = () => {
       setTemplateName(currentTemplate.name);
     }
   }, [currentTemplate]);
-  // useEffect(() => {
-  //   if (id) {
-  //     dispatch(fetchSectionsForTemplate(id))
-  //   }
-  // }, [dispatch,id]);
 
   const handleTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -162,34 +159,34 @@ const EditingPage = () => {
       [name]: files && files[0] ? files[0] : value,
     }));
   };
-  const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewSection((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleCreateOrUpdateSection = async (event: FormEvent) => {
-    event.preventDefault();
-    try {
-      if (id) {
-        await dispatch(
-          createSection({ template_id: id, header: newSection.header })
-        );
-        // alert("Section successfully updated/created!");
+  // const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setNewSection((prev) => ({ ...prev, [name]: value }));
+  // };
+  // const handleCreateOrUpdateSection = async (event: FormEvent) => {
+  //   event.preventDefault();
+  //   try {
+  //     if (id) {
+  //       await dispatch(
+  //         createSection({ template_id: id, header: newSection.header })
+  //       );
+  //       // alert("Section successfully updated/created!");
 
-        // Reset newSection state
-        setNewSection({
-          section_id: currentTemplate?.template_sections || "",
-          template_id: id,
-          header: "",
-          section_order: "0",
-        });
-      } else {
-        alert("Incorrect id!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to create/update section.");
-    }
-  };
+  //       // Reset newSection state
+  //       setNewSection({
+  //         section_id: currentTemplate?.template_sections || "",
+  //         template_id: id,
+  //         header: "",
+  //         section_order: "0",
+  //       });
+  //     } else {
+  //       alert("Incorrect id!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("Failed to create/update section.");
+  //   }
+  // };
   const handleMenuName = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -237,6 +234,7 @@ const EditingPage = () => {
           })
         );
         alert("Successfully updated the menu");
+        navigate(`/templates/${com_id}`); 
       } else {
         alert("Incorrect id!");
       }
@@ -245,48 +243,47 @@ const EditingPage = () => {
       alert("Failed to update menu.");
     }
   };
-  const handleItemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewItem((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleOptions = (event: ChangeEvent<HTMLSelectElement>) => {
-    const sectionValue = event.target.value; // Fetch the selected value
-    if (sectionValue === "") {
-      alert("Please select a valid section."); // Display an error message
-      return;
-    }
-    setSelectedSection(sectionValue);
+  // const handleItemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setNewItem((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+  // const handleOptions = (event: ChangeEvent<HTMLSelectElement>) => {
+  //   const sectionValue = event.target.value; // Fetch the selected value
+  //   if (sectionValue === "") {
+  //     alert("Please select a valid section."); // Display an error message
+  //     return;
+  //   }
+  //   setSelectedSection(sectionValue)
+  //   setNewItem((prevProduct) => ({
+  //     ...prevProduct,
+  //     section_id: sectionValue,
+  //   }));
+  // };
 
-    setNewItem((prevProduct) => ({
-      ...prevProduct,
-      section_id: sectionValue,
-    }));
-  };
-  const handleCreateItem = async (event: FormEvent) => {
-    event.preventDefault();
-    console.log(newItem);
-    try {
-      if (currentTemplate?.component_id) {
-        await dispatch(createItem(newItem));
-        setNewItem({
-          section_id: "",
-          title: "",
-          description: "",
-          price: "",
-        });
-        alert("Successfully create an item.");
-
-      } else {
-        alert("Incorrect id!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to create item.");
-    }
-  };
+  // const handleCreateItem = async (event: FormEvent) => {
+  //   event.preventDefault();
+  //   console.log(newItem);
+  //   try {
+  //     if (currentTemplate?.component_id) {
+  //       await dispatch(createItem(newItem));
+  //       setNewItem({
+  //         section_id: "",
+  //         title: "",
+  //         description: "",
+  //         price: "",
+  //       });
+  //       alert("Successfully create an item.");
+  //     } else {
+  //       alert("Incorrect id!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("Failed to create item.");
+  //   }
+  // };
   return (
     <div className="editing-container">
       <div className="top-edit-page-header">
@@ -443,7 +440,7 @@ const EditingPage = () => {
                 />
               </div>
             </div>
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" >
               Save Changes
             </button>
           </div>
@@ -451,8 +448,8 @@ const EditingPage = () => {
         </div>
       </form>
 
-      <div className="divider"></div>
-      <div className="top-edit-page-header">
+      {/* <div className="divider"></div> */}
+      {/* <div className="top-edit-page-header">
         <h1>Add New Section</h1>
         <svg
           width="20"
@@ -469,8 +466,8 @@ const EditingPage = () => {
             stroke-linejoin="round"
           />
         </svg>
-      </div>
-      <form
+      </div> */}
+      {/* <form
         action=""
         onSubmit={handleCreateOrUpdateSection}
         className="template-form"
@@ -491,47 +488,13 @@ const EditingPage = () => {
             <button type="submit" className="submit-btn">
               Add Section
             </button>
-            {/* <div className="input-label-container">
-              <label htmlFor="menu_name" className="">
-                Sections
-              </label>
-              <select name="template-sections" className="editing-input">
-                {sections
-                  .filter((section) => section.section_id && section.header)
-                  .map((section) => (
-                    <option
-                      key={section.section_id}
-                      value={section.section_id}
-                      className="section-option"
-                    >
-                      {section.header}
-                    </option>
-                  ))}
-              </select>
-            </div> */}
-            {/* <div className="input-label-container">
-              <label htmlFor="menu_name" className="label">
-                Update Section Name
-              </label>
-              <input
-                className="editing-input"
-                type="text"
-                id="menu_name"
-                name="header"
-                placeholder="Max 250 characters"
-                onChange={handleCompChange}
-              />
-              <button type="submit" className="submit-btn">
-                Update Section
-              </button>
-            </div> */}
+           
           </div>
           <div className="error-area">*error</div>
         </div>
-      </form>
-      <SectionsAccordion templateId={id} />
+      </form> */}
 
-      <div className="divider"></div>
+      {/* <div className="divider"></div>
       <div className="top-edit-page-header">
         <h1>Add New Item</h1>
         <svg
@@ -549,9 +512,9 @@ const EditingPage = () => {
             stroke-linejoin="round"
           />
         </svg>
-      </div>
+      </div> */}
 
-      <form action="" onSubmit={handleCreateItem} className="component-form">
+      {/* <form action="" onSubmit={handleCreateItem} className="component-form">
         <div className="edit-menu-container">
           <div className="input-label-container">
             <label htmlFor="menu_name" className="label component-image">
@@ -617,7 +580,6 @@ const EditingPage = () => {
                 id="menu_name"
                 name="description"
                 value={newItem.description}
-
                 placeholder="Max 250 characters"
                 onChange={handleItemChange}
                 required
@@ -633,7 +595,6 @@ const EditingPage = () => {
                 id="menu_name"
                 name="price"
                 value={newItem.price}
-
                 placeholder="ex: 12.99"
                 onChange={handleItemChange}
                 required
@@ -668,7 +629,8 @@ const EditingPage = () => {
           </div>
           <div className="error-area">*error</div>
         </div>
-      </form>
+      </form> */}
+
     </div>
   );
 };

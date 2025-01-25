@@ -1,10 +1,10 @@
-.accordion-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px dashed green;
-  align-items: center;
-  gap: 10px;
-}
+// .accordion-wrapper {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   border: 1px dashed green;
+//   align-items: center;
+//   gap: 10px;
+// }
 .accordion {
   border: 1px solid #333;
   border-radius: 4px;
@@ -102,35 +102,86 @@
 }
 .edit-buttons {
   margin-top: 10px;
-
 }
 .toggle-btn {
-  // background-color: red; 
-  display: flex; 
-  align-items: center; 
+  // background-color: red;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 0; 
-  margin: 0; 
+  padding: 0;
+  margin: 0;
   border: none;
-  cursor: pointer; 
-}
-
-.save-btn, .cancel-btn {
-  border: 1px solid #333;
-  background-color: #181818;
   cursor: pointer;
-  width: 120px;
-  height: 31px;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background-color 0.3s, border-color 0.3s;
-
-  &:hover {
-    background-color: #111;
-    color: #fff;
+}
+.items-section-conatiner{
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  // align-items: center;
+  // gap: 10px;
+}
+.editing-item-section{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 15px;
+  .input-label-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    .label{
+        color: #D9D9D9;
+        font-size: 16px;
+    }
   }
 }
+.edit-section {
+  border: 1px solid aqua;
 
-.cancel-btn {
-  margin-left: 15px;
+  .item-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .input-label-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+    .label{
+        color: #D9D9D9;
+        font-size: 16px;
+    }
+  }
+  input {
+    border: 1px solid #333;
+    background-color: #181818;
+    height: 35px;
+    width: 100%;
+    border-radius: 4px;
+    padding: 0 10px;
+    outline: none;
+  }
+
+  .edit-buttons {
+    .save-btn,
+    .cancel-btn {
+      border: 1px solid #333;
+      background-color: #181818;
+      cursor: pointer;
+      width: 120px;
+      height: 31px;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.3s, border-color 0.3s;
+
+      &:hover {
+        background-color: #111;
+        color: #fff;
+      }
+    }
+    .cancel-btn {
+      margin-left: 15px;
+    }
+  }
 }

@@ -2,13 +2,24 @@ import { useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 
 import "../../styles/ui/accordion.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 interface AccordionProps<T> {
   title: string; // Title of the accordion
   data: T[]; // Generic data array
   onEdit: (id: string, updatedValue: string) => void; // Callback for editing
   onDelete: (id: string) => void; // Callback for deleting
   renderContent: (item: T) => string; // Function to render the main content of each item
-  renderAdditionalContent?: (item: T) => JSX.Element; // Optional: Additional JSX for each item
+  renderAdditionalContent?: (item: T) => JSX.Element;
+  headers?: string[]; // Optional: Custom headers for the table
+  actions?: (item: T) => JSX.Element;
+  renderEditComponent?: (
+    id: string,
+    value: string,
+    onSave: () => void,
+    onCancel: () => void,
+    onChange: (value: string) => void
+  ) => JSX.Element;
 }
 
 const Accordion = <T extends { id: string }>({
@@ -17,6 +28,9 @@ const Accordion = <T extends { id: string }>({
   onEdit,
   onDelete,
   renderContent,
+  headers = ["Header", "Actions"], // Default headers
+  actions,
+  renderEditComponent,
 }: // renderAdditionalContent,
 AccordionProps<T>) => {
   // const dispatch: AppDispatch = useDispatch();
@@ -25,6 +39,8 @@ AccordionProps<T>) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false); // Track container state
   const [activeEditId, setActiveEditId] = useState<string | null>(null); // Track active edit ID
   const [updatedValue, setUpdatedValue] = useState<string>(""); // Updated value for editing
+  const { sections } = useSelector((state: RootState) => state.sections);
+  const { items } = useSelector((state: RootState) => state.items);
 
   const toggleAccordionContainer = () => {
     setIsAccordionOpen((prevState) => !prevState);
@@ -50,7 +66,7 @@ AccordionProps<T>) => {
 
   return (
     <div className="accordion-wrapper">
-      <div>
+      <div className="acc-container">
         <div className="accordion">
           <div className="accordion-header" onClick={toggleAccordionContainer}>
             <h2>{title}</h2>
@@ -92,27 +108,28 @@ AccordionProps<T>) => {
           {isAccordionOpen && (
             <div className="accordion-table">
               <div className="accordion-table-header">
-                <div>Header</div>
-                <div>Actions</div>
+                {headers.map((header, index) => (
+                  <div key={index}>{header}</div>
+                ))}
               </div>
-              {data.map((item) => (
-                <div key={item.id} className="accordion-table-row">
-                  <div>{renderContent(item)}</div>
+              {items.map((item) => (
+                <div key={item.item_id} className="accordion-table-row">
+                  <div></div>
                   <div className="actions">
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        handleEditClick(item.id, renderContent(item))
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => onDelete(item.id)}
-                    >
-                      Delete
-                    </button>
+                        <button
+                          className="edit-btn"
+                          onClick={() =>
+                            handleEditClick(item.item_id)
+                          }
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => onDelete(item.item_id)}
+                        >
+                          Delete
+                        </button>
                   </div>
                 </div>
               ))}
@@ -122,22 +139,34 @@ AccordionProps<T>) => {
         {/* Edit Section Below Accordion */}
         {activeEditId && (
           <div className="edit-section">
-            <h3>Edit Section</h3>
-            <input
-              type="text"
-              value={updatedValue}
-              onChange={(e) => setUpdatedValue(e.target.value)}
-              placeholder="Update item"
-              className="update-input"
-            />
-            <div className="edit-buttons">
-              <button className="save-btn" onClick={handleSaveClick}>
-                Save
-              </button>
-              <button className="cancel-btn" onClick={handleCancelEdit}>
-                Cancel
-              </button>
-            </div>
+            {renderEditComponent ? (
+              renderEditComponent(
+                activeEditId,
+                updatedValue,
+                handleSaveClick,
+                handleCancelEdit,
+                setUpdatedValue
+              )
+            ) : (
+              <>
+                <h3>Edit Section</h3>
+                <input
+                  type="text"
+                  value={updatedValue}
+                  onChange={(e) => setUpdatedValue(e.target.value)}
+                  placeholder="Update item"
+                  className="update-input"
+                />
+                <div className="edit-buttons">
+                  <button className="save-btn" onClick={handleSaveClick}>
+                    Save
+                  </button>
+                  <button className="cancel-btn" onClick={handleCancelEdit}>
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
