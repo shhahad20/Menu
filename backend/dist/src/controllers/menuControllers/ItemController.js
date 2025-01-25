@@ -11,7 +11,7 @@ export const getMenuItems = async (req, res, next) => {
         if (!userId) {
             return next(ApiError.unauthorized("User not authenticated"));
         }
-        const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo, limit, sortField, sortOrder, search);
+        const result = await menuItemService.getAllMenuItems(userId, "template_items", "title", pageNo, limit, sortField, sortOrder, search);
         if (result) {
             res.status(200).json(result);
         }
@@ -26,9 +26,9 @@ export const getMenuItems = async (req, res, next) => {
 export const getMenuItem = async (req, res, next) => {
     try {
         const userId = req.user?.id;
-        const id = req.params.id;
-        const { menuId } = req.body;
-        const menuItem = await menuItemService.getMenuItemById(id, userId, menuId);
+        const { id, templateId } = req.params;
+        // const { menuId } = req.body;
+        const menuItem = await menuItemService.getMenuItemById(id, userId, templateId);
         if (menuItem) {
             res.status(200).json(menuItem);
         }
@@ -137,7 +137,9 @@ export const deleteMenuItem = async (req, res, next) => {
         //     console.error("Failed to delete image from Supabase storage.");
         //   }
         // }
-        res.status(204).json({ message: `You deleted an item with id: ${item_id}` });
+        res
+            .status(204)
+            .json({ message: `You deleted an item with id: ${item_id}` });
     }
     catch (error) {
         return next(ApiError.internal("Failed to delete menu item"));

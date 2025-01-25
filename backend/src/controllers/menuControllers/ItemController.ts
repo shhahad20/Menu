@@ -6,7 +6,7 @@ import {
   deleteImageFromSupabase,
   uploadImageToSupabase,
 } from "../../helper/supabaseUploadFile.js";
- 
+
 export const getMenuItems = async (
   req: Request,
   res: Response,
@@ -23,11 +23,16 @@ export const getMenuItems = async (
     if (!userId) {
       return next(ApiError.unauthorized("User not authenticated"));
     }
-    const result = await menuItemService.getAllMenuItems(userId, 'template_items', 'title', pageNo,
+    const result = await menuItemService.getAllMenuItems(
+      userId,
+      "template_items",
+      "title",
+      pageNo,
       limit,
       sortField,
       sortOrder,
-      search);
+      search
+    );
     if (result) {
       res.status(200).json(result);
     } else {
@@ -49,10 +54,10 @@ export const getMenuItem = async (
 ) => {
   try {
     const userId = req.user?.id;
-    const id = req.params.id;
-    const { menuId } = req.body;
+    const {id, templateId} = req.params;
+    // const { menuId } = req.body;
 
-    const menuItem = await menuItemService.getMenuItemById(id, userId, menuId);
+    const menuItem = await menuItemService.getMenuItemById(id, userId, templateId);
     if (menuItem) {
       res.status(200).json(menuItem);
     } else {
@@ -69,10 +74,14 @@ export const getSectionItems = async (
 ) => {
   try {
     const userId = req.user?.id;
-    const {id , sectionId} = req.params;
+    const { id, sectionId } = req.params;
     // const { sectionId } = req.body;
 
-    const sectionItems = await menuItemService.getSectionItemsById(id, userId, sectionId);
+    const sectionItems = await menuItemService.getSectionItemsById(
+      id,
+      userId,
+      sectionId
+    );
     if (sectionItems) {
       res.status(200).json(sectionItems);
     } else {
@@ -151,7 +160,13 @@ export const updateMeuItem = async (
     //       .json({ error: "Failed to upload the new image" });
     //   }
     // }
-    await menuItemService.updateMenuItem(userId,item_id, title, price, description);
+    await menuItemService.updateMenuItem(
+      userId,
+      item_id,
+      title,
+      price,
+      description
+    );
 
     res.status(200).json({ message: `You updated item with id: ${item_id}` });
   } catch (error) {
@@ -184,7 +199,9 @@ export const deleteMenuItem = async (
     //     console.error("Failed to delete image from Supabase storage.");
     //   }
     // }
-    res.status(204).json({ message: `You deleted an item with id: ${item_id}` });
+    res
+      .status(204)
+      .json({ message: `You deleted an item with id: ${item_id}` });
   } catch (error) {
     return next(ApiError.internal("Failed to delete menu item"));
   }

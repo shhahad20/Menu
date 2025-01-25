@@ -18,7 +18,7 @@ const MainDashboard = () => {
 
       <Routes>
         <Route path="/items" element={<Products />} />
-        <Route path="items/:id" element={<EditProduct />}/>
+        <Route path="items/:id/:templateId" element={<EditProduct />}/>
         <Route path="/menus" element={<MenusList />} />
         <Route path="menus/:id" element={<EditingPage />}/>
 

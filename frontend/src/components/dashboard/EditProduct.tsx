@@ -1,13 +1,25 @@
 import { useParams } from "react-router-dom";
 import "../../styles/dashboard-elements/editProduct.scss";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { fetchItemById } from "../../redux/menu/itemSlice";
 
 const EditProduct = () => {
-  const { id } = useParams<{ componentId: string }>();
-  const [selectedSection, setSelectedSection] = useState("");
+  const { id, templateId } = useParams<{ id: string, templateId: string }>();
   const { sections } = useSelector((state: RootState) => state.sections);
+  const {item} = useSelector((state: RootState) => state.items);
+  const dispatch = useDispatch<AppDispatch>();
+  const [selectedSection, setSelectedSection] = useState("");
+
+  useEffect(()=>{
+    if(id && templateId){
+        dispatch(fetchItemById({item_id:id, template_id:templateId}))
+    }
+  },[dispatch, templateId, id])
+
+  console.log("item: "+ item?.item.title)
 
   const handleOptions = (event: ChangeEvent<HTMLSelectElement>) => {
     const sectionValue = event.target.value; // Fetch the selected value
@@ -17,6 +29,7 @@ const EditProduct = () => {
     }
     setSelectedSection(sectionValue);
   };
+  console.log(sections)
   return (
     <div className="product-edit">
       <form>
@@ -31,7 +44,7 @@ const EditProduct = () => {
               type="text"
               id="menu_name"
               name="header"
-              //   value={compData.header}
+                value={item?.item.title}
               //   onChange={handleCompChange}
             />
           </div>
@@ -44,7 +57,7 @@ const EditProduct = () => {
               type="text"
               id="menu_name"
               name="slogan"
-              //   value={compData.slogan}
+              value={item?.item.description}
               //   onChange={handleCompChange}
             />
           </div>
@@ -55,7 +68,7 @@ const EditProduct = () => {
             <input
               type="number"
               id="tags-input"
-              // value={inputValue}
+              value={item?.item.price}
               // onChange={handleInputChange}
               // onKeyDown={handleKeyDown}
               placeholder="Type and press Enter"
@@ -70,12 +83,9 @@ const EditProduct = () => {
               name="item-section"
               className="section-select"
               onChange={handleOptions}
-              value={selectedSection || ""}
+            //   value={selectedSection}
               required
             >
-              <option value="" disabled>
-                Select a section
-              </option>
               {sections
                 .filter((section) => section.section_id && section.header)
                 .map((section) => (
@@ -87,7 +97,7 @@ const EditProduct = () => {
           </div>
         </div>
         <button type="submit" className="submit-btn">
-          Submit
+          Update
         </button>
       </form>
     </div>

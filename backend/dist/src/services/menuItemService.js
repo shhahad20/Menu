@@ -52,17 +52,18 @@ export const getAllMenuItems = async (userId, tableName, searchField, pageNo = 1
         throw new Error(`Failed to fetch data: ${error}`);
     }
 };
-export const getMenuItemById = async (id, userId, menuId) => {
+export const getMenuItemById = async (id, userId, templateId) => {
     try {
-        console.log("Inputs:", { id, userId, menuId });
-        if (!id || !userId || !menuId) {
-            throw new Error("Invalid input: id, userId, and menuId must all be provided.");
+        console.log("Inputs:", { id, userId, templateId });
+        if (!id || !userId || !templateId) {
+            throw new Error("Invalid input: id, userId, and templateId must all be provided.");
         }
         const { data, error } = await supabase
             .from("templates")
             .select(`
       id,
       name,
+      user_id,
       template_sections (
         section_id,
         header,
@@ -74,8 +75,8 @@ export const getMenuItemById = async (id, userId, menuId) => {
         )
       )
     `)
-            .eq("id", menuId) // Match the menu ID
-            .eq("user_id", userId); // Match the user ID
+            .eq("id", templateId)
+            .eq("user_id", userId);
         if (error) {
             console.error("Error fetching menu item:", error);
             throw new Error(error.message);
@@ -83,14 +84,28 @@ export const getMenuItemById = async (id, userId, menuId) => {
         if (!data || data.length === 0) {
             throw new Error("Menu or sections not found");
         }
-        // Find the specific item in the nested sections
-        const item = data[0].template_sections
-            ?.flatMap((section) => section.template_items)
-            ?.find((templateItem) => templateItem.item_id === id);
-        if (!item) {
+        // Find the specific section and item
+        let foundSection = null;
+        let foundItem = null;
+        for (const section of data[0].template_sections) {
+            const item = section.template_items?.find((templateItem) => templateItem.item_id === id);
+            if (item) {
+                foundSection = {
+                    section_id: section.section_id,
+                    header: section.header,
+                };
+                foundItem = item;
+                break;
+            }
+        }
+        if (!foundItem) {
             throw new Error("Item not found in the menu");
         }
-        return item;
+        // Return both the item and its corresponding section
+        return {
+            item: foundItem,
+            section: foundSection,
+        };
     }
     catch (error) {
         console.error("Error in getMenuItemById:", error);

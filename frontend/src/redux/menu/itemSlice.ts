@@ -28,13 +28,35 @@ export interface Template {
   templateName: string;
   sections: Section[];
 }
+export interface SingleItem {
+  item: {
+    title: string;
+    price: number;
+    description: string;
+  };
+  section: {
+    header: string;
+    section_id: string;
+  };
+}
+
 export interface ItemsState {
   items: Item[];
+  item: SingleItem | null;
   loading: boolean;
   error: string | null;
   totalPages: number;
   currentPage: number;
   totalItems: number;
+}
+const initialState:ItemsState= {
+  items: [],
+  item:null,
+  loading: false,
+  error: null,
+  totalPages: 1,
+  currentPage: 1,
+  totalItems: 0,
 }
 
 // Fetch items from backend
@@ -99,7 +121,25 @@ export const createItem = createAsyncThunk(
     }
   }
 );
-
+export const fetchItemById = createAsyncThunk(
+  "sections/fetch-item",
+  async ({
+    item_id,
+    template_id,
+  }: {
+    item_id: string;
+    template_id: string;
+  }) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/menu/menu-items/${item_id}/${template_id}` 
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 export const updateItem = createAsyncThunk(
   "items/editItem",
   async (item: object) => {
@@ -117,14 +157,7 @@ export const removeItem = createAsyncThunk(
 
 const itemsSlice = createSlice({
   name: "items",
-  initialState: {
-    items: [],
-    loading: false,
-    error: null,
-    totalPages: 1,
-    currentPage: 1,
-    totalItems: 0,
-  } as ItemsState,
+  initialState,
   reducers: {
     // addItem: (state, action: PayloadAction<Item>) => {
     //   state.items.push(action.payload);
@@ -145,6 +178,13 @@ const itemsSlice = createSlice({
         state.totalItems = action.payload.totalItems;
         state.currentPage = action.payload.currentPage;
         state.totalPages = action.payload.totalPages;
+      })
+      .addCase(fetchItemById.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload)
+
+        state.item = action.payload;
+        console.log(state.item)
       })
       .addCase(createItem.fulfilled, (state, action) => {
         console.log(action.payload);

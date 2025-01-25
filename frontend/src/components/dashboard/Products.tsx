@@ -108,7 +108,7 @@ const Products: React.FC = () => {
                     <p>Price: {item.price} SAR</p>
                   </div>
                   <div className="card-top-icons">
-                    <Link to={`${item.item_id}`}>
+                    <Link to={`${item.item_id}/${item.template_sections.template_id}`}>
                       <button className="edit-card-btn">
                         <svg
                           width="20"

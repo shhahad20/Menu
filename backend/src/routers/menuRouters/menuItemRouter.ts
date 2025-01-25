@@ -7,7 +7,7 @@ import { verifyOwnership } from '../../middleware/ownerShip.js';
 const router = express.Router();
 
 router.get('/',isLoggedIn, menuItemController.getMenuItems);
-router.get('/:id', isLoggedIn, menuItemController.getMenuItem);
+router.get('/:id/:templateId', isLoggedIn, menuItemController.getMenuItem);
 router.get('/all/:id/:sectionId', isLoggedIn, menuItemController.getSectionItems);
 
 router.post('/',isLoggedIn,uploadMiddleware , menuItemController.createMenuItem);
