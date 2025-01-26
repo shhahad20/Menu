@@ -1,0 +1,34 @@
+.loading-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 100vh;
+    .loader{
+    //     background-color:wheat ;
+    // margin: 0 0 2em;
+    // height: 100px;
+    // width: 20%;
+    // text-align: center;
+    // padding: 1em;
+    // margin: 0 auto 1em;
+    // display: inline-block;
+    // vertical-align: top;
+    margin: 0 auto; /* Center the loader */
+    display: flex;
+    justify-content: center; /* Center the SVG inside the loader */
+    align-items: center;     /* Vertically center the SVG inside the loader */
+    height: 100px;
+    width: 20%;
+    // background-color: wheat;
+    svg {
+        width: 40px;  /* Ensure the SVG width is set */
+        height: 40px; /* Ensure the SVG height is set */
+      }
+    svg path,
+    svg rect{
+      fill: #C4D977;
+    }
+  }
+  }
+  
+

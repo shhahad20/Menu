@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { fetchItems, removeItem } from "../../redux/menu/itemSlice";
+import { fetchItems, fetchSectionItems, removeItem } from "../../redux/menu/itemSlice";
 import "../../styles/dashboard-elements/products.scss";
 import SearchBar from "./SearchBar";
 import { useTheme } from "../../context/ThemeContext";
 import { Link } from "react-router-dom";
 import Pagination from "../ui/Pagination";
+import Loading from "../ui/Loading";
+import { fetchMenuTemplatesForUser } from "../../redux/menu/menuSlice";
+import { fetchSectionsForTemplate } from "../../redux/menu/sectionSlice";
 
 const Products: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, currentPage, totalPages, loading } = useSelector(
     (state: RootState) => state.items
   );
-  const [sortOrder, setsortOrder] = useState<"asc" | "desc">("asc");
+  const { templates } = useSelector(
+    (state: RootState) => state.menu
+  );
+  const { sections } = useSelector((state: RootState) => state.sections);
+
+    const [sortOrder, setsortOrder] = useState<"asc" | "desc">("asc");
   const [limit, setLimit] = useState(8);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("title");
@@ -21,6 +29,9 @@ const Products: React.FC = () => {
   const [page, setPage] = useState(currentPage);
   const { theme } = useTheme();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showSectionDropdown, setShowSectionDropdown] = useState(false);
+  const [ selectedTemplate, setSelectedTemplate] = useState("");
+  const [selectedSection, setSelectedSection] = useState("");
 
   useEffect(() => {
     const validatedSortOrder =
@@ -34,10 +45,16 @@ const Products: React.FC = () => {
         limit,
       })
     );
+    dispatch(fetchMenuTemplatesForUser({
+            page,
+            searchTerm,
+            sortOption: "name",
+            sortOrder: validatedSortOrder,
+            limit,
+          }))
   }, [dispatch, page, searchTerm, sortOption, sortOrder, limit]);
 
-  console.log(items);
-  if (loading) return <p>Loading items...</p>;
+
 
   const filteredItems = items?.filter(
     (item) =>
@@ -49,10 +66,19 @@ const Products: React.FC = () => {
       return sortOrder === "asc"
         ? a.title.localeCompare(b.title)
         : b.title.localeCompare(a.title);
+    } else if (sortOption === "priceLowToHigh") {
+      const priceA = a.price || 0;
+      const priceB = b.price || 0;
+      return priceA - priceB; // Low to High
+    } else if (sortOption === "priceHighToLow") {
+      const priceA = a.price || 0;
+      const priceB = b.price || 0;
+      return priceB - priceA; // High to Low
     } else if (sortOption === "price") {
-      const priceA = parseFloat(a.price) || 0; // Default to 0 if parsing fails
-      const priceB = parseFloat(b.price) || 0; // Default to 0 if parsing fails
-      return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+      // Default sorting by price (low to high)
+      const priceA = a.price || 0;
+      const priceB = b.price || 0;
+      return priceA - priceB; // Low to High
     }
     return 0;
   });
@@ -72,6 +98,30 @@ const Products: React.FC = () => {
       console.error("Failed to delete item:", error);
     }
   };
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = event.target.value;
+    setSortOption(selectedOption);
+    
+    // Show sections dropdown when "template" is selected
+    if (selectedOption === "template") {
+      setShowSectionDropdown(true);
+    } else {
+      setShowSectionDropdown(false);
+    }
+  };
+  useEffect(() => {
+    if(selectedTemplate){
+      dispatch(fetchSectionsForTemplate(selectedTemplate))
+    }
+  }, [dispatch,selectedTemplate]);
+
+  useEffect(() => {
+    if (selectedSection && selectedTemplate) {
+      dispatch(fetchSectionItems({template_id: selectedTemplate, section_id: selectedSection}));  // Assuming this action is defined in itemSlice to fetch items for a section
+    }
+  }, [dispatch, selectedSection,selectedTemplate]);
+  console.log(items)
+  if (loading) return <Loading/>;
   return (
     <>
       <SearchBar
@@ -80,6 +130,48 @@ const Products: React.FC = () => {
         onViewChange={handleViewChange}
       />
       {/* ----------------------------------------- */}
+      <div className="sort-options">
+        <div className="sort-selects-conatiner">
+          <select onChange={handleSortChange} value={sortOption}>
+            <option value="title">Sort by Title</option>
+            <option value="priceLowToHigh">Sort by Price: Low to High</option>
+            <option value="priceHighToLow">Sort by Price: High to Low</option>
+            <option value="template">Sort by Template</option>
+          </select>
+
+          {showSectionDropdown && (
+            <div>
+              <select
+                value={selectedTemplate}
+                onChange={(e) => setSelectedTemplate(e.target.value)}
+              >
+                <option value="">Select Template</option>
+                {templates.map((template) => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+
+              {selectedTemplate && (
+              <select
+                value={selectedSection}
+                onChange={(e) => setSelectedSection(e.target.value)}
+              >
+                <option value="">Select Section</option>
+                {sections.map((section) => (
+                  <option key={section.section_id} value={section.section_id}>
+                    {section.header}
+                  </option>
+                ))}
+              </select>
+            )}
+            </div>
+          )}
+        </div>
+      </div>
+
+       {/* ----------------------------------------- */}
       <div className="menus-list">
         {!items || items.length === 0 ? (
           <p>Not found.</p>
@@ -89,7 +181,7 @@ const Products: React.FC = () => {
               viewOption === "list" ? "list-view" : ""
             }`}
           >
-            {items.map((item) => (
+            {sortedItems.map((item) => (
               <div key={item.item_id} className="menu-card">
                 <div className="menu-header">
                   <div className="card-header-p">
@@ -108,7 +200,7 @@ const Products: React.FC = () => {
                     <p>Price: {item.price} SAR</p>
                   </div>
                   <div className="card-top-icons">
-                    <Link to={`${item.item_id}/${item.template_sections.template_id}`}>
+                    {/* <Link to={`${item.item_id}/${item.template_sections.template_id}`}>
                       <button className="edit-card-btn">
                         <svg
                           width="20"
@@ -117,7 +209,6 @@ const Products: React.FC = () => {
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <path d="M12 20h9"></path>
                           <path
                             d="M6.25012 2.5H4.50012C3.80006 2.5 3.44976 2.5 3.18237 2.63624C2.94717 2.75608 2.75608 2.94717 2.63624 3.18237C2.5 3.44976 2.5 3.80006 2.5 4.50012V10.5001C2.5 11.2002 2.5 11.55 2.63624 11.8174C2.75608 12.0526 2.94717 12.2441 3.18237 12.3639C3.4495 12.5 3.79937 12.5 4.49807 12.5H10.5019C11.2006 12.5 11.55 12.5 11.8171 12.3639C12.0523 12.2441 12.244 12.0524 12.3639 11.8172C12.5 11.5501 12.5 11.2006 12.5 10.5019V8.75M10 3.125L6.25 6.875V8.75H8.125L11.875 5M10 3.125L11.875 1.25L13.75 3.125L11.875 5M10 3.125L11.875 5"
                             stroke={theme === "dark" ? "#D9D9D9" : "#757575"}
@@ -126,7 +217,7 @@ const Products: React.FC = () => {
                           />
                         </svg>
                       </button>
-                    </Link>
+                    </Link> */}
                     <button
                       className="delete-card-btn"
                       onClick={() => handleDelete(item.item_id)}

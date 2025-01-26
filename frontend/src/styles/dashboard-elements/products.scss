@@ -1,3 +1,28 @@
+.sort-options{
+  display: flex;
+  justify-content: center;
+margin-top: 1rem;
+
+.sort-selects-conatiner{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 15px;
+ width: 580px;
+}
+  select{
+    border: 1px solid #333;
+    background-color: #181818;
+    height: 30px;
+    font-size: 14px;
+    // width: 100%;
+    // width: 500px;
+    border-radius: 4px;
+    padding: 0 15px;
+    outline: none;
+    color: #D9D9D9;
+  }
+}
 .items-list {
   border: 1px dashed green;
   display: flex;

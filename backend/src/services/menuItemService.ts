@@ -31,7 +31,8 @@ export const getAllMenuItems = async (
           template_id,
           templates (
             id,
-            user_id
+            user_id,
+            name
           )
         )
       `,
@@ -40,8 +41,22 @@ export const getAllMenuItems = async (
       .eq("template_sections.templates.user_id", userId) // Filter based on user_id of templates table
       .not("template_sections", "is", null)
       .not("template_sections.templates", "is", null)
-      .range(offset, offset + limit - 1)
-      .order(sortField, { ascending: sortOrder === "asc" });
+      .range(offset, offset + limit - 1);
+      // .order(sortField, { ascending: sortOrder === "asc" });
+
+       // Handle sorting based on the field and order
+    if (sortField === "priceLowToHigh") {
+      query = query.order("price", { ascending: true });
+    } else if (sortField === "priceHighToLow") {
+      query = query.order("price", { ascending: false });
+    } else if (sortField === "template") {
+      // Sorting by template (e.g., by template header)
+      query = query.order("template_sections.templates.name", { ascending: sortOrder === "asc" });
+    } else {
+      query = query.order(sortField, { ascending: sortOrder === "asc" });
+    }
+
+
 
     if (searchQuery) {
       query = query.ilike(searchField, `%${searchQuery}%`); // ilike() for Case-insensitive search

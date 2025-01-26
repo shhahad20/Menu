@@ -11,7 +11,21 @@ export const getMenuItems = async (req, res, next) => {
         if (!userId) {
             return next(ApiError.unauthorized("User not authenticated"));
         }
-        const result = await menuItemService.getAllMenuItems(userId, "template_items", "title", pageNo, limit, sortField, sortOrder, search);
+        let orderByField = "title"; // Default sort field
+        let orderDirection = sortOrder; // Default sorting order
+        if (sortField === "priceLowToHigh") {
+            orderByField = "price";
+            orderDirection = "asc"; // Always low to high for price
+        }
+        else if (sortField === "priceHighToLow") {
+            orderByField = "price";
+            orderDirection = "desc"; // Always high to low for price
+        }
+        else if (sortField === "title") {
+            orderByField = "title"; // Sort by title as default
+            orderDirection = sortOrder; // Respect the sortOrder for title
+        }
+        const result = await menuItemService.getAllMenuItems(userId, "template_items", "title", pageNo, limit, sortField, orderDirection, search);
         if (result) {
             res.status(200).json(result);
         }

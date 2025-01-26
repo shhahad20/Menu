@@ -101,6 +101,7 @@ export const fetchSectionItems = createAsyncThunk(
       const response = await axios.get(
         `${API_URL}/menu/menu-items/all/${template_id}/${section_id}`
       );
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(error);

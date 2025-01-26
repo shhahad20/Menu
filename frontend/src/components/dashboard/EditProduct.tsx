@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { fetchItemById, updateItem } from "../../redux/menu/itemSlice";
 import { fetchSectionsForTemplate } from "../../redux/menu/sectionSlice";
+import Loading from "../ui/Loading";
 
 const EditProduct = () => {
   const { id, templateId } = useParams<{ id: string; templateId: string }>();
@@ -14,13 +15,14 @@ const EditProduct = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [selectedSection, setSelectedSection] = useState("");
   const navigate = useNavigate(); // Initialize useNavigate
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   const [updatedItem, setupdatedItem] = useState({
     item_id: id,
-    title: item?.item.title || "",
-    description: item?.item.description || "",
-    price: item?.item.price || 0,
-    section_id: item?.section.section_id || "",
+    title: item?.item.title,
+    description: item?.item.description,
+    price: item?.item.price ,
+    section_id: item?.section.section_id,
   });
   // useEffect(() => {
   //   if (item) {
@@ -42,10 +44,12 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (id && templateId) {
-      dispatch(fetchItemById({ item_id: id, template_id: templateId }));
+      dispatch(fetchItemById({ item_id: id, template_id: templateId }))
+        .then(() => setIsLoading(false)) // Set loading state to false after data is fetched
+        .catch(() => setIsLoading(false)); // Set loading state to false in case of error
     }
   }, [dispatch, templateId, id]);
-
+console.log(item?.item.title)
   useEffect(() => {
     if (item?.section.section_id) {
       setSelectedSection(item.section.section_id);
@@ -85,7 +89,6 @@ const EditProduct = () => {
       alert("Please fill out all fields.");
       return;
     }
-    console.log(updatedItem);
     dispatch(updateItem(updatedItem ))
       .then(() => {
         alert("Item updated successfully!")
@@ -93,7 +96,12 @@ const EditProduct = () => {
     )
       .catch((error) => alert("Failed to update item: " + error));
   };
-console.log(updatedItem)
+
+  
+  if (isLoading) {
+    return <Loading/>;
+  }
+
   return (
     <div className="product-edit">
       <form onSubmit={handleSubmit}>
