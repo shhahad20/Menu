@@ -162,6 +162,17 @@ export const getMenuItemById = async (
     throw new Error(`Failed to fetch the item: ${error}`);
   }
 };
+interface TemplateItem {
+  item_id: string;
+  title: string;
+  price: number;
+  description: string;
+  section_id: string;
+  template_sections: {
+    template_id: string;
+  }[];
+}
+
 export const getSectionItemsById = async (
   id: string,
   userId: string | undefined,
@@ -182,7 +193,8 @@ export const getSectionItemsById = async (
       title,
       price,
       description,
-      section_id
+      section_id,
+      template_sections!inner(template_id)
     `
       )
       .eq("section_id", sectionId);
@@ -196,7 +208,10 @@ export const getSectionItemsById = async (
       throw new Error("Menu or sections not found");
     }
 
-    return data;
+    return (data as TemplateItem[]).map((item) => ({
+      ...item,
+      template_id: item.template_sections[0]?.template_id,
+    }));
   } catch (error) {
     console.error("Error in getMenuItemById:", error);
     throw new Error(`Failed to fetch the item: ${error}`);

@@ -140,7 +140,7 @@ const Products: React.FC = () => {
           </select>
 
           {showSectionDropdown && (
-            <div>
+            <div className="inner-select">
               <select
                 value={selectedTemplate}
                 onChange={(e) => setSelectedTemplate(e.target.value)}
@@ -198,9 +198,10 @@ const Products: React.FC = () => {
                       )} */}
                     </p>
                     <p>Price: {item.price} SAR</p>
+                    
                   </div>
                   <div className="card-top-icons">
-                    {/* <Link to={`${item.item_id}/${item.template_sections.template_id}`}>
+                    <Link to={`${item.item_id}/${item.template_sections.template_id}`}>
                       <button className="edit-card-btn">
                         <svg
                           width="20"
@@ -217,7 +218,7 @@ const Products: React.FC = () => {
                           />
                         </svg>
                       </button>
-                    </Link> */}
+                    </Link>
                     <button
                       className="delete-card-btn"
                       onClick={() => handleDelete(item.item_id)}
@@ -239,7 +240,7 @@ const Products: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <div>{item.description}</div>
+                <div className="description">{item.description}</div>
                 <div className="menu-card-bottom">
                   <div className="menu-status">
                     {/* <span className="status-icon active">

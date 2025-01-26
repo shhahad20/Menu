@@ -140,7 +140,8 @@ export const getSectionItemsById = async (id, userId, sectionId) => {
       title,
       price,
       description,
-      section_id
+      section_id,
+      template_sections!inner(template_id)
     `)
             .eq("section_id", sectionId);
         if (error) {
@@ -150,7 +151,10 @@ export const getSectionItemsById = async (id, userId, sectionId) => {
         if (!data || data.length === 0) {
             throw new Error("Menu or sections not found");
         }
-        return data;
+        return data.map((item) => ({
+            ...item,
+            template_id: item.template_sections[0]?.template_id,
+        }));
     }
     catch (error) {
         console.error("Error in getMenuItemById:", error);
